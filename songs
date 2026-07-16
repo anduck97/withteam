@@ -1,1 +1,10 @@
-
+{
+  "version": 1,
+  "songs": [
+    "wolf-type.json",
+    "yukiakari.json",
+    "imprinted.json",
+    "buzz-love.json",
+    "firework.json"
+  ]
+}
