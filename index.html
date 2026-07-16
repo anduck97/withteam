@@ -2,18 +2,16 @@
 <!--
   KotobaTune (코토바튠) — J-Pop 가사 기반 듀오링고식 일본어 학습 앱
   ─────────────────────────────────────────────────────────────
-  · 무빌드 단일 파일. 더블클릭으로 바로 실행됩니다 (인터넷 연결 필요: CDN + Claude API).
-  · 가사 분석은 Claude API(claude-opus-4-8)를 브라우저에서 직접 호출합니다.
-  · API 키는 우측 상단 ⚙ 설정에서 입력하며 브라우저 LocalStorage에만 저장됩니다.
-
-  ⚠️ 보안: API 키가 이 브라우저의 LocalStorage와 네트워크 요청에 노출됩니다.
-     본인 PC 개인용으로만 사용하세요. 이 파일을 공개 배포하거나 공용 키를 넣지 마세요.
+  · 무빌드 정적 웹앱. 웹 서버/정적 호스팅에서 실행합니다 (CDN 연결 필요).
+  · 공용 곡 데이터는 songs/catalog.json과 songs/*.json에서 읽습니다.
+  · 개인 학습 기록(아는 단어, SRS 진도, 최근 학습 곡)은 각 기기의 LocalStorage에만 저장됩니다.
+  · API 키나 개인정보를 수집하거나 서버로 전송하지 않습니다.
 -->
 <html lang="ko">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-<title>KotobaTune · J-Pop 일본어 학습</title>
+<title>Let's learn Japanese with &TEAM</title>
 <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
 <script src="https://cdn.tailwindcss.com"></script>
@@ -149,12 +147,11 @@ interface UserProgress {
   knownWordIds: string[];
   learningWords: LearningWord[];
   recentSongs: Array<{ title: string; artist: string; analyzedAt: string }>;
-  history: SongAnalysis[];
 }
 
-const EMPTY_PROGRESS: UserProgress = { knownWordIds: [], learningWords: [], recentSongs: [], history: [] };
+const EMPTY_PROGRESS: UserProgress = { knownWordIds: [], learningWords: [], recentSongs: [] };
 const LS_PROGRESS = 'kotobatune_progress';
-const LS_APIKEY  = 'kotobatune_apikey';
+const PUBLIC_CATALOG_URL = './songs/catalog.json';
 
 /* ════════════════════════ 저장소 (LocalStorage) ════════════════════════ */
 function loadProgress(): UserProgress {
@@ -163,10 +160,36 @@ function loadProgress(): UserProgress {
     if (!raw) return EMPTY_PROGRESS;
     const p = JSON.parse(raw);
     p.learningWords = (p.learningWords || []).map(lw => ({ ...lw, nextReviewDate: new Date(lw.nextReviewDate), lapses: lw.lapses || 0 }));
-    return { ...EMPTY_PROGRESS, ...p };
+    // v1 stored full song JSON in history. From v2 only device-local learning data is kept.
+    return {
+      knownWordIds: Array.isArray(p.knownWordIds) ? p.knownWordIds : [],
+      learningWords: p.learningWords,
+      recentSongs: Array.isArray(p.recentSongs) ? p.recentSongs : []
+    };
   } catch { return EMPTY_PROGRESS; }
 }
-function saveProgress(p: UserProgress) { localStorage.setItem(LS_PROGRESS, JSON.stringify(p)); }
+function saveProgress(p: UserProgress) {
+  localStorage.setItem(LS_PROGRESS, JSON.stringify({
+    knownWordIds: p.knownWordIds,
+    learningWords: p.learningWords,
+    recentSongs: p.recentSongs
+  }));
+}
+
+async function loadPublicCatalog(): Promise<SongAnalysis[]> {
+  const manifestRes = await fetch(PUBLIC_CATALOG_URL, { cache: 'no-cache' });
+  if (!manifestRes.ok) throw new Error(`곡 목록을 불러오지 못했습니다 (${manifestRes.status})`);
+  const manifest = await manifestRes.json();
+  if (!Array.isArray(manifest?.songs)) throw new Error('곡 목록 형식이 올바르지 않습니다.');
+  const results = await Promise.all(manifest.songs.map(async (file: string, i: number) => {
+    const res = await fetch(`./songs/${file}`, { cache: 'no-cache' });
+    if (!res.ok) throw new Error(`${file}을 불러오지 못했습니다 (${res.status})`);
+    const payload = await res.json();
+    const raw = Array.isArray(payload) ? payload[0] : payload;
+    return normalizeSong(raw, i);
+  }));
+  return results.filter(Boolean) as SongAnalysis[];
+}
 
 /* ════════════════════════ Chapter 4 · 효과음 (Web Audio) ════════════════════════ */
 function playSound(type: 'correct' | 'wrong') {
@@ -327,102 +350,6 @@ const JLPT_COLOR: Record<string,string> = {
   Unknown:'bg-white text-slate-600 border-2 border-ink font-extrabold'
 };
 
-/* ════════════════════════ Chapter 2 · Claude 가사 분석 호출 ════════════════════════ */
-const ANALYSIS_SCHEMA = {
-  type: 'object',
-  additionalProperties: false,
-  properties: {
-    verses: {
-      type: 'array',
-      items: {
-        type: 'object', additionalProperties: false,
-        properties: { text: { type: 'string' }, translation: { type: 'string' } },
-        required: ['text', 'translation']
-      }
-    },
-    vocabulary: {
-      type: 'array',
-      items: {
-        type: 'object', additionalProperties: false,
-        properties: {
-          surface: { type: 'string' },
-          dictionaryForm: { type: 'string' },
-          reading: { type: 'string' },
-          pos: { type: 'string' },
-          meaning: { type: 'string' },
-          jlptLevel: { type: 'string', enum: ['N1','N2','N3','N4','N5','Unknown'] },
-          conjugation: { type: 'string' }
-        },
-        required: ['surface','dictionaryForm','reading','pos','meaning','jlptLevel','conjugation']
-      }
-    }
-  },
-  required: ['verses', 'vocabulary']
-};
-
-const SYSTEM_PROMPT =
-`너는 일본어 교육에 특화된 일본어 교사이며 실시간 음악 가사 분석기야.
-사용자가 J-Pop 가사를 주면 아래 규칙으로 학습용 분석 데이터를 만든다.
-
-추출 우선순위:
-1. 전체 일본어 가사를 자연스러운 단위(주로 한 줄)로 쪼개 verses 로 매핑하고, 각 줄의 한국어 번역(translation)을 단다. 영어뿐인 추임새 줄은 제외한다.
-2. 가사에서 쓰인 주요 동사·형용사의 활용형은 가사 속 원문 표기(surface)와 사전형(dictionaryForm)을 이원화해서 추출하고, 활용 정보를 conjugation 에 적는다(예: "과거형(た형)", "て형", "가정형(ば형)"). 활용이 없으면 conjugation 은 "" 로.
-3. vocabulary 는 N4~N1 범위의 학습 가치가 높은 단어 위주로 15~30개 구성한다. 君·僕·見る 같은 N5 기초어와 조사는 제외한다.
-   - 관용구·연어(예: 気になる, 眼を光らせる)는 통째로 하나의 항목으로 추출해도 좋다.
-   - reading 은 단어 표기의 히라가나 요미가나.
-   - meaning 은 자연스러운 한국어 뜻. 관용적 쓰임이 있으면 괄호로 짧게 덧붙인다.
-   - pos 는 한국어 품사명(명사/동사/い형용사/な형용사/부사/관용표현 등).
-   - jlptLevel 은 N5~N1 또는 Unknown.
-
-번역 지침: translation 은 직역이 아니라 노래 가사로서 자연스러운 한국어로 의역한다. 은유·관용 표현은 의미가 통하게 옮기고(예: 手のひらで dancing → 네 손바닥 위에서 춤추고 있어), 화자의 어조(반말)를 유지한다.
-
-반드시 지정된 JSON 스키마 형식 하나로만 응답한다.`;
-
-async function analyzeLyrics(apiKey: string, title: string, artist: string, lyrics: string): Promise<SongAnalysis> {
-  const userText =
-    `곡 제목: ${title || '(미상)'}\n아티스트: ${artist || '(미상)'}\n\n가사:\n${lyrics}`;
-
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true'
-    },
-    body: JSON.stringify({
-      model: 'claude-opus-4-8',
-      max_tokens: 8000,
-      system: SYSTEM_PROMPT,
-      messages: [{ role: 'user', content: userText }],
-      output_config: { format: { type: 'json_schema', schema: ANALYSIS_SCHEMA } }
-    })
-  });
-
-  if (!res.ok) {
-    let detail = '';
-    try { detail = (await res.json())?.error?.message || ''; } catch {}
-    throw new Error(`Claude API 오류 (${res.status}) ${detail}`);
-  }
-  const data = await res.json();
-  if (data.stop_reason === 'refusal') throw new Error('요청이 안전 정책으로 거부되었습니다.');
-  const textBlock = (data.content || []).find(b => b.type === 'text');
-  if (!textBlock) throw new Error('응답에서 분석 결과를 찾지 못했습니다.');
-  const parsed = JSON.parse(textBlock.text);
-
-  const finalTitle = title.trim() || '(제목 없음)';
-  const finalArtist = artist.trim() || '(아티스트 미상)';
-  const used = new Set<string>();
-  const vocabulary: Word[] = (parsed.vocabulary || []).map((w) => ({
-    id: makeWordId(finalTitle, finalArtist, w, used),
-    surface: w.surface, dictionaryForm: w.dictionaryForm, reading: w.reading,
-    pos: w.pos, meaning: w.meaning, jlptLevel: w.jlptLevel || 'Unknown',
-    conjugation: w.conjugation || ''
-  }));
-  return { title: finalTitle, artist: finalArtist,
-           lyrics, verses: parsed.verses || [], vocabulary };
-}
-
 /* ════════════════════════ 공통 헬퍼 ════════════════════════ */
 function shuffle<T>(arr: T[]): T[] { const a = [...arr]; for (let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
 
@@ -441,50 +368,29 @@ function makeWordId(title: string, artist: string, w: { surface?: string; dictio
   return id;
 }
 
-// 어디에도 존재하지 않는 단어의 학습/앎 기록 정리 (곡 삭제·교체 후 고아 방지)
-function pruneOrphans(p: UserProgress): UserProgress {
+// 공용 카탈로그에 더 이상 없는 단어/최근 곡 기록만 정리한다.
+function pruneOrphans(p: UserProgress, catalog: SongAnalysis[]): UserProgress {
   const valid = new Set<string>();
-  p.history.forEach(s => s.vocabulary.forEach(w => valid.add(w.id)));
+  const songKeys = new Set<string>();
+  catalog.forEach(s => {
+    songKeys.add(`${s.title}∷${s.artist}`);
+    s.vocabulary.forEach(w => valid.add(w.id));
+  });
   return { ...p,
     learningWords: p.learningWords.filter(l => valid.has(l.wordId)),
-    knownWordIds: p.knownWordIds.filter(id => valid.has(id)) };
-}
-
-/* ════════════════════════ 설정 모달 ════════════════════════ */
-function SettingsModal({ apiKey, onSave, onClose }) {
-  const [val, setVal] = useState(apiKey || '');
-  return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 anim-pop" onClick={e=>e.stopPropagation()}>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold text-ink">설정</h2>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-700"><IconX/></button>
-        </div>
-        <label className="text-sm font-medium text-slate-700">Claude API 키</label>
-        <input type="password" value={val} onChange={e=>setVal(e.target.value)} placeholder="sk-ant-..."
-          className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"/>
-        <p className="mt-2 text-xs text-slate-500 leading-relaxed">
-          키는 이 브라우저(LocalStorage)에만 저장됩니다. console.anthropic.com 에서 발급하세요.
-          공용 PC에서는 사용 후 삭제하세요.
-        </p>
-        <div className="mt-5 flex justify-end gap-2">
-          <button onClick={onClose} className="px-4 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-100">취소</button>
-          <button onClick={()=>onSave(val.trim())} className="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700">저장</button>
-        </div>
-      </div>
-    </div>
-  );
+    knownWordIds: p.knownWordIds.filter(id => valid.has(id)),
+    recentSongs: p.recentSongs.filter(s => songKeys.has(`${s.title}∷${s.artist}`)) };
 }
 
 /* ════════════════════════ Dashboard 탭 ════════════════════════ */
-function Dashboard({ progress, go }) {
+function Dashboard({ progress, catalog, go }) {
   const stat = (label, value, color) => (
     <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
       <div className={`text-3xl font-extrabold ${color}`}>{value}</div>
       <div className="text-sm text-slate-500 mt-1">{label}</div>
     </div>
   );
-  const dueToday = dueCount(progress, Date.now());
+  const dueToday = dueCount(progress, catalog, Date.now());
   return (
     <div className="anim-slideup">
       <h1 className="text-2xl font-extrabold text-ink mb-1"><span className="wiggle">🐺</span> こんにちは 👋</h1>
@@ -501,15 +407,15 @@ function Dashboard({ progress, go }) {
       <div className="grid grid-cols-3 gap-3 mb-6">
         {stat('학습 중 단어', progress.learningWords.length, 'text-brand-600')}
         {stat('아는 단어', progress.knownWordIds.length, 'text-emerald-600')}
-        {stat('분석한 곡', progress.history.length, 'text-amber-600')}
+        {stat('공용 곡', catalog.length, 'text-amber-600')}
       </div>
       <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="font-bold text-ink">최근 분석한 곡</h2>
-          <button onClick={()=>go('analyze')} className="text-sm font-semibold text-brand-600">+ 새 곡 분석</button>
+          <h2 className="font-bold text-ink">최근 학습한 곡</h2>
+          <button onClick={()=>go('library')} className="text-sm font-semibold text-brand-600">전체 곡 보기</button>
         </div>
         {progress.recentSongs.length === 0 ? (
-          <p className="text-sm text-slate-400 py-6 text-center">아직 분석한 곡이 없어요. Analyze 탭에서 시작하세요!</p>
+          <p className="text-sm text-slate-400 py-6 text-center">아직 열어본 곡이 없어요. 아카이브에서 시작하세요!</p>
         ) : (
           <ul className="divide-y divide-slate-100">
             {progress.recentSongs.slice(0,6).map((s,i)=>(
@@ -529,40 +435,13 @@ function Dashboard({ progress, go }) {
 }
 
 /* ════════════════════════ Analyze 탭 (Chapter 2 + 3) ════════════════════════ */
-const SAMPLE = {
-  title:'夜に駆ける', artist:'YOASOBI',
-  lyrics:'沈むように溶けてゆくように\n二人だけの空が広がる夜に\nさよならだけだった\nその一言で全てが分かった'
-};
-
-function Analyze({ apiKey, current, setCurrent, progress, setProgress, openSettings, go }) {
-  const [title, setTitle] = useState('');
-  const [artist, setArtist] = useState('');
-  const [lyrics, setLyrics] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+function Analyze({ current, setCurrent, progress, setProgress, catalog, go }) {
   const [selected, setSelected] = useState<Word | null>(null);
   const [showTrans, setShowTrans] = useState(true);
   const [wf, setWf] = useState<'all'|'learning'|'new'>('all');   // 상태 필터
   const [jf, setJf] = useState<string>('all');                    // JLPT 필터
 
   const dict = useMemo(() => buildRubyDict(current?.vocabulary || []), [current]);
-
-  async function run() {
-    if (!apiKey) { setError('먼저 ⚙ 설정에서 Claude API 키를 입력하세요.'); return; }
-    if (!lyrics.trim()) { setError('가사를 입력하세요.'); return; }
-    setError(''); setLoading(true); setSelected(null);
-    try {
-      const result = await analyzeLyrics(apiKey, title, artist, lyrics);
-      setCurrent(result);
-      setProgress(prev => {
-        const history = [result, ...prev.history.filter(s => s.title !== result.title || s.artist !== result.artist)];
-        const recent = [{ title: result.title, artist: result.artist, analyzedAt: new Date().toISOString() },
-          ...prev.recentSongs.filter(rs => rs.title !== result.title || rs.artist !== result.artist)];
-        return { ...prev, history, recentSongs: recent };
-      });
-    } catch (e:any) { setError(e.message || '분석 실패'); }
-    finally { setLoading(false); }
-  }
 
   const isKnown = (id) => progress.knownWordIds.includes(id);
   const isLearning = (id) => progress.learningWords.some(l => l.wordId === id);
@@ -614,7 +493,7 @@ function Analyze({ apiKey, current, setCurrent, progress, setProgress, openSetti
   }
   const learningInSong = current ? current.vocabulary.filter(w => isLearning(w.id)).length : 0;
   const lwOf = (id: string) => progress.learningWords.find(l => l.wordId === id);
-  const dueN = dueCount(progress, Date.now());
+  const dueN = dueCount(progress, catalog, Date.now());
   const visibleVocab = current ? current.vocabulary.filter(w => {
     const statusOk = wf === 'all'
       || (wf === 'learning' && isLearning(w.id))
@@ -624,38 +503,15 @@ function Analyze({ apiKey, current, setCurrent, progress, setProgress, openSetti
 
   return (
     <div className="anim-slideup">
-      <h1 className="text-2xl font-extrabold text-ink mb-4">🐶 가사 분석기</h1>
+      <h1 className="text-2xl font-extrabold text-ink mb-4">🐶 곡 학습</h1>
 
-      {!current && !apiKey && (
+      {!current && (
         <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 text-center max-w-2xl">
           <div className="text-5xl mb-3"><span className="wiggle">🐺</span></div>
           <p className="text-slate-600 mb-1 font-medium">열어 볼 곡이 없어요</p>
-          <p className="text-sm text-slate-400 mb-5">아카이브에서 곡을 열거나, 곡 데이터(JSON)를 가져와서 학습을 시작하세요.</p>
+          <p className="text-sm text-slate-400 mb-5">공용 아카이브에서 곡을 골라 학습을 시작하세요.</p>
           <div className="flex gap-2 justify-center">
             <button onClick={()=>go('library')} className="px-5 py-2.5 rounded-xl font-semibold text-white bg-brand-600 hover:bg-brand-700">아카이브 열기</button>
-          </div>
-          <button onClick={openSettings} className="mt-4 text-xs text-slate-400 underline hover:text-slate-600">API 키로 직접 가사 분석하기</button>
-        </div>
-      )}
-
-      {!current && apiKey && (
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 max-w-2xl">
-          <div className="grid grid-cols-2 gap-3">
-            <input value={title} onChange={e=>setTitle(e.target.value)} placeholder="곡 제목"
-              className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-jp focus:outline-none focus:ring-2 focus:ring-brand-400"/>
-            <input value={artist} onChange={e=>setArtist(e.target.value)} placeholder="아티스트"
-              className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-jp focus:outline-none focus:ring-2 focus:ring-brand-400"/>
-          </div>
-          <textarea value={lyrics} onChange={e=>setLyrics(e.target.value)} rows={8} placeholder="여기에 일본어 가사를 붙여넣으세요…"
-            className="mt-3 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm font-jp leading-relaxed focus:outline-none focus:ring-2 focus:ring-brand-400"/>
-          {error && <div className="mt-3 text-sm text-rose-600">{error}</div>}
-          <div className="mt-4 flex items-center gap-3">
-            <button onClick={run} disabled={loading}
-              className="px-5 py-2.5 rounded-xl font-semibold text-white bg-brand-600 hover:bg-brand-700 disabled:opacity-50 flex items-center gap-2">
-              {loading ? '분석 중…' : <><IconSpark width="18" height="18"/> 분석하기</>}
-            </button>
-            <button onClick={()=>{setTitle(SAMPLE.title);setArtist(SAMPLE.artist);setLyrics(SAMPLE.lyrics);}}
-              className="text-sm text-slate-500 hover:text-slate-700">예시 채우기</button>
           </div>
         </div>
       )}
@@ -817,150 +673,48 @@ function normalizeSong(raw, seq: number): SongAnalysis | null {
     verses, vocabulary
   };
 }
-// 입력 텍스트(배열 / 단일 곡 / 내보낸 progress) 어느 형태든 곡 배열로 파싱.
-function parseImportPayload(text: string): SongAnalysis[] {
-  const data = JSON.parse(text);
-  let arr;
-  if (Array.isArray(data)) arr = data;
-  else if (data && Array.isArray(data.history)) arr = data.history;
-  else if (data && (data.verses || data.vocabulary)) arr = [data];
-  else throw new Error('알 수 없는 형식입니다. 곡 배열 또는 단일 곡 객체여야 합니다.');
-  const songs = arr.map((r, i) => normalizeSong(r, i)).filter(Boolean) as SongAnalysis[];
-  if (songs.length === 0) throw new Error('유효한 곡이 없습니다. 각 곡에 verses와 vocabulary가 필요합니다.');
-  return songs;
-}
-// history·recentSongs에 병합(중복은 title+artist로 갱신).
-function mergeImported(prev: UserProgress, songs: SongAnalysis[]): UserProgress {
-  let history = [...prev.history];
-  let recent = [...prev.recentSongs];
-  songs.forEach(s => {
-    history = [s, ...history.filter(h => h.title !== s.title || h.artist !== s.artist)];
-    recent = [{ title: s.title, artist: s.artist, analyzedAt: new Date().toISOString() },
-      ...recent.filter(r => r.title !== s.title || r.artist !== s.artist)];
-  });
-  return pruneOrphans({ ...prev, history, recentSongs: recent });
-}
-function exportSongs(progress: UserProgress) {
-  const blob = new Blob([JSON.stringify(progress.history, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'kotobatune-songs.json'; a.click();
-  URL.revokeObjectURL(url);
-}
-
-const IMPORT_EXAMPLE =
-`[
-  {
-    "title": "夜に駆ける",
-    "artist": "YOASOBI",
-    "verses": [
-      { "text": "二人だけの空が広がる夜に", "translation": "둘만의 하늘이 펼쳐지는 밤에" }
-    ],
-    "vocabulary": [
-      { "surface": "空", "dictionaryForm": "空", "reading": "そら",
-        "pos": "명사", "meaning": "하늘", "jlptLevel": "N5", "conjugation": "" },
-      { "surface": "広がる", "dictionaryForm": "広がる", "reading": "ひろがる",
-        "pos": "동사", "meaning": "펼쳐지다", "jlptLevel": "N3", "conjugation": "" }
-    ]
-  }
-]`;
-
-function ImportModal({ onImport, onClose }) {
-  const [text, setText] = useState('');
-  const [error, setError] = useState('');
-  const fileRef = useRef<HTMLInputElement>(null);
-
-  function doImport(payload: string) {
-    try {
-      const songs = parseImportPayload(payload);
-      onImport(songs);
-    } catch (e:any) { setError(e.message || '가져오기 실패'); }
-  }
-  function onFile(e) {
-    const f = e.target.files?.[0];
-    if (!f) return;
-    const r = new FileReader();
-    r.onload = () => doImport(String(r.result));
-    r.readAsText(f);
-  }
-  return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 anim-pop" onClick={e=>e.stopPropagation()}>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg font-bold text-ink">🍓 곡 데이터 가져오기 (API 불필요)</h2>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-700"><IconX/></button>
-        </div>
-        <p className="text-sm text-slate-500 mb-3">분석 완료된 곡 JSON을 붙여넣거나 파일을 선택하세요. 키 없이 바로 학습/퀴즈에 추가됩니다.</p>
-        <div className="flex gap-2 mb-3">
-          <input ref={fileRef} type="file" accept=".json,application/json" onChange={onFile} className="hidden" />
-          <button onClick={()=>fileRef.current?.click()} className="px-3 py-2 rounded-lg text-sm border border-slate-300 text-slate-700 hover:bg-slate-50">JSON 파일 선택</button>
-        </div>
-        <textarea value={text} onChange={e=>setText(e.target.value)} rows={8} placeholder="여기에 JSON 붙여넣기…"
-          className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-brand-400"/>
-        {error && <div className="mt-2 text-sm text-rose-600">{error}</div>}
-        <details className="mt-3 text-xs text-slate-500">
-          <summary className="cursor-pointer select-none">형식 예시 보기</summary>
-          <pre className="mt-2 bg-slate-50 rounded-lg p-3 overflow-auto whitespace-pre">{IMPORT_EXAMPLE}</pre>
-        </details>
-        <div className="mt-5 flex justify-end gap-2">
-          <button onClick={onClose} className="px-4 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-100">취소</button>
-          <button onClick={()=>doImport(text)} disabled={!text.trim()}
-            className="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 disabled:opacity-40">가져오기</button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /* ════════════════════════ Library 탭 (Chapter 5) ════════════════════════ */
-function Library({ progress, setProgress, openSong }) {
-  const [showImport, setShowImport] = useState(false);
-  function del(song) {
-    setProgress(prev => {
-      const newHistory = prev.history.filter(s => s.title !== song.title || s.artist !== song.artist);
-      const newRecentSongs = prev.recentSongs.filter(rs => rs.title !== song.title || rs.artist !== song.artist);
-      return pruneOrphans({ ...prev, history: newHistory, recentSongs: newRecentSongs });
-    });
-  }
-  function handleImport(songs: SongAnalysis[]) {
-    setProgress(prev => mergeImported(prev, songs));
-    setShowImport(false);
-  }
+function Library({ catalog, loading, error, openSong }) {
   return (
     <div className="anim-slideup">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-        <h1 className="text-2xl font-extrabold text-ink">🍊 아카이브</h1>
-        <div className="flex gap-2">
-          <button onClick={()=>setShowImport(true)}
-            className="px-3 py-2 rounded-lg text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700">가져오기</button>
-          <button onClick={()=>exportSongs(progress)} disabled={progress.history.length===0}
-            className="px-3 py-2 rounded-lg text-sm font-semibold border border-slate-300 text-slate-700 hover:bg-slate-50 disabled:opacity-40">내보내기</button>
+        <div>
+          <h1 className="text-2xl font-extrabold text-ink">🍊 공용 아카이브</h1>
+          <p className="text-sm text-slate-500 mt-1">모든 사용자가 같은 곡 데이터를 봅니다.</p>
         </div>
       </div>
-      {progress.history.length === 0 ? (
+      {loading ? (
+        <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 text-center">
+          <div className="text-4xl mb-3 wiggle">🐺</div>
+          <p className="text-slate-500">공용 곡 데이터를 불러오는 중...</p>
+        </div>
+      ) : error ? (
+        <div className="bg-white rounded-2xl p-8 shadow-sm border border-rose-200 text-center">
+          <div className="text-5xl mb-3">🐶</div>
+          <p className="font-semibold text-rose-600 mb-1">곡 데이터를 불러오지 못했어요.</p>
+          <p className="text-sm text-slate-500">{error}</p>
+        </div>
+      ) : catalog.length === 0 ? (
         <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 text-center">
           <div className="text-5xl mb-3">🍓</div>
-          <p className="text-slate-500 mb-1">분석 완료된 곡이 여기에 보관됩니다.</p>
-          <p className="text-sm text-slate-400">API 키 없이 쓰려면 <b>가져오기</b>로 분석된 곡 JSON을 넣으세요.</p>
+          <p className="text-slate-500">등록된 공용 곡이 없습니다.</p>
         </div>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {progress.history.map((s,i)=>(
+          {catalog.map((s,i)=>(
             <div key={i} className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex flex-col">
               <div className="flex-1 cursor-pointer" onClick={()=>openSong(s)}>
                 <div className="font-bold text-ink font-jp">{s.title}</div>
                 <div className="text-sm text-slate-500 font-jp">{s.artist}</div>
                 <div className="text-xs text-slate-400 mt-2">{s.vocabulary.length} 단어 · {s.verses.length} 문장</div>
               </div>
-              <div className="mt-3 flex justify-between items-center">
+              <div className="mt-3 flex justify-start items-center">
                 <button onClick={()=>openSong(s)} className="text-sm font-semibold text-brand-600">열기</button>
-                <button onClick={()=>del(s)} className="text-slate-400 hover:text-rose-600" title="삭제"><IconTrash width="18" height="18"/></button>
               </div>
             </div>
           ))}
         </div>
       )}
-      {showImport && <ImportModal onImport={handleImport} onClose={()=>setShowImport(false)} />}
     </div>
   );
 }
@@ -973,9 +727,9 @@ const MAX_SESSION_WORDS = 15;   // 한 세션 최대 단어 수
 
 function srsDays(rep: number): number { return SRS_INTERVALS[Math.min(Math.max(rep,0), SRS_INTERVALS.length - 1)]; }
 function isDue(lw: LearningWord, now: number): boolean { return new Date(lw.nextReviewDate).getTime() <= now; }
-function dueCount(progress: UserProgress, now: number): number {
+function dueCount(progress: UserProgress, catalog: SongAnalysis[], now: number): number {
   const inVocab = new Set<string>();
-  progress.history.forEach(s => s.vocabulary.forEach(w => inVocab.add(w.id)));
+  catalog.forEach(s => s.vocabulary.forEach(w => inVocab.add(w.id)));
   return progress.learningWords.filter(l => inVocab.has(l.wordId) && isDue(l, now)).length;
 }
 // 정답: 간격 증가 / 오답: 강등 + lapse 기록, 오늘 다시 due
@@ -1023,11 +777,11 @@ function pickQuizForWord(w: Word, rep: number, wordSong, meanings: string[], sur
 }
 
 // mode 'due': 오늘 복습 예정 단어만 / 'all': 전체 학습 단어. level 로 JLPT 필터. 단어당 1문제, 상한 적용.
-function buildSession(progress: UserProgress, mode: 'due'|'all' = 'due', level: 'all'|JLPTLevel = 'all'): { quizzes: Quiz[]; dict: Map<string,string> } {
+function buildSession(progress: UserProgress, catalog: SongAnalysis[], mode: 'due'|'all' = 'due', level: 'all'|JLPTLevel = 'all'): { quizzes: Quiz[]; dict: Map<string,string> } {
   const lwById = new Map(progress.learningWords.map(l => [l.wordId, l]));
   const allWords: Word[] = [];
   const wordSong = new Map<string, SongAnalysis>();
-  progress.history.forEach(song => song.vocabulary.forEach(w => { allWords.push(w); wordSong.set(w.id, song); }));
+  catalog.forEach(song => song.vocabulary.forEach(w => { allWords.push(w); wordSong.set(w.id, song); }));
   const dict = buildRubyDict(allWords);
   const meanings = allWords.map(w => w.meaning);
   const surfaces = allWords.map(w => w.surface);
@@ -1050,7 +804,7 @@ function buildSession(progress: UserProgress, mode: 'due'|'all' = 'due', level: 
 }
 
 /* ════════════════════════ Review 탭 (Chapter 4) ════════════════════════ */
-function Review({ progress, setProgress, go }) {
+function Review({ progress, setProgress, catalog, go }) {
   const [session, setSession] = useState<Quiz[]>([]);
   const [dict, setDict] = useState<Map<string,string>>(new Map());
   const [idx, setIdx] = useState(0);
@@ -1068,7 +822,7 @@ function Review({ progress, setProgress, go }) {
   const PRAISE = ['정답! 🐺', 'いいね! 🍊', '완벽! 🍓', 'すごい! 🐰', '멋져! 🐶'];
 
   function startSession(mode: 'due'|'all', lv: 'all'|JLPTLevel = level) {
-    const built = buildSession(progress, mode, lv);
+    const built = buildSession(progress, catalog, mode, lv);
     setSession(built.quizzes); setDict(built.dict);
     setIdx(0); setDone(0); setWrongCount(0); setCombo(0); setBest(0);
     setFeedback('none'); setPicked(null);
@@ -1082,14 +836,14 @@ function Review({ progress, setProgress, go }) {
   useEffect(() => {
     if (session.length > 0 && idx < session.length) return;   // ← 락: 진행 중일 때만 (완료/빈 세션은 재생성)
     startSession('due');
-  }, [progress.learningWords.length, progress.history.length]); // eslint-disable-line
+  }, [progress.learningWords.length, catalog.length]); // eslint-disable-line
 
   // 현재 레벨에 해당하는 학습 단어 수 (빈 상태 안내·버튼 활성화용)
   const wordById = useMemo(() => {
     const m = new Map<string, Word>();
-    progress.history.forEach(s => s.vocabulary.forEach(w => m.set(w.id, w)));
+    catalog.forEach(s => s.vocabulary.forEach(w => m.set(w.id, w)));
     return m;
-  }, [progress.history]);
+  }, [catalog]);
   const levelLearningCount = progress.learningWords.filter(l => {
     const w = wordById.get(l.wordId);
     return w && (level === 'all' || w.jlptLevel === level);
@@ -1319,22 +1073,44 @@ function Review({ progress, setProgress, go }) {
 /* ════════════════════════ 루트 App + 네비게이션 ════════════════════════ */
 const TABS = [
   { id:'dashboard', label:'홈',       Icon: IconHome },
-  { id:'analyze',   label:'분석',     Icon: IconBook },
-  { id:'library',   label:'아카이브', Icon: IconLibrary },
+  { id:'analyze',   label:'학습',     Icon: IconBook },
+  { id:'library',   label:'곡 목록',  Icon: IconLibrary },
   { id:'review',    label:'복습',     Icon: IconBrain },
 ];
 
 function App() {
   const [tab, setTab] = useState('dashboard');
   const [progress, setProgress] = useState<UserProgress>(loadProgress);
-  const [apiKey, setApiKey] = useState<string>(() => localStorage.getItem(LS_APIKEY) || '');
+  const [catalog, setCatalog] = useState<SongAnalysis[]>([]);
+  const [catalogLoading, setCatalogLoading] = useState(true);
+  const [catalogError, setCatalogError] = useState('');
   const [current, setCurrent] = useState<SongAnalysis | null>(null);
-  const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => { saveProgress(progress); }, [progress]);
+  useEffect(() => {
+    let active = true;
+    loadPublicCatalog()
+      .then(songs => {
+        if (!active) return;
+        setCatalog(songs);
+        setProgress(prev => pruneOrphans(prev, songs));
+        setCatalogError('');
+      })
+      .catch(e => { if (active) setCatalogError(e.message || '공용 곡 로드 실패'); })
+      .finally(() => { if (active) setCatalogLoading(false); });
+    return () => { active = false; };
+  }, []);
 
-  function saveKey(k: string) { setApiKey(k); localStorage.setItem(LS_APIKEY, k); setShowSettings(false); }
-  function openSong(s: SongAnalysis) { setCurrent(s); setTab('analyze'); }
+  function openSong(s: SongAnalysis) {
+    setCurrent(s);
+    setProgress(prev => ({ ...prev,
+      recentSongs: [
+        { title:s.title, artist:s.artist, analyzedAt:new Date().toISOString() },
+        ...prev.recentSongs.filter(r => r.title !== s.title || r.artist !== s.artist)
+      ].slice(0, 12)
+    }));
+    setTab('analyze');
+  }
 
   const Nav = ({ vertical }) => (
     <nav className={vertical ? 'flex flex-col gap-1' : 'flex justify-around'}>
@@ -1361,11 +1137,7 @@ function App() {
           <div className="font-extrabold text-ink leading-tight">KotobaTune<div className="text-[10px] font-normal text-slate-400">コトバチューン</div></div>
         </div>
         <Nav vertical />
-        <div className="mt-auto">
-          <button onClick={()=>setShowSettings(true)} className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:text-slate-800 w-full">
-            <IconCog width="22" height="22"/><span className="font-semibold">설정</span>
-          </button>
-        </div>
+        <div className="mt-auto px-4 py-3 text-xs text-slate-400 leading-relaxed">학습 기록은<br/>이 기기에만 저장됩니다.</div>
       </aside>
 
       {/* 모바일 상단바 */}
@@ -1374,17 +1146,17 @@ function App() {
           <div className="w-7 h-7 rounded-lg bg-brand-600 text-white grid place-items-center text-sm">🐺</div>
           <span className="font-extrabold text-ink">KotobaTune</span>
         </div>
-        <button onClick={()=>setShowSettings(true)} className="text-slate-500"><IconCog/></button>
+        <span className="text-[10px] text-slate-400">기기별 저장</span>
       </header>
 
       {/* 본문 */}
       <main className="flex-1 overflow-auto p-4 md:p-8 pb-24 md:pb-8">
         <div className="max-w-5xl mx-auto">
-          {tab==='dashboard' && <Dashboard progress={progress} go={setTab} />}
-          {tab==='analyze'   && <Analyze apiKey={apiKey} current={current} setCurrent={setCurrent}
-                                          progress={progress} setProgress={setProgress} openSettings={()=>setShowSettings(true)} go={setTab} />}
-          {tab==='library'   && <Library progress={progress} setProgress={setProgress} openSong={openSong} />}
-          {tab==='review'    && <Review progress={progress} setProgress={setProgress} go={setTab} />}
+          {tab==='dashboard' && <Dashboard progress={progress} catalog={catalog} go={setTab} />}
+          {tab==='analyze'   && <Analyze current={current} setCurrent={setCurrent}
+                                          progress={progress} setProgress={setProgress} catalog={catalog} go={setTab} />}
+          {tab==='library'   && <Library catalog={catalog} loading={catalogLoading} error={catalogError} openSong={openSong} />}
+          {tab==='review'    && <Review progress={progress} setProgress={setProgress} catalog={catalog} go={setTab} />}
         </div>
       </main>
 
@@ -1392,8 +1164,6 @@ function App() {
       <div className="md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 z-40">
         <Nav vertical={false} />
       </div>
-
-      {showSettings && <SettingsModal apiKey={apiKey} onSave={saveKey} onClose={()=>setShowSettings(false)} />}
     </div>
   );
 }
