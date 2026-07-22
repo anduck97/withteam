@@ -23,8 +23,15 @@
       { "text": "すぐに笑顔になる", "translation": "금세 웃는 얼굴이 돼" },
       { "text": "モノクロなその日々を", "translation": "흑백이던 그 나날을" },
       { "text": "彩る僕になるよ", "translation": "물들이는 내가 될게" },
-      { "text": "優しく照らす日差し追うあの花のように", "translation": "부드럽게 비추는 햇살을 좇는 저 꽃(해바라기)처럼" },
-      { "text": "君以外愛せないってそう刻まれているんだ", "translation": "너 말곤 사랑할 수 없다고, 그렇게 새겨져 있는 거야" }
+      { "text": "優しく照らす日差し追うあ-の花のように", "translation": "부드럽게 비추는 햇살을 좇는 저- 꽃(해바라기)처럼" },
+      { "text": "君以外愛せないってそう刻まれているんだ", "translation": "너 말곤 사랑할 수 없다고, 그렇게 새겨져 있는 거야" },
+      { "text": "きっと本当の気持ちなんて", "translation": "분명 진짜 마음 같은 건" },
+      { "text": "半分ほども伝わらない", "translation": "절반만큼도 전해지지 않아" },
+      { "text": "この胸開いてすべてを", "translation": "이 가슴을 열어 전부를" },
+      { "text": "君に見せたいのに", "translation": "너에게 보여 주고 싶은데" },
+      { "text": "一途なこの想いは", "translation": "한결같은 이 마음은" },
+      { "text": "「僕だけを見てくれないか？」", "translation": "「나만 바라봐 주지 않을래?」" },
+      { "text": "永遠に続く真夏のように", "translation": "영원히 계속되는 한여름처럼" }
     ],
     "vocabulary": [
       { "id": "imprinted∷溶ける", "surface": "溶けた", "dictionaryForm": "溶ける", "reading": "とけた", "pos": "동사", "meaning": "녹다", "jlptLevel": "N3", "conjugation": "과거형(た형)" },
