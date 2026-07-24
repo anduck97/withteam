@@ -21,7 +21,7 @@
       { "text": "僕の心が叫ぶんだ 今", "translation": "내 마음이 외치고 있어, 지금" },
       { "text": "Break (Break)", "translation": },
       { "text": "目覚めてく Under the skin skin", "translation": "깨어나고 있어 Under the skin" },
-      { "text": "One day (Day)",  },
+      { "text": "One day (Day)" },
       { "text": "この声が届くまで", "translation": "이 목소리가 닿을 때까지" },
       { "text": "Where are you? ただ探している", "translation": "Where are you? 그저 찾아 헤매고 있어" },
       { "text": "One more time one more time", "translation":  },
@@ -64,8 +64,7 @@
       { "text": "Where are you? ただ探している", "translation": "Where are you? 그저 찾아 헤매고 있어" },
       { "text": "One more time one more time", "translation": },
       { "text": "Where are you? I wanna step out with you", "translation": },
-      { "text": "One more time in this world", "translation": }
-    ],
+      { "text": "One more time in this world", "translation": }    ],
     "vocabulary": [
       { "id": "undertheskin∷探す", "surface": "探している", "dictionaryForm": "探す", "reading": "さがしている", "pos": "동사", "meaning": "찾다", "jlptLevel": "N4", "conjugation": "진행형(~ている)" },
       { "id": "undertheskin∷曇る", "surface": "曇っていた", "dictionaryForm": "曇る", "reading": "くもっていた", "pos": "동사", "meaning": "흐리다, 흐려지다", "jlptLevel": "N3", "conjugation": "과거 진행(~ていた)" },
