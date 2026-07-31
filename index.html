@@ -892,6 +892,13 @@ type Quiz =
   | { kind:'B'; word:Word; verse:Verse; choices:string[]; answer:string; blanked:string }
   | { kind:'C'; word:Word; verse:Verse; tokens:string[]; answer:string[] };
 
+// 부정 활용은 표면형과 부정 뜻이 서로 힌트가 되므로 항상 기본형 뜻 문제(A)로 낸다.
+// 예: 隠さない → 문제에는 隠す, 선지에는 '숨기다'를 표시.
+function isNegativeForm(w: Word): boolean {
+  const grammar = `${w.conjugation || ''} ${w.grammarNote || ''}`;
+  return /부정|ない|ぬ|ず/u.test(grammar);
+}
+
 // 단어 하나에 대해 숙련도(rep)에 맞는 유형 1개를 생성 (없으면 쉬운 유형으로 폴백)
 function pickQuizForWord(w: Word, rep: number, wordSong, meanings: string[], surfaces: string[]): Quiz | null {
   const song = wordSong.get(w.id);
@@ -914,6 +921,9 @@ function pickQuizForWord(w: Word, rep: number, wordSong, meanings: string[], sur
     if (tokens.length < 3 || tokens.length > 8) return null;
     return { kind:'C', word:w, verse, answer: tokens, tokens: shuffle(tokens) };
   };
+  // 부정형은 숙련도가 올라도 빈칸(B)·문장조립(C)으로 자동 전환하지 않는다.
+  // 문제 모양은 기존 뜻 고르기 그대로 두고, 제시어만 dictionaryForm으로 바꾼다.
+  if (isNegativeForm(w)) return makeA();
   if (rep >= 4) return makeC() || makeB() || makeA();
   if (rep >= 2) return makeB() || makeA();
   return makeA();
