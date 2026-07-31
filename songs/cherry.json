@@ -1,77 +1,594 @@
 [
-  {
-    "title": "CHE.R.RY",
-    "artist": "YUI",
-    "verses": [
-      { "text": "手のひらで震えたそれが", "translation": "손바닥에서 떨린 그것이" },
-      { "text": "小さな勇気になっていたんだ", "translation": "작은 용기가 되어 있었어" },
-      { "text": "絵文字は苦手だっただけど", "translation": "이모티콘은 서툴렀지만" },
-      { "text": "君からだったらワクワクしちゃう", "translation": "너한테서 온 거라면 두근거려 버려" },
-      { "text": "返事はすぐにしちゃ駄目だって", "translation": "답장은 바로 하면 안 된대" },
-      { "text": "誰かに聞いた事あるけど", "translation": "누군가한테 들은 적 있지만" },
-      { "text": "駆け引きなんて出来ないの", "translation": "밀당 같은 건 못 해" },
-      { "text": "好きなのよ ah ah ah~", "translation": "좋아하는걸 ah ah ah~" },
-      { "text": "恋しちゃったんだ", "translation": "사랑에 빠져 버렸어" },
-      { "text": "多分気づいてないでしょう", "translation": "아마 눈치 못 챘겠지" },
-      { "text": "星の夜願い込めて C.HE.RRY", "translation": "별이 뜬 밤 소원을 담아 C.HE.RRY" },
-      { "text": "指先で送る君へのメッセージ", "translation": "손끝으로 보내는 너에게로의 메시지" },
-      { "text": "桜が咲いているこの部屋から見えてる景色を全部", "translation": "벚꽃이 피어 있는 이 방에서 보이는 풍경을 전부" },
-      { "text": "今君が感じた世界と", "translation": "지금 네가 느낀 세계와" },
-      { "text": "10秒取り替えてもらうより", "translation": "10초 바꿔 받기보다" },
-      { "text": "ほんの一行でも構わないんだ", "translation": "그저 한 줄이라도 괜찮아" },
-      { "text": "君からの言葉が欲しいんだ", "translation": "너의 말이 갖고 싶어" },
-      { "text": "嘘でも信じ続けられるの", "translation": "거짓말이라도 계속 믿을 수 있어" },
-      { "text": "好きだから ah ah ah~", "translation": "좋아하니까 ah ah ah~" },
-      { "text": "恋しちゃったんだ", "translation": "사랑에 빠져 버렸어" },
-      { "text": "多分気づいてないでしょう", "translation": "아마 눈치 못 챘겠지" },
-      { "text": "星の夜願い込めて C.HE.RRY", "translation": "별이 뜬 밤 소원을 담아 C.HE.RRY" },
-      { "text": "指先で送る君へのメッセージ", "translation": "손끝으로 보내는 너에게로의 메시지" },
-      { "text": "甘くなる果実がいいの", "translation": "달콤해지는 과실이 좋아" },
-      { "text": "何気ない会話から育てたい", "translation": "아무렇지 않은 대화에서 키우고 싶어" },
-      { "text": "恋の始まり胸がキュンと狭くなる", "translation": "사랑의 시작, 가슴이 찌릿 좁아져" },
-      { "text": "いつまでも待ってるから", "translation": "언제까지고 기다리고 있을 테니까" },
-      { "text": "春の冷たい夜風に預けてメッセージ", "translation": "봄의 차가운 밤바람에 맡기는 메시지" },
-      { "text": "恋しちゃったんだ", "translation": "사랑에 빠져 버렸어" },
-      { "text": "多分気づいてないでしょう", "translation": "아마 눈치 못 챘겠지" },
-      { "text": "星の夜願い込めて C.HE.RRY", "translation": "별이 뜬 밤 소원을 담아 C.HE.RRY" },
-      { "text": "指先で送る君へのメッセージ", "translation": "손끝으로 보내는 너에게로의 메시지" }
-    ],
-    "vocabulary": [
-      { "id": "cherry∷手のひら", "surface": "手のひら", "dictionaryForm": "手のひら", "reading": "てのひら", "pos": "명사", "meaning": "손바닥", "jlptLevel": "N2", "conjugation": "" },
-      { "id": "cherry∷震える", "surface": "震えた", "dictionaryForm": "震える", "reading": "ふるえた", "pos": "동사", "meaning": "떨리다, 흔들리다", "jlptLevel": "N3", "conjugation": "과거형(た형)" },
-      { "id": "cherry∷勇気", "surface": "勇気", "dictionaryForm": "勇気", "reading": "ゆうき", "pos": "명사", "meaning": "용기", "jlptLevel": "N3", "conjugation": "" },
-      { "id": "cherry∷絵文字", "surface": "絵文字", "dictionaryForm": "絵文字", "reading": "えもじ", "pos": "명사", "meaning": "이모티콘, 그림문자", "jlptLevel": "N2", "conjugation": "" },
-      { "id": "cherry∷苦手", "surface": "苦手", "dictionaryForm": "苦手", "reading": "にがて", "pos": "な형용사", "meaning": "서투름, 잘 못함, 질색임", "jlptLevel": "N3", "conjugation": "" },
-      { "id": "cherry∷ワクワク", "surface": "ワクワクしちゃう", "dictionaryForm": "ワクワクする", "reading": "わくわくする", "pos": "동사", "meaning": "두근두근 설레다", "jlptLevel": "N2", "conjugation": "~しちゃう(~해 버리다)" },
-      { "id": "cherry∷返事", "surface": "返事", "dictionaryForm": "返事", "reading": "へんじ", "pos": "명사·する동사", "meaning": "답장, 대답", "jlptLevel": "N4", "conjugation": "" },
-      { "id": "cherry∷駄目", "surface": "駄目", "dictionaryForm": "駄目", "reading": "だめ", "pos": "な형용사", "meaning": "안 됨, 소용없음", "jlptLevel": "N4", "conjugation": "" },
-      { "id": "cherry∷駆け引き", "surface": "駆け引き", "dictionaryForm": "駆け引き", "reading": "かけひき", "pos": "명사", "meaning": "밀당, 흥정, 눈치 싸움", "jlptLevel": "N1", "conjugation": "" },
-      { "id": "cherry∷恋", "surface": "恋しちゃった", "dictionaryForm": "恋", "reading": "こい", "pos": "명사·する동사", "meaning": "사랑, 연애 (恋する: 사랑에 빠지다)", "jlptLevel": "N3", "conjugation": "~しちゃった(~해 버렸다)" },
-      { "id": "cherry∷気づく", "surface": "気づいてない", "dictionaryForm": "気づく", "reading": "きづいてない", "pos": "동사", "meaning": "눈치채다, 알아차리다", "jlptLevel": "N3", "conjugation": "て형+ない 구어(~てない)" },
-      { "id": "cherry∷星", "surface": "星の夜", "dictionaryForm": "星", "reading": "ほし", "pos": "명사", "meaning": "별", "jlptLevel": "N5", "conjugation": "" },
-      { "id": "cherry∷願い", "surface": "願い込めて", "dictionaryForm": "願い", "reading": "ねがい", "pos": "명사", "meaning": "소원, 바람", "jlptLevel": "N3", "conjugation": "" },
-      { "id": "cherry∷込める", "surface": "込めて", "dictionaryForm": "込める", "reading": "こめて", "pos": "동사", "meaning": "(마음·정성을) 담다, 채우다", "jlptLevel": "N2", "conjugation": "て형" },
-      { "id": "cherry∷指先", "surface": "指先", "dictionaryForm": "指先", "reading": "ゆびさき", "pos": "명사", "meaning": "손끝, 손가락 끝", "jlptLevel": "N2", "conjugation": "" },
-      { "id": "cherry∷送る", "surface": "送る", "dictionaryForm": "送る", "reading": "おくる", "pos": "동사", "meaning": "보내다, 부치다", "jlptLevel": "N4", "conjugation": "" },
-      { "id": "cherry∷桜", "surface": "桜が咲いている", "dictionaryForm": "桜", "reading": "さくら", "pos": "명사", "meaning": "벚꽃, 벚나무", "jlptLevel": "N4", "conjugation": "" },
-      { "id": "cherry∷咲く", "surface": "咲いている", "dictionaryForm": "咲く", "reading": "さいている", "pos": "동사", "meaning": "(꽃이) 피다", "jlptLevel": "N4", "conjugation": "진행형(~ている)" },
-      { "id": "cherry∷景色", "surface": "景色", "dictionaryForm": "景色", "reading": "けしき", "pos": "명사", "meaning": "경치, 풍경", "jlptLevel": "N3", "conjugation": "" },
-      { "id": "cherry∷感じる", "surface": "感じた", "dictionaryForm": "感じる", "reading": "かんじた", "pos": "동사", "meaning": "느끼다", "jlptLevel": "N4", "conjugation": "과거형(た형)" },
-      { "id": "cherry∷取り替える", "surface": "取り替えて", "dictionaryForm": "取り替える", "reading": "とりかえて", "pos": "동사", "meaning": "바꾸다, 교체하다", "jlptLevel": "N2", "conjugation": "て형(+もらう)" },
-      { "id": "cherry∷構う", "surface": "構わない", "dictionaryForm": "構う", "reading": "かまわない", "pos": "동사", "meaning": "상관하다 (構わない: 상관없다, 괜찮다)", "jlptLevel": "N2", "conjugation": "부정형(ない형)" },
-      { "id": "cherry∷言葉", "surface": "言葉", "dictionaryForm": "言葉", "reading": "ことば", "pos": "명사", "meaning": "말, 언어", "jlptLevel": "N4", "conjugation": "" },
-      { "id": "cherry∷嘘", "surface": "嘘でも", "dictionaryForm": "嘘", "reading": "うそ", "pos": "명사", "meaning": "거짓말", "jlptLevel": "N4", "conjugation": "" },
-      { "id": "cherry∷信じ続ける", "surface": "信じ続けられる", "dictionaryForm": "信じ続ける", "reading": "しんじつづけられる", "pos": "동사", "meaning": "계속 믿다 (信じる+続ける)", "jlptLevel": "N3", "conjugation": "가능형(~られる)" },
-      { "id": "cherry∷甘い", "surface": "甘くなる", "dictionaryForm": "甘い", "reading": "あまい", "pos": "い형용사", "meaning": "달다, 달콤하다", "jlptLevel": "N4", "conjugation": "부사형(く)+なる" },
-      { "id": "cherry∷果実", "surface": "果実", "dictionaryForm": "果実", "reading": "かじつ", "pos": "명사", "meaning": "과실, 열매", "jlptLevel": "N1", "conjugation": "" },
-      { "id": "cherry∷何気ない", "surface": "何気ない", "dictionaryForm": "何気ない", "reading": "なにげない", "pos": "い형용사", "meaning": "아무렇지 않은, 무심한, 예사로운", "jlptLevel": "N1", "conjugation": "" },
-      { "id": "cherry∷会話", "surface": "会話", "dictionaryForm": "会話", "reading": "かいわ", "pos": "명사·する동사", "meaning": "회화, 대화", "jlptLevel": "N4", "conjugation": "" },
-      { "id": "cherry∷育てる", "surface": "育てたい", "dictionaryForm": "育てる", "reading": "そだてたい", "pos": "동사", "meaning": "키우다, 기르다", "jlptLevel": "N3", "conjugation": "희망형(~たい)" },
-      { "id": "cherry∷胸", "surface": "胸がキュン", "dictionaryForm": "胸", "reading": "むね", "pos": "명사", "meaning": "가슴, 마음속 (胸がキュン: 가슴이 찌릿·설렘)", "jlptLevel": "N3", "conjugation": "" },
-      { "id": "cherry∷狭い", "surface": "狭くなる", "dictionaryForm": "狭い", "reading": "せまい", "pos": "い형용사", "meaning": "좁다", "jlptLevel": "N4", "conjugation": "부사형(く)+なる" },
-      { "id": "cherry∷冷たい", "surface": "冷たい", "dictionaryForm": "冷たい", "reading": "つめたい", "pos": "い형용사", "meaning": "차갑다, 차다", "jlptLevel": "N4", "conjugation": "" },
-      { "id": "cherry∷夜風", "surface": "夜風", "dictionaryForm": "夜風", "reading": "よかぜ", "pos": "명사", "meaning": "밤바람", "jlptLevel": "N1", "conjugation": "" },
-      { "id": "cherry∷預ける", "surface": "預けて", "dictionaryForm": "預ける", "reading": "あずけて", "pos": "동사", "meaning": "맡기다, 위탁하다", "jlptLevel": "N2", "conjugation": "て형" }
-    ]
-  }
+{
+    "title":  "CHE.R.RY",
+    "artist":  "YUI",
+    "verses":  [
+                   {
+                       "text":  "手のひらで震えたそれが",
+                       "translation":  "손바닥에서 떨린 그것이"
+                   },
+                   {
+                       "text":  "小さな勇気になっていたんだ",
+                       "translation":  "작은 용기가 되어 있었어"
+                   },
+                   {
+                       "text":  "絵文字は苦手だっただけど",
+                       "translation":  "이모티콘은 서툴렀지만"
+                   },
+                   {
+                       "text":  "君からだったらワクワクしちゃう",
+                       "translation":  "너한테서 온 거라면 두근거려 버려"
+                   },
+                   {
+                       "text":  "返事はすぐにしちゃ駄目だって",
+                       "translation":  "답장은 바로 하면 안 된대"
+                   },
+                   {
+                       "text":  "誰かに聞いた事あるけど",
+                       "translation":  "누군가한테 들은 적 있지만"
+                   },
+                   {
+                       "text":  "駆け引きなんて出来ないの",
+                       "translation":  "밀당 같은 건 못 해"
+                   },
+                   {
+                       "text":  "好きなのよ ah ah ah~",
+                       "translation":  "좋아하는걸 ah ah ah~"
+                   },
+                   {
+                       "text":  "恋しちゃったんだ",
+                       "translation":  "사랑에 빠져 버렸어"
+                   },
+                   {
+                       "text":  "多分気づいてないでしょう",
+                       "translation":  "아마 눈치 못 챘겠지"
+                   },
+                   {
+                       "text":  "星の夜願い込めて C.HE.RRY",
+                       "translation":  "별이 뜬 밤 소원을 담아 C.HE.RRY"
+                   },
+                   {
+                       "text":  "指先で送る君へのメッセージ",
+                       "translation":  "손끝으로 보내는 너에게로의 메시지"
+                   },
+                   {
+                       "text":  "桜が咲いているこの部屋から見えてる景色を全部",
+                       "translation":  "벚꽃이 피어 있는 이 방에서 보이는 풍경을 전부"
+                   },
+                   {
+                       "text":  "今君が感じた世界と",
+                       "translation":  "지금 네가 느낀 세계와"
+                   },
+                   {
+                       "text":  "10秒取り替えてもらうより",
+                       "translation":  "10초 바꿔 받기보다"
+                   },
+                   {
+                       "text":  "ほんの一行でも構わないんだ",
+                       "translation":  "그저 한 줄이라도 괜찮아"
+                   },
+                   {
+                       "text":  "君からの言葉が欲しいんだ",
+                       "translation":  "너의 말이 갖고 싶어"
+                   },
+                   {
+                       "text":  "嘘でも信じ続けられるの",
+                       "translation":  "거짓말이라도 계속 믿을 수 있어"
+                   },
+                   {
+                       "text":  "好きだから ah ah ah~",
+                       "translation":  "좋아하니까 ah ah ah~"
+                   },
+                   {
+                       "text":  "恋しちゃったんだ",
+                       "translation":  "사랑에 빠져 버렸어"
+                   },
+                   {
+                       "text":  "多分気づいてないでしょう",
+                       "translation":  "아마 눈치 못 챘겠지"
+                   },
+                   {
+                       "text":  "星の夜願い込めて C.HE.RRY",
+                       "translation":  "별이 뜬 밤 소원을 담아 C.HE.RRY"
+                   },
+                   {
+                       "text":  "指先で送る君へのメッセージ",
+                       "translation":  "손끝으로 보내는 너에게로의 메시지"
+                   },
+                   {
+                       "text":  "甘くなる果実がいいの",
+                       "translation":  "달콤해지는 과실이 좋아"
+                   },
+                   {
+                       "text":  "何気ない会話から育てたい",
+                       "translation":  "아무렇지 않은 대화에서 키우고 싶어"
+                   },
+                   {
+                       "text":  "恋の始まり胸がキュンと狭くなる",
+                       "translation":  "사랑의 시작, 가슴이 찌릿 좁아져"
+                   },
+                   {
+                       "text":  "いつまでも待ってるから",
+                       "translation":  "언제까지고 기다리고 있을 테니까"
+                   },
+                   {
+                       "text":  "春の冷たい夜風に預けてメッセージ",
+                       "translation":  "봄의 차가운 밤바람에 맡기는 메시지"
+                   },
+                   {
+                       "text":  "恋しちゃったんだ",
+                       "translation":  "사랑에 빠져 버렸어"
+                   },
+                   {
+                       "text":  "多分気づいてないでしょう",
+                       "translation":  "아마 눈치 못 챘겠지"
+                   },
+                   {
+                       "text":  "星の夜願い込めて C.HE.RRY",
+                       "translation":  "별이 뜬 밤 소원을 담아 C.HE.RRY"
+                   },
+                   {
+                       "text":  "指先で送る君へのメッセージ",
+                       "translation":  "손끝으로 보내는 너에게로의 메시지"
+                   }
+               ],
+    "vocabulary":  [
+                       {
+                           "id":  "cherry∷手のひら",
+                           "surface":  "手のひら",
+                           "dictionaryForm":  "手のひら",
+                           "reading":  "てのひら",
+                           "pos":  "명사",
+                           "meaning":  "손바닥",
+                           "jlptLevel":  "N2",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "손바닥",
+                           "quizMeaning":  "손바닥",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "cherry∷震える",
+                           "surface":  "震えた",
+                           "dictionaryForm":  "震える",
+                           "reading":  "ふるえた",
+                           "pos":  "동사",
+                           "meaning":  "떨리다, 흔들리다",
+                           "jlptLevel":  "N3",
+                           "conjugation":  "과거형(た형)",
+                           "surfaceMeaning":  "떨리다, 흔들리다",
+                           "quizMeaning":  "떨리다, 흔들리다",
+                           "grammarNote":  "과거형(た형)"
+                       },
+                       {
+                           "id":  "cherry∷勇気",
+                           "surface":  "勇気",
+                           "dictionaryForm":  "勇気",
+                           "reading":  "ゆうき",
+                           "pos":  "명사",
+                           "meaning":  "용기",
+                           "jlptLevel":  "N3",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "용기",
+                           "quizMeaning":  "용기",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "cherry∷絵文字",
+                           "surface":  "絵文字",
+                           "dictionaryForm":  "絵文字",
+                           "reading":  "えもじ",
+                           "pos":  "명사",
+                           "meaning":  "이모티콘, 그림문자",
+                           "jlptLevel":  "N2",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "이모티콘, 그림문자",
+                           "quizMeaning":  "이모티콘, 그림문자",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "cherry∷苦手",
+                           "surface":  "苦手",
+                           "dictionaryForm":  "苦手",
+                           "reading":  "にがて",
+                           "pos":  "な형용사",
+                           "meaning":  "서투름, 잘 못함, 질색임",
+                           "jlptLevel":  "N3",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "서투름, 잘 못함, 질색임",
+                           "quizMeaning":  "서투름, 잘 못함, 질색임",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "cherry∷ワクワク",
+                           "surface":  "ワクワクしちゃう",
+                           "dictionaryForm":  "ワクワクする",
+                           "reading":  "わくわくする",
+                           "pos":  "동사",
+                           "meaning":  "두근두근 설레다",
+                           "jlptLevel":  "N2",
+                           "conjugation":  "~しちゃう(~해 버리다)",
+                           "surfaceMeaning":  "두근두근 설레 버리다",
+                           "quizMeaning":  "두근두근 설레 버리다",
+                           "grammarNote":  "~しちゃう(~해 버리다)"
+                       },
+                       {
+                           "id":  "cherry∷返事",
+                           "surface":  "返事",
+                           "dictionaryForm":  "返事",
+                           "reading":  "へんじ",
+                           "pos":  "명사·する동사",
+                           "meaning":  "답장, 대답",
+                           "jlptLevel":  "N4",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "답장, 대답",
+                           "quizMeaning":  "답장, 대답",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "cherry∷駄目",
+                           "surface":  "駄目",
+                           "dictionaryForm":  "駄目",
+                           "reading":  "だめ",
+                           "pos":  "な형용사",
+                           "meaning":  "안 됨, 소용없음",
+                           "jlptLevel":  "N4",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "안 됨, 소용없음",
+                           "quizMeaning":  "안 됨, 소용없음",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "cherry∷駆け引き",
+                           "surface":  "駆け引き",
+                           "dictionaryForm":  "駆け引き",
+                           "reading":  "かけひき",
+                           "pos":  "명사",
+                           "meaning":  "밀당, 흥정, 눈치 싸움",
+                           "jlptLevel":  "N1",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "밀당, 흥정, 눈치 싸움",
+                           "quizMeaning":  "밀당, 흥정, 눈치 싸움",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "cherry∷恋",
+                           "surface":  "恋しちゃった",
+                           "dictionaryForm":  "恋",
+                           "reading":  "こい",
+                           "pos":  "명사·する동사",
+                           "meaning":  "사랑, 연애 (恋する: 사랑에 빠지다)",
+                           "jlptLevel":  "N3",
+                           "conjugation":  "~しちゃった(~해 버렸다)",
+                           "surfaceMeaning":  "사랑에 빠져 버렸다",
+                           "quizMeaning":  "사랑에 빠져 버렸다",
+                           "grammarNote":  "~しちゃった(~해 버렸다)"
+                       },
+                       {
+                           "id":  "cherry∷気づく",
+                           "surface":  "気づいてない",
+                           "dictionaryForm":  "気づく",
+                           "reading":  "きづいてない",
+                           "pos":  "동사",
+                           "meaning":  "눈치채다, 알아차리다",
+                           "jlptLevel":  "N3",
+                           "conjugation":  "て형+ない 구어(~てない)",
+                           "surfaceMeaning":  "눈치채지 못하고 있다",
+                           "quizMeaning":  "눈치채지 못하고 있다",
+                           "grammarNote":  "て형+ない 구어(~てない)"
+                       },
+                       {
+                           "id":  "cherry∷星",
+                           "surface":  "星の夜",
+                           "dictionaryForm":  "星",
+                           "reading":  "ほし",
+                           "pos":  "명사",
+                           "meaning":  "별",
+                           "jlptLevel":  "N5",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "별",
+                           "quizMeaning":  "별",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "cherry∷願い",
+                           "surface":  "願い込めて",
+                           "dictionaryForm":  "願い",
+                           "reading":  "ねがい",
+                           "pos":  "명사",
+                           "meaning":  "소원, 바람",
+                           "jlptLevel":  "N3",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "소원, 바람",
+                           "quizMeaning":  "소원, 바람",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "cherry∷込める",
+                           "surface":  "込めて",
+                           "dictionaryForm":  "込める",
+                           "reading":  "こめて",
+                           "pos":  "동사",
+                           "meaning":  "(마음·정성을) 담다, 채우다",
+                           "jlptLevel":  "N2",
+                           "conjugation":  "て형",
+                           "surfaceMeaning":  "(마음·정성을) 담다, 채우다",
+                           "quizMeaning":  "(마음·정성을) 담다, 채우다",
+                           "grammarNote":  "て형"
+                       },
+                       {
+                           "id":  "cherry∷指先",
+                           "surface":  "指先",
+                           "dictionaryForm":  "指先",
+                           "reading":  "ゆびさき",
+                           "pos":  "명사",
+                           "meaning":  "손끝, 손가락 끝",
+                           "jlptLevel":  "N2",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "손끝, 손가락 끝",
+                           "quizMeaning":  "손끝, 손가락 끝",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "cherry∷送る",
+                           "surface":  "送る",
+                           "dictionaryForm":  "送る",
+                           "reading":  "おくる",
+                           "pos":  "동사",
+                           "meaning":  "보내다, 부치다",
+                           "jlptLevel":  "N4",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "보내다, 부치다",
+                           "quizMeaning":  "보내다, 부치다",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "cherry∷桜",
+                           "surface":  "桜が咲いている",
+                           "dictionaryForm":  "桜",
+                           "reading":  "さくら",
+                           "pos":  "명사",
+                           "meaning":  "벚꽃, 벚나무",
+                           "jlptLevel":  "N4",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "벚꽃, 벚나무",
+                           "quizMeaning":  "벚꽃, 벚나무",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "cherry∷咲く",
+                           "surface":  "咲いている",
+                           "dictionaryForm":  "咲く",
+                           "reading":  "さいている",
+                           "pos":  "동사",
+                           "meaning":  "(꽃이) 피다",
+                           "jlptLevel":  "N4",
+                           "conjugation":  "진행형(~ている)",
+                           "surfaceMeaning":  "피어 있다",
+                           "quizMeaning":  "피어 있다",
+                           "grammarNote":  "진행형(~ている)"
+                       },
+                       {
+                           "id":  "cherry∷景色",
+                           "surface":  "景色",
+                           "dictionaryForm":  "景色",
+                           "reading":  "けしき",
+                           "pos":  "명사",
+                           "meaning":  "경치, 풍경",
+                           "jlptLevel":  "N3",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "경치, 풍경",
+                           "quizMeaning":  "경치, 풍경",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "cherry∷感じる",
+                           "surface":  "感じた",
+                           "dictionaryForm":  "感じる",
+                           "reading":  "かんじた",
+                           "pos":  "동사",
+                           "meaning":  "느끼다",
+                           "jlptLevel":  "N4",
+                           "conjugation":  "과거형(た형)",
+                           "surfaceMeaning":  "느끼다",
+                           "quizMeaning":  "느끼다",
+                           "grammarNote":  "과거형(た형)"
+                       },
+                       {
+                           "id":  "cherry∷取り替える",
+                           "surface":  "取り替えて",
+                           "dictionaryForm":  "取り替える",
+                           "reading":  "とりかえて",
+                           "pos":  "동사",
+                           "meaning":  "바꾸다, 교체하다",
+                           "jlptLevel":  "N2",
+                           "conjugation":  "て형(+もらう)",
+                           "surfaceMeaning":  "바꾸다, 교체하다",
+                           "quizMeaning":  "바꾸다, 교체하다",
+                           "grammarNote":  "て형(+もらう)"
+                       },
+                       {
+                           "id":  "cherry∷構う",
+                           "surface":  "構わない",
+                           "dictionaryForm":  "構う",
+                           "reading":  "かまわない",
+                           "pos":  "동사",
+                           "meaning":  "상관하다 (構わない: 상관없다, 괜찮다)",
+                           "jlptLevel":  "N2",
+                           "conjugation":  "부정형(ない형)",
+                           "surfaceMeaning":  "상관없다",
+                           "quizMeaning":  "상관없다",
+                           "grammarNote":  "부정형(ない형)"
+                       },
+                       {
+                           "id":  "cherry∷言葉",
+                           "surface":  "言葉",
+                           "dictionaryForm":  "言葉",
+                           "reading":  "ことば",
+                           "pos":  "명사",
+                           "meaning":  "말, 언어",
+                           "jlptLevel":  "N4",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "말, 언어",
+                           "quizMeaning":  "말, 언어",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "cherry∷嘘",
+                           "surface":  "嘘でも",
+                           "dictionaryForm":  "嘘",
+                           "reading":  "うそ",
+                           "pos":  "명사",
+                           "meaning":  "거짓말",
+                           "jlptLevel":  "N4",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "거짓말",
+                           "quizMeaning":  "거짓말",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "cherry∷信じ続ける",
+                           "surface":  "信じ続けられる",
+                           "dictionaryForm":  "信じ続ける",
+                           "reading":  "しんじつづけられる",
+                           "pos":  "동사",
+                           "meaning":  "계속 믿다 (信じる+続ける)",
+                           "jlptLevel":  "N3",
+                           "conjugation":  "가능형(~られる)",
+                           "surfaceMeaning":  "계속 믿을 수 있다",
+                           "quizMeaning":  "계속 믿을 수 있다",
+                           "grammarNote":  "가능형(~られる)"
+                       },
+                       {
+                           "id":  "cherry∷甘い",
+                           "surface":  "甘くなる",
+                           "dictionaryForm":  "甘い",
+                           "reading":  "あまい",
+                           "pos":  "い형용사",
+                           "meaning":  "달다, 달콤하다",
+                           "jlptLevel":  "N4",
+                           "conjugation":  "부사형(く)+なる",
+                           "surfaceMeaning":  "달다, 달콤하다",
+                           "quizMeaning":  "달다, 달콤하다",
+                           "grammarNote":  "부사형(く)+なる"
+                       },
+                       {
+                           "id":  "cherry∷果実",
+                           "surface":  "果実",
+                           "dictionaryForm":  "果実",
+                           "reading":  "かじつ",
+                           "pos":  "명사",
+                           "meaning":  "과실, 열매",
+                           "jlptLevel":  "N1",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "과실, 열매",
+                           "quizMeaning":  "과실, 열매",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "cherry∷何気ない",
+                           "surface":  "何気ない",
+                           "dictionaryForm":  "何気ない",
+                           "reading":  "なにげない",
+                           "pos":  "い형용사",
+                           "meaning":  "아무렇지 않은, 무심한, 예사로운",
+                           "jlptLevel":  "N1",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "아무렇지 않은, 무심한, 예사로운",
+                           "quizMeaning":  "아무렇지 않은, 무심한, 예사로운",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "cherry∷会話",
+                           "surface":  "会話",
+                           "dictionaryForm":  "会話",
+                           "reading":  "かいわ",
+                           "pos":  "명사·する동사",
+                           "meaning":  "회화, 대화",
+                           "jlptLevel":  "N4",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "회화, 대화",
+                           "quizMeaning":  "회화, 대화",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "cherry∷育てる",
+                           "surface":  "育てたい",
+                           "dictionaryForm":  "育てる",
+                           "reading":  "そだてたい",
+                           "pos":  "동사",
+                           "meaning":  "키우다, 기르다",
+                           "jlptLevel":  "N3",
+                           "conjugation":  "희망형(~たい)",
+                           "surfaceMeaning":  "키우고 싶다",
+                           "quizMeaning":  "키우고 싶다",
+                           "grammarNote":  "희망형(~たい)"
+                       },
+                       {
+                           "id":  "cherry∷胸",
+                           "surface":  "胸がキュン",
+                           "dictionaryForm":  "胸",
+                           "reading":  "むね",
+                           "pos":  "명사",
+                           "meaning":  "가슴, 마음속 (胸がキュン: 가슴이 찌릿·설렘)",
+                           "jlptLevel":  "N3",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "가슴, 마음속",
+                           "quizMeaning":  "가슴, 마음속",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "cherry∷狭い",
+                           "surface":  "狭くなる",
+                           "dictionaryForm":  "狭い",
+                           "reading":  "せまい",
+                           "pos":  "い형용사",
+                           "meaning":  "좁다",
+                           "jlptLevel":  "N4",
+                           "conjugation":  "부사형(く)+なる",
+                           "surfaceMeaning":  "좁다",
+                           "quizMeaning":  "좁다",
+                           "grammarNote":  "부사형(く)+なる"
+                       },
+                       {
+                           "id":  "cherry∷冷たい",
+                           "surface":  "冷たい",
+                           "dictionaryForm":  "冷たい",
+                           "reading":  "つめたい",
+                           "pos":  "い형용사",
+                           "meaning":  "차갑다, 차다",
+                           "jlptLevel":  "N4",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "차갑다, 차다",
+                           "quizMeaning":  "차갑다, 차다",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "cherry∷夜風",
+                           "surface":  "夜風",
+                           "dictionaryForm":  "夜風",
+                           "reading":  "よかぜ",
+                           "pos":  "명사",
+                           "meaning":  "밤바람",
+                           "jlptLevel":  "N1",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "밤바람",
+                           "quizMeaning":  "밤바람",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "cherry∷預ける",
+                           "surface":  "預けて",
+                           "dictionaryForm":  "預ける",
+                           "reading":  "あずけて",
+                           "pos":  "동사",
+                           "meaning":  "맡기다, 위탁하다",
+                           "jlptLevel":  "N2",
+                           "conjugation":  "て형",
+                           "surfaceMeaning":  "맡기다, 위탁하다",
+                           "quizMeaning":  "맡기다, 위탁하다",
+                           "grammarNote":  "て형"
+                       }
+                   ],
+    "schemaVersion":  2
+}
 ]
