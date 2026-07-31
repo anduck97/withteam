@@ -1190,6 +1190,9 @@ function Review({ progress, setProgress, catalog, go }) {
                 </div>
               )}
               <div><span className="text-slate-400">가사형 </span><b className="font-jp">{current.word.surface}</b> · {surfaceMeaning(current.word)}</div>
+              {current.word.reading && (
+                <div className="text-slate-500 mt-1"><span className="text-slate-400">읽기 </span><span className="font-jp">{current.word.reading}</span></div>
+              )}
               <div className="text-slate-500 mt-1">원형 <span className="font-jp">{current.word.dictionaryForm}</span> · {dictionaryMeaning(current.word)}</div>
               {(current.word.grammarNote || current.word.conjugation) && (
                 <div className="text-rose-500 mt-1">문법 · {current.word.grammarNote || current.word.conjugation}</div>
