@@ -1,103 +1,707 @@
 [
-  {
-    "title": "Go in Blind",
-    "artist": "&TEAM",
-    "verses": [
-      { "text": "赫い月が照らす", "translation": "붉은 달이 비추는" },
-      { "text": "光と影が交差する世界", "translation": "빛과 그림자가 교차하는 세계" },
-      { "text": "We gotta take it to the top", "translation": "" },
-      { "text": "統計や前例なんてとっくに興味ない", "translation": "통계나 전례 같은 건 진작에 관심 없어" },
-      { "text": "刻み込むこの時代に", "translation": "새겨 넣는 이 시대에" },
-      { "text": "牙剥き出して I’ll try", "translation": "송곳니를 드러내고 I’ll try" },
-      { "text": "能動的じゃないとこの世界じゃdie", "translation": "능동적이지 않으면 이 세계에선 die" },
-      { "text": "轟かす声が指標さ for we are glorious", "translation": "울려 퍼뜨리는 목소리가 지표야 for we are glorious" },
-      { "text": "It’s a cold vicious world", "translation": "" },
-      { "text": "立ち止まる暇はない", "translation": "멈춰 설 틈은 없어" },
-      { "text": "そう This is war", "translation": "그래 This is war" },
-      { "text": "声を上げろ", "translation": "목소리를 높여라" },
-      { "text": "闇の中駆け出して Go in Blind", "translation": "어둠 속을 내달려 Go in Blind" },
-      { "text": "研ぎ澄ました感覚 Go in Blind", "translation": "예리하게 벼린 감각 Go in Blind" },
-      { "text": "あの月まで遠くたって吠えた", "translation": "저 달까지 멀어도 짖었어" },
-      { "text": "僕らはここだって", "translation": "우리는 여기 있다고" },
-      { "text": "Now we gotta head on head on (head on)", "translation": "" },
-      { "text": "That’s all we gotta bet on bet on (battle)", "translation": "" },
-      { "text": "叫ぶよ今 louder", "translation": "외쳐 지금 louder" },
-      { "text": "示す freedom", "translation": "보여 줄 freedom" },
-      { "text": "もう never looking back", "translation": "이제 never looking back" },
-      { "text": "さぁ行こう", "translation": "자, 가자" },
-      { "text": "We’re going in blind", "translation": "" },
-      { "text": "無理だと言う声とか mute mute", "translation": "무리라고 말하는 목소리 따위 mute mute" },
-      { "text": "言葉じゃなく行動で prove prove", "translation": "말이 아니라 행동으로 prove prove" },
-      { "text": "可能 or 不可能は誰も don’t know", "translation": "가능 or 불가능은 아무도 don’t know" },
-      { "text": "So I’m gonna go do me, woo woo", "translation": "" },
-      { "text": "That's how I know 迷いはない", "translation": "That's how I know 망설임은 없어" },
-      { "text": "目隠ししても I'll dive", "translation": "눈을 가려도 I'll dive" },
-      { "text": "Battle without sight", "translation": "" },
-      { "text": "Yeah we go on", "translation": "" },
-      { "text": "誰もみたことのないやり方で shout it out", "translation": "아무도 본 적 없는 방식으로 shout it out" },
-      { "text": "It’s a cold vicious world", "translation": "" },
-      { "text": "見えないなら怖くはない", "translation": "보이지 않으면 두렵지 않아" },
-      { "text": "そう This is war", "translation": "그래 This is war" },
-      { "text": "Go, we’ve been movin’ on", "translation": "" },
-      { "text": "闇の中駆け出して Go in Blind", "translation": "어둠 속을 내달려 Go in Blind" },
-      { "text": "研ぎ澄ました感覚 Go in Blind", "translation": "예리하게 벼린 감각 Go in Blind" },
-      { "text": "あの月まで遠くたって吠えた", "translation": "저 달까지 멀어도 짖었어" },
-      { "text": "僕らはここだって", "translation": "우리는 여기 있다고" },
-      { "text": "Now we gotta head on head on (head on)", "translation": "" },
-      { "text": "That’s all we gotta bet on bet on (battle)", "translation": "" },
-      { "text": "叫ぶよ今 louder", "translation": "외쳐 지금 louder" },
-      { "text": "示す freedom", "translation": "보여 줄 freedom" },
-      { "text": "もう never looking back", "translation": "이제 never looking back" },
-      { "text": "さぁ行こう", "translation": "자, 가자" },
-      { "text": "We’re going in blind", "translation": "" },
-      { "text": "We go", "translation": "" },
-      { "text": "Go in Blind", "translation": "" },
-      { "text": "Let’s go", "translation": "" },
-      { "text": "Go in Blind", "translation": "" },
-      { "text": "蹴散らしていく今", "translation": "걷어차 흩뜨리며 가는 지금" },
-      { "text": "Taking flight like I never", "translation": "" },
-      { "text": "証明したいんだ what we are", "translation": "증명하고 싶어 what we are" },
-      { "text": "Never looking back", "translation": "" },
-      { "text": "さぁ行こう", "translation": "자, 가자" },
-      { "text": "We’re going in blind", "translation": "" }
-    ],
-    "vocabulary": [
-      { "id": "goinblind∷赫い", "surface": "赫い", "dictionaryForm": "赫い", "reading": "あかい", "pos": "い형용사", "meaning": "붉다, 시뻘겋다 (赤い의 문학적 표기)", "jlptLevel": "N1", "conjugation": "" },
-      { "id": "goinblind∷照らす", "surface": "照らす", "dictionaryForm": "照らす", "reading": "てらす", "pos": "동사", "meaning": "비추다", "jlptLevel": "N2", "conjugation": "" },
-      { "id": "goinblind∷影", "surface": "影", "dictionaryForm": "影", "reading": "かげ", "pos": "명사", "meaning": "그림자", "jlptLevel": "N3", "conjugation": "" },
-      { "id": "goinblind∷交差する", "surface": "交差する", "dictionaryForm": "交差する", "reading": "こうさする", "pos": "명사·する동사", "meaning": "교차하다", "jlptLevel": "N1", "conjugation": "" },
-      { "id": "goinblind∷統計", "surface": "統計", "dictionaryForm": "統計", "reading": "とうけい", "pos": "명사", "meaning": "통계", "jlptLevel": "N1", "conjugation": "" },
-      { "id": "goinblind∷前例", "surface": "前例", "dictionaryForm": "前例", "reading": "ぜんれい", "pos": "명사", "meaning": "전례", "jlptLevel": "N1", "conjugation": "" },
-      { "id": "goinblind∷とっくに", "surface": "とっくに", "dictionaryForm": "とっくに", "reading": "とっくに", "pos": "부사", "meaning": "진작에, 벌써", "jlptLevel": "N2", "conjugation": "" },
-      { "id": "goinblind∷興味", "surface": "興味", "dictionaryForm": "興味", "reading": "きょうみ", "pos": "명사", "meaning": "흥미, 관심", "jlptLevel": "N4", "conjugation": "" },
-      { "id": "goinblind∷刻み込む", "surface": "刻み込む", "dictionaryForm": "刻み込む", "reading": "きざみこむ", "pos": "동사", "meaning": "깊이 새기다, 아로새기다 (刻む+込む)", "jlptLevel": "N1", "conjugation": "" },
-      { "id": "goinblind∷時代", "surface": "時代", "dictionaryForm": "時代", "reading": "じだい", "pos": "명사", "meaning": "시대", "jlptLevel": "N3", "conjugation": "" },
-      { "id": "goinblind∷牙", "surface": "牙", "dictionaryForm": "牙", "reading": "きば", "pos": "명사", "meaning": "송곳니, 엄니", "jlptLevel": "N1", "conjugation": "" },
-      { "id": "goinblind∷剥き出す", "surface": "剥き出して", "dictionaryForm": "剥き出す", "reading": "むきだして", "pos": "동사", "meaning": "드러내다, (이빨을) 내밀다", "jlptLevel": "N1", "conjugation": "て형" },
-      { "id": "goinblind∷能動的", "surface": "能動的", "dictionaryForm": "能動的", "reading": "のうどうてき", "pos": "な형용사", "meaning": "능동적", "jlptLevel": "N1", "conjugation": "" },
-      { "id": "goinblind∷轟かす", "surface": "轟かす", "dictionaryForm": "轟かす", "reading": "とどろかす", "pos": "동사", "meaning": "울려 퍼뜨리다, 떨치다", "jlptLevel": "N1", "conjugation": "" },
-      { "id": "goinblind∷指標", "surface": "指標", "dictionaryForm": "指標", "reading": "しひょう", "pos": "명사", "meaning": "지표, 기준", "jlptLevel": "N1", "conjugation": "" },
-      { "id": "goinblind∷立ち止まる", "surface": "立ち止まる", "dictionaryForm": "立ち止まる", "reading": "たちどまる", "pos": "동사", "meaning": "멈춰 서다", "jlptLevel": "N2", "conjugation": "" },
-      { "id": "goinblind∷暇", "surface": "暇", "dictionaryForm": "暇", "reading": "ひま", "pos": "명사", "meaning": "틈, 짬, 여가 (暇はない: 그럴 틈 없다)", "jlptLevel": "N4", "conjugation": "" },
-      { "id": "goinblind∷上げる", "surface": "上げろ", "dictionaryForm": "上げる", "reading": "あげろ", "pos": "동사", "meaning": "올리다, 높이다 (声を上げる: 목소리를 높이다)", "jlptLevel": "N4", "conjugation": "명령형" },
-      { "id": "goinblind∷闇", "surface": "闇", "dictionaryForm": "闇", "reading": "やみ", "pos": "명사", "meaning": "어둠", "jlptLevel": "N1", "conjugation": "" },
-      { "id": "goinblind∷駆け出す", "surface": "駆け出して", "dictionaryForm": "駆け出す", "reading": "かけだして", "pos": "동사", "meaning": "달려 나가다, 내달리다", "jlptLevel": "N2", "conjugation": "て형" },
-      { "id": "goinblind∷研ぎ澄ます", "surface": "研ぎ澄ました", "dictionaryForm": "研ぎ澄ます", "reading": "とぎすました", "pos": "동사", "meaning": "예리하게 갈고닦다, (감각을) 벼리다", "jlptLevel": "N1", "conjugation": "과거형(た형)" },
-      { "id": "goinblind∷感覚", "surface": "感覚", "dictionaryForm": "感覚", "reading": "かんかく", "pos": "명사", "meaning": "감각", "jlptLevel": "N2", "conjugation": "" },
-      { "id": "goinblind∷吠える", "surface": "吠えた", "dictionaryForm": "吠える", "reading": "ほえた", "pos": "동사", "meaning": "짖다, 으르렁대다", "jlptLevel": "N1", "conjugation": "과거형(た형)" },
-      { "id": "goinblind∷叫ぶ", "surface": "叫ぶ", "dictionaryForm": "叫ぶ", "reading": "さけぶ", "pos": "동사", "meaning": "외치다, 부르짖다", "jlptLevel": "N2", "conjugation": "" },
-      { "id": "goinblind∷示す", "surface": "示す", "dictionaryForm": "示す", "reading": "しめす", "pos": "동사", "meaning": "보여 주다, 나타내다", "jlptLevel": "N2", "conjugation": "" },
-      { "id": "goinblind∷無理", "surface": "無理", "dictionaryForm": "無理", "reading": "むり", "pos": "명사·な형용사", "meaning": "무리, 불가능함", "jlptLevel": "N4", "conjugation": "" },
-      { "id": "goinblind∷言葉", "surface": "言葉", "dictionaryForm": "言葉", "reading": "ことば", "pos": "명사", "meaning": "말, 언어", "jlptLevel": "N4", "conjugation": "" },
-      { "id": "goinblind∷行動", "surface": "行動", "dictionaryForm": "行動", "reading": "こうどう", "pos": "명사·する동사", "meaning": "행동", "jlptLevel": "N3", "conjugation": "" },
-      { "id": "goinblind∷可能", "surface": "可能", "dictionaryForm": "可能", "reading": "かのう", "pos": "명사·な형용사", "meaning": "가능", "jlptLevel": "N3", "conjugation": "" },
-      { "id": "goinblind∷迷い", "surface": "迷い", "dictionaryForm": "迷い", "reading": "まよい", "pos": "명사", "meaning": "망설임, 갈등", "jlptLevel": "N2", "conjugation": "" },
-      { "id": "goinblind∷目隠し", "surface": "目隠し", "dictionaryForm": "目隠し", "reading": "めかくし", "pos": "명사·する동사", "meaning": "눈가림, 눈을 가림", "jlptLevel": "N1", "conjugation": "" },
-      { "id": "goinblind∷やり方", "surface": "やり方", "dictionaryForm": "やり方", "reading": "やりかた", "pos": "명사", "meaning": "방식, 방법", "jlptLevel": "N3", "conjugation": "" },
-      { "id": "goinblind∷見える", "surface": "見えない", "dictionaryForm": "見える", "reading": "みえない", "pos": "동사", "meaning": "보이다", "jlptLevel": "N4", "conjugation": "부정형(ない형)" },
-      { "id": "goinblind∷怖い", "surface": "怖くはない", "dictionaryForm": "怖い", "reading": "こわくはない", "pos": "い형용사", "meaning": "무섭다, 두렵다", "jlptLevel": "N4", "conjugation": "부정(~くはない)" },
-      { "id": "goinblind∷蹴散らす", "surface": "蹴散らしていく", "dictionaryForm": "蹴散らす", "reading": "けちらしていく", "pos": "동사", "meaning": "걷어차 흩뜨리다, 짓밟아 흩어 버리다", "jlptLevel": "N1", "conjugation": "て형+いく" },
-      { "id": "goinblind∷証明", "surface": "証明", "dictionaryForm": "証明", "reading": "しょうめい", "pos": "명사·する동사", "meaning": "증명", "jlptLevel": "N2", "conjugation": "" }
-    ]
-  }
+{
+    "title":  "Go in Blind",
+    "artist":  "\u0026TEAM",
+    "verses":  [
+                   {
+                       "text":  "赫い月が照らす",
+                       "translation":  "붉은 달이 비추는"
+                   },
+                   {
+                       "text":  "光と影が交差する世界",
+                       "translation":  "빛과 그림자가 교차하는 세계"
+                   },
+                   {
+                       "text":  "We gotta take it to the top",
+                       "translation":  ""
+                   },
+                   {
+                       "text":  "統計や前例なんてとっくに興味ない",
+                       "translation":  "통계나 전례 같은 건 진작에 관심 없어"
+                   },
+                   {
+                       "text":  "刻み込むこの時代に",
+                       "translation":  "새겨 넣는 이 시대에"
+                   },
+                   {
+                       "text":  "牙剥き出して I’ll try",
+                       "translation":  "송곳니를 드러내고 I’ll try"
+                   },
+                   {
+                       "text":  "能動的じゃないとこの世界じゃdie",
+                       "translation":  "능동적이지 않으면 이 세계에선 die"
+                   },
+                   {
+                       "text":  "轟かす声が指標さ for we are glorious",
+                       "translation":  "울려 퍼뜨리는 목소리가 지표야 for we are glorious"
+                   },
+                   {
+                       "text":  "It’s a cold vicious world",
+                       "translation":  ""
+                   },
+                   {
+                       "text":  "立ち止まる暇はない",
+                       "translation":  "멈춰 설 틈은 없어"
+                   },
+                   {
+                       "text":  "そう This is war",
+                       "translation":  "그래 This is war"
+                   },
+                   {
+                       "text":  "声を上げろ",
+                       "translation":  "목소리를 높여라"
+                   },
+                   {
+                       "text":  "闇の中駆け出して Go in Blind",
+                       "translation":  "어둠 속을 내달려 Go in Blind"
+                   },
+                   {
+                       "text":  "研ぎ澄ました感覚 Go in Blind",
+                       "translation":  "예리하게 벼린 감각 Go in Blind"
+                   },
+                   {
+                       "text":  "あの月まで遠くたって吠えた",
+                       "translation":  "저 달까지 멀어도 짖었어"
+                   },
+                   {
+                       "text":  "僕らはここだって",
+                       "translation":  "우리는 여기 있다고"
+                   },
+                   {
+                       "text":  "Now we gotta head on head on (head on)",
+                       "translation":  ""
+                   },
+                   {
+                       "text":  "That’s all we gotta bet on bet on (battle)",
+                       "translation":  ""
+                   },
+                   {
+                       "text":  "叫ぶよ今 louder",
+                       "translation":  "외쳐 지금 louder"
+                   },
+                   {
+                       "text":  "示す freedom",
+                       "translation":  "보여 줄 freedom"
+                   },
+                   {
+                       "text":  "もう never looking back",
+                       "translation":  "이제 never looking back"
+                   },
+                   {
+                       "text":  "さぁ行こう",
+                       "translation":  "자, 가자"
+                   },
+                   {
+                       "text":  "We’re going in blind",
+                       "translation":  ""
+                   },
+                   {
+                       "text":  "無理だと言う声とか mute mute",
+                       "translation":  "무리라고 말하는 목소리 따위 mute mute"
+                   },
+                   {
+                       "text":  "言葉じゃなく行動で prove prove",
+                       "translation":  "말이 아니라 행동으로 prove prove"
+                   },
+                   {
+                       "text":  "可能 or 不可能は誰も don’t know",
+                       "translation":  "가능 or 불가능은 아무도 don’t know"
+                   },
+                   {
+                       "text":  "So I’m gonna go do me, woo woo",
+                       "translation":  ""
+                   },
+                   {
+                       "text":  "That\u0027s how I know 迷いはない",
+                       "translation":  "That\u0027s how I know 망설임은 없어"
+                   },
+                   {
+                       "text":  "目隠ししても I\u0027ll dive",
+                       "translation":  "눈을 가려도 I\u0027ll dive"
+                   },
+                   {
+                       "text":  "Battle without sight",
+                       "translation":  ""
+                   },
+                   {
+                       "text":  "Yeah we go on",
+                       "translation":  ""
+                   },
+                   {
+                       "text":  "誰もみたことのないやり方で shout it out",
+                       "translation":  "아무도 본 적 없는 방식으로 shout it out"
+                   },
+                   {
+                       "text":  "It’s a cold vicious world",
+                       "translation":  ""
+                   },
+                   {
+                       "text":  "見えないなら怖くはない",
+                       "translation":  "보이지 않으면 두렵지 않아"
+                   },
+                   {
+                       "text":  "そう This is war",
+                       "translation":  "그래 This is war"
+                   },
+                   {
+                       "text":  "Go, we’ve been movin’ on",
+                       "translation":  ""
+                   },
+                   {
+                       "text":  "闇の中駆け出して Go in Blind",
+                       "translation":  "어둠 속을 내달려 Go in Blind"
+                   },
+                   {
+                       "text":  "研ぎ澄ました感覚 Go in Blind",
+                       "translation":  "예리하게 벼린 감각 Go in Blind"
+                   },
+                   {
+                       "text":  "あの月まで遠くたって吠えた",
+                       "translation":  "저 달까지 멀어도 짖었어"
+                   },
+                   {
+                       "text":  "僕らはここだって",
+                       "translation":  "우리는 여기 있다고"
+                   },
+                   {
+                       "text":  "Now we gotta head on head on (head on)",
+                       "translation":  ""
+                   },
+                   {
+                       "text":  "That’s all we gotta bet on bet on (battle)",
+                       "translation":  ""
+                   },
+                   {
+                       "text":  "叫ぶよ今 louder",
+                       "translation":  "외쳐 지금 louder"
+                   },
+                   {
+                       "text":  "示す freedom",
+                       "translation":  "보여 줄 freedom"
+                   },
+                   {
+                       "text":  "もう never looking back",
+                       "translation":  "이제 never looking back"
+                   },
+                   {
+                       "text":  "さぁ行こう",
+                       "translation":  "자, 가자"
+                   },
+                   {
+                       "text":  "We’re going in blind",
+                       "translation":  ""
+                   },
+                   {
+                       "text":  "We go",
+                       "translation":  ""
+                   },
+                   {
+                       "text":  "Go in Blind",
+                       "translation":  ""
+                   },
+                   {
+                       "text":  "Let’s go",
+                       "translation":  ""
+                   },
+                   {
+                       "text":  "Go in Blind",
+                       "translation":  ""
+                   },
+                   {
+                       "text":  "蹴散らしていく今",
+                       "translation":  "걷어차 흩뜨리며 가는 지금"
+                   },
+                   {
+                       "text":  "Taking flight like I never",
+                       "translation":  ""
+                   },
+                   {
+                       "text":  "証明したいんだ what we are",
+                       "translation":  "증명하고 싶어 what we are"
+                   },
+                   {
+                       "text":  "Never looking back",
+                       "translation":  ""
+                   },
+                   {
+                       "text":  "さぁ行こう",
+                       "translation":  "자, 가자"
+                   },
+                   {
+                       "text":  "We’re going in blind",
+                       "translation":  ""
+                   }
+               ],
+    "vocabulary":  [
+                       {
+                           "id":  "goinblind∷赫い",
+                           "surface":  "赫い",
+                           "dictionaryForm":  "赫い",
+                           "reading":  "あかい",
+                           "pos":  "い형용사",
+                           "meaning":  "붉다, 시뻘겋다 (赤い의 문학적 표기)",
+                           "jlptLevel":  "N1",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "붉다, 시뻘겋다",
+                           "quizMeaning":  "붉다, 시뻘겋다",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷照らす",
+                           "surface":  "照らす",
+                           "dictionaryForm":  "照らす",
+                           "reading":  "てらす",
+                           "pos":  "동사",
+                           "meaning":  "비추다",
+                           "jlptLevel":  "N2",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "비추다",
+                           "quizMeaning":  "비추다",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷影",
+                           "surface":  "影",
+                           "dictionaryForm":  "影",
+                           "reading":  "かげ",
+                           "pos":  "명사",
+                           "meaning":  "그림자",
+                           "jlptLevel":  "N3",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "그림자",
+                           "quizMeaning":  "그림자",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷交差する",
+                           "surface":  "交差する",
+                           "dictionaryForm":  "交差する",
+                           "reading":  "こうさする",
+                           "pos":  "명사·する동사",
+                           "meaning":  "교차하다",
+                           "jlptLevel":  "N1",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "교차하다",
+                           "quizMeaning":  "교차하다",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷統計",
+                           "surface":  "統計",
+                           "dictionaryForm":  "統計",
+                           "reading":  "とうけい",
+                           "pos":  "명사",
+                           "meaning":  "통계",
+                           "jlptLevel":  "N1",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "통계",
+                           "quizMeaning":  "통계",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷前例",
+                           "surface":  "前例",
+                           "dictionaryForm":  "前例",
+                           "reading":  "ぜんれい",
+                           "pos":  "명사",
+                           "meaning":  "전례",
+                           "jlptLevel":  "N1",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "전례",
+                           "quizMeaning":  "전례",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷とっくに",
+                           "surface":  "とっくに",
+                           "dictionaryForm":  "とっくに",
+                           "reading":  "とっくに",
+                           "pos":  "부사",
+                           "meaning":  "진작에, 벌써",
+                           "jlptLevel":  "N2",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "진작에, 벌써",
+                           "quizMeaning":  "진작에, 벌써",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷興味",
+                           "surface":  "興味",
+                           "dictionaryForm":  "興味",
+                           "reading":  "きょうみ",
+                           "pos":  "명사",
+                           "meaning":  "흥미, 관심",
+                           "jlptLevel":  "N4",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "흥미, 관심",
+                           "quizMeaning":  "흥미, 관심",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷刻み込む",
+                           "surface":  "刻み込む",
+                           "dictionaryForm":  "刻み込む",
+                           "reading":  "きざみこむ",
+                           "pos":  "동사",
+                           "meaning":  "깊이 새기다, 아로새기다 (刻む+込む)",
+                           "jlptLevel":  "N1",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "깊이 새기다, 아로새기다",
+                           "quizMeaning":  "깊이 새기다, 아로새기다",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷時代",
+                           "surface":  "時代",
+                           "dictionaryForm":  "時代",
+                           "reading":  "じだい",
+                           "pos":  "명사",
+                           "meaning":  "시대",
+                           "jlptLevel":  "N3",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "시대",
+                           "quizMeaning":  "시대",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷牙",
+                           "surface":  "牙",
+                           "dictionaryForm":  "牙",
+                           "reading":  "きば",
+                           "pos":  "명사",
+                           "meaning":  "송곳니, 엄니",
+                           "jlptLevel":  "N1",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "송곳니, 엄니",
+                           "quizMeaning":  "송곳니, 엄니",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷剥き出す",
+                           "surface":  "剥き出して",
+                           "dictionaryForm":  "剥き出す",
+                           "reading":  "むきだして",
+                           "pos":  "동사",
+                           "meaning":  "드러내다, (이빨을) 내밀다",
+                           "jlptLevel":  "N1",
+                           "conjugation":  "て형",
+                           "surfaceMeaning":  "드러내다, (이빨을) 내밀다",
+                           "quizMeaning":  "드러내다, (이빨을) 내밀다",
+                           "grammarNote":  "て형"
+                       },
+                       {
+                           "id":  "goinblind∷能動的",
+                           "surface":  "能動的",
+                           "dictionaryForm":  "能動的",
+                           "reading":  "のうどうてき",
+                           "pos":  "な형용사",
+                           "meaning":  "능동적",
+                           "jlptLevel":  "N1",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "능동적",
+                           "quizMeaning":  "능동적",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷轟かす",
+                           "surface":  "轟かす",
+                           "dictionaryForm":  "轟かす",
+                           "reading":  "とどろかす",
+                           "pos":  "동사",
+                           "meaning":  "울려 퍼뜨리다, 떨치다",
+                           "jlptLevel":  "N1",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "울려 퍼뜨리다, 떨치다",
+                           "quizMeaning":  "울려 퍼뜨리다, 떨치다",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷指標",
+                           "surface":  "指標",
+                           "dictionaryForm":  "指標",
+                           "reading":  "しひょう",
+                           "pos":  "명사",
+                           "meaning":  "지표, 기준",
+                           "jlptLevel":  "N1",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "지표, 기준",
+                           "quizMeaning":  "지표, 기준",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷立ち止まる",
+                           "surface":  "立ち止まる",
+                           "dictionaryForm":  "立ち止まる",
+                           "reading":  "たちどまる",
+                           "pos":  "동사",
+                           "meaning":  "멈춰 서다",
+                           "jlptLevel":  "N2",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "멈춰 서다",
+                           "quizMeaning":  "멈춰 서다",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷暇",
+                           "surface":  "暇",
+                           "dictionaryForm":  "暇",
+                           "reading":  "ひま",
+                           "pos":  "명사",
+                           "meaning":  "틈, 짬, 여가 (暇はない: 그럴 틈 없다)",
+                           "jlptLevel":  "N4",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "틈, 짬, 여가",
+                           "quizMeaning":  "틈, 짬, 여가",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷上げる",
+                           "surface":  "上げろ",
+                           "dictionaryForm":  "上げる",
+                           "reading":  "あげろ",
+                           "pos":  "동사",
+                           "meaning":  "올리다, 높이다 (声を上げる: 목소리를 높이다)",
+                           "jlptLevel":  "N4",
+                           "conjugation":  "명령형",
+                           "surfaceMeaning":  "올리다, 높이다",
+                           "quizMeaning":  "올리다, 높이다",
+                           "grammarNote":  "명령형"
+                       },
+                       {
+                           "id":  "goinblind∷闇",
+                           "surface":  "闇",
+                           "dictionaryForm":  "闇",
+                           "reading":  "やみ",
+                           "pos":  "명사",
+                           "meaning":  "어둠",
+                           "jlptLevel":  "N1",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "어둠",
+                           "quizMeaning":  "어둠",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷駆け出す",
+                           "surface":  "駆け出して",
+                           "dictionaryForm":  "駆け出す",
+                           "reading":  "かけだして",
+                           "pos":  "동사",
+                           "meaning":  "달려 나가다, 내달리다",
+                           "jlptLevel":  "N2",
+                           "conjugation":  "て형",
+                           "surfaceMeaning":  "달려 나가다, 내달리다",
+                           "quizMeaning":  "달려 나가다, 내달리다",
+                           "grammarNote":  "て형"
+                       },
+                       {
+                           "id":  "goinblind∷研ぎ澄ます",
+                           "surface":  "研ぎ澄ました",
+                           "dictionaryForm":  "研ぎ澄ます",
+                           "reading":  "とぎすました",
+                           "pos":  "동사",
+                           "meaning":  "예리하게 갈고닦다, (감각을) 벼리다",
+                           "jlptLevel":  "N1",
+                           "conjugation":  "과거형(た형)",
+                           "surfaceMeaning":  "예리하게 갈고닦다, (감각을) 벼리다",
+                           "quizMeaning":  "예리하게 갈고닦다, (감각을) 벼리다",
+                           "grammarNote":  "과거형(た형)"
+                       },
+                       {
+                           "id":  "goinblind∷感覚",
+                           "surface":  "感覚",
+                           "dictionaryForm":  "感覚",
+                           "reading":  "かんかく",
+                           "pos":  "명사",
+                           "meaning":  "감각",
+                           "jlptLevel":  "N2",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "감각",
+                           "quizMeaning":  "감각",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷吠える",
+                           "surface":  "吠えた",
+                           "dictionaryForm":  "吠える",
+                           "reading":  "ほえた",
+                           "pos":  "동사",
+                           "meaning":  "짖다, 으르렁대다",
+                           "jlptLevel":  "N1",
+                           "conjugation":  "과거형(た형)",
+                           "surfaceMeaning":  "짖다, 으르렁대다",
+                           "quizMeaning":  "짖다, 으르렁대다",
+                           "grammarNote":  "과거형(た형)"
+                       },
+                       {
+                           "id":  "goinblind∷叫ぶ",
+                           "surface":  "叫ぶ",
+                           "dictionaryForm":  "叫ぶ",
+                           "reading":  "さけぶ",
+                           "pos":  "동사",
+                           "meaning":  "외치다, 부르짖다",
+                           "jlptLevel":  "N2",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "외치다, 부르짖다",
+                           "quizMeaning":  "외치다, 부르짖다",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷示す",
+                           "surface":  "示す",
+                           "dictionaryForm":  "示す",
+                           "reading":  "しめす",
+                           "pos":  "동사",
+                           "meaning":  "보여 주다, 나타내다",
+                           "jlptLevel":  "N2",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "보여 주다, 나타내다",
+                           "quizMeaning":  "보여 주다, 나타내다",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷無理",
+                           "surface":  "無理",
+                           "dictionaryForm":  "無理",
+                           "reading":  "むり",
+                           "pos":  "명사·な형용사",
+                           "meaning":  "무리, 불가능함",
+                           "jlptLevel":  "N4",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "무리, 불가능함",
+                           "quizMeaning":  "무리, 불가능함",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷言葉",
+                           "surface":  "言葉",
+                           "dictionaryForm":  "言葉",
+                           "reading":  "ことば",
+                           "pos":  "명사",
+                           "meaning":  "말, 언어",
+                           "jlptLevel":  "N4",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "말, 언어",
+                           "quizMeaning":  "말, 언어",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷行動",
+                           "surface":  "行動",
+                           "dictionaryForm":  "行動",
+                           "reading":  "こうどう",
+                           "pos":  "명사·する동사",
+                           "meaning":  "행동",
+                           "jlptLevel":  "N3",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "행동",
+                           "quizMeaning":  "행동",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷可能",
+                           "surface":  "可能",
+                           "dictionaryForm":  "可能",
+                           "reading":  "かのう",
+                           "pos":  "명사·な형용사",
+                           "meaning":  "가능",
+                           "jlptLevel":  "N3",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "가능",
+                           "quizMeaning":  "가능",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷迷い",
+                           "surface":  "迷い",
+                           "dictionaryForm":  "迷い",
+                           "reading":  "まよい",
+                           "pos":  "명사",
+                           "meaning":  "망설임, 갈등",
+                           "jlptLevel":  "N2",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "망설임, 갈등",
+                           "quizMeaning":  "망설임, 갈등",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷目隠し",
+                           "surface":  "目隠し",
+                           "dictionaryForm":  "目隠し",
+                           "reading":  "めかくし",
+                           "pos":  "명사·する동사",
+                           "meaning":  "눈가림, 눈을 가림",
+                           "jlptLevel":  "N1",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "눈가림, 눈을 가림",
+                           "quizMeaning":  "눈가림, 눈을 가림",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷やり方",
+                           "surface":  "やり方",
+                           "dictionaryForm":  "やり方",
+                           "reading":  "やりかた",
+                           "pos":  "명사",
+                           "meaning":  "방식, 방법",
+                           "jlptLevel":  "N3",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "방식, 방법",
+                           "quizMeaning":  "방식, 방법",
+                           "grammarNote":  ""
+                       },
+                       {
+                           "id":  "goinblind∷見える",
+                           "surface":  "見えない",
+                           "dictionaryForm":  "見える",
+                           "reading":  "みえない",
+                           "pos":  "동사",
+                           "meaning":  "보이다",
+                           "jlptLevel":  "N4",
+                           "conjugation":  "부정형(ない형)",
+                           "surfaceMeaning":  "보이지 않다",
+                           "quizMeaning":  "보이지 않다",
+                           "grammarNote":  "부정형(ない형)"
+                       },
+                       {
+                           "id":  "goinblind∷怖い",
+                           "surface":  "怖くはない",
+                           "dictionaryForm":  "怖い",
+                           "reading":  "こわくはない",
+                           "pos":  "い형용사",
+                           "meaning":  "무섭다, 두렵다",
+                           "jlptLevel":  "N4",
+                           "conjugation":  "부정(~くはない)",
+                           "surfaceMeaning":  "무섭지는 않다",
+                           "quizMeaning":  "무섭지는 않다",
+                           "grammarNote":  "부정(~くはない)"
+                       },
+                       {
+                           "id":  "goinblind∷蹴散らす",
+                           "surface":  "蹴散らしていく",
+                           "dictionaryForm":  "蹴散らす",
+                           "reading":  "けちらしていく",
+                           "pos":  "동사",
+                           "meaning":  "걷어차 흩뜨리다, 짓밟아 흩어 버리다",
+                           "jlptLevel":  "N1",
+                           "conjugation":  "て형+いく",
+                           "surfaceMeaning":  "걷어차 흩뜨리다, 짓밟아 흩어 버리다",
+                           "quizMeaning":  "걷어차 흩뜨리다, 짓밟아 흩어 버리다",
+                           "grammarNote":  "て형+いく"
+                       },
+                       {
+                           "id":  "goinblind∷証明",
+                           "surface":  "証明",
+                           "dictionaryForm":  "証明",
+                           "reading":  "しょうめい",
+                           "pos":  "명사·する동사",
+                           "meaning":  "증명",
+                           "jlptLevel":  "N2",
+                           "conjugation":  "",
+                           "surfaceMeaning":  "증명",
+                           "quizMeaning":  "증명",
+                           "grammarNote":  ""
+                       }
+                   ],
+    "schemaVersion":  2
+}
 ]
