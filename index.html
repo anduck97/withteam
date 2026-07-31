@@ -899,8 +899,9 @@ function isNegativeForm(w: Word): boolean {
   return /부정|ない|ぬ|ず/u.test(grammar);
 }
 
-// 단어 하나에 대해 숙련도(rep)에 맞는 유형 1개를 생성 (없으면 쉬운 유형으로 폴백)
-function pickQuizForWord(w: Word, rep: number, wordSong, meanings: string[], surfaces: string[]): Quiz | null {
+// 단어 하나에 대해 숙련도(rep)에 맞는 유형 1개를 생성 (없으면 쉬운 유형으로 폴백).
+// 숙련도가 높아져도 뜻 4지선다(A)가 사라지지 않도록 세션 순번으로 유형을 섞는다.
+function pickQuizForWord(w: Word, rep: number, wordSong, meanings: string[], surfaces: string[], sessionIndex: number): Quiz | null {
   const song = wordSong.get(w.id);
   const verse = song?.verses.find(v => v.text.includes(w.surface));
   const makeA = (): Quiz | null => {
@@ -917,6 +918,9 @@ function pickQuizForWord(w: Word, rep: number, wordSong, meanings: string[], sur
   };
   const makeC = (): Quiz | null => {
     if (!verse) return null;
+    // 영문이 섞인 가사는 영어 어순 자체가 힌트가 되어 문장 조립 학습 효과가 없다.
+    // 이런 문장은 C형을 만들지 않고 호출부의 A/B 폴백을 사용한다.
+    if (/[A-Za-z]/.test(verse.text)) return null;
     const tokens = tokenizeJa(verse.text);
     if (tokens.length < 3 || tokens.length > 8) return null;
     return { kind:'C', word:w, verse, answer: tokens, tokens: shuffle(tokens) };
@@ -924,8 +928,17 @@ function pickQuizForWord(w: Word, rep: number, wordSong, meanings: string[], sur
   // 부정형은 숙련도가 올라도 빈칸(B)·문장조립(C)으로 자동 전환하지 않는다.
   // 문제 모양은 기존 뜻 고르기 그대로 두고, 제시어만 dictionaryForm으로 바꾼다.
   if (isNegativeForm(w)) return makeA();
-  if (rep >= 4) return makeC() || makeB() || makeA();
-  if (rep >= 2) return makeB() || makeA();
+  if (rep >= 4) {
+    const variant = sessionIndex % 3;
+    if (variant === 0) return makeA() || makeB() || makeC();
+    if (variant === 1) return makeB() || makeA() || makeC();
+    return makeC() || makeA() || makeB();
+  }
+  if (rep >= 2) {
+    return sessionIndex % 2 === 0
+      ? makeA() || makeB()
+      : makeB() || makeA();
+  }
   return makeA();
 }
 
@@ -951,8 +964,8 @@ function buildSession(progress: UserProgress, catalog: SongAnalysis[], mode: 'du
   entries = entries.slice(0, MAX_SESSION_WORDS);
 
   const quizzes: Quiz[] = [];
-  for (const e of entries) {
-    const q = pickQuizForWord(e.w, e.lw.repetition, wordSong, meanings, surfaces);
+  for (const [sessionIndex, e] of entries.entries()) {
+    const q = pickQuizForWord(e.w, e.lw.repetition, wordSong, meanings, surfaces, sessionIndex);
     if (q) quizzes.push(q);
   }
   return { quizzes: shuffle(quizzes), dict };
