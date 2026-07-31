@@ -372,7 +372,14 @@ const JLPT_COLOR: Record<string,string> = {
 /* ════════════════════════ 공통 헬퍼 ════════════════════════ */
 function shuffle<T>(arr: T[]): T[] { const a = [...arr]; for (let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
 // 뜻은 용도별로 분리한다. 기존 JSON은 meaning 폴백으로 계속 동작한다.
-function dictionaryMeaning(w: Word): string { return (w.meaning || '').trim(); }
+function cleanDictionaryMeaning(value: string): string {
+  return (value || '')
+    .replace(/\s*[（(][^（）()]*[ぁ-んァ-ヶ一-龯][^（）()]*[）)]/gu, '')
+    .replace(/\s*[（(][^（）()]*(?:활용|부정형|수동형|가능형|축약|문어형|구어형)[^（）()]*[）)]/gu, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+function dictionaryMeaning(w: Word): string { return cleanDictionaryMeaning(w.meaning || ''); }
 function surfaceMeaning(w: Word): string { return (w.surfaceMeaning || w.meaning || '').trim(); }
 function quizMeaning(w: Word): string { return (w.quizMeaning || w.surfaceMeaning || w.meaning || '').trim(); }
 function validateCatalogMeanings(catalog: SongAnalysis[]) {
@@ -881,7 +888,7 @@ function MasteryDots({ rep }: { rep: number }) {
 
 /* ════════════════════════ Chapter 4 · 퀴즈 세션 빌더 ════════════════════════ */
 type Quiz =
-  | { kind:'A'; word:Word; choices:string[]; answer:string }
+  | { kind:'A'; word:Word; verse?:Verse; choices:string[]; answer:string }
   | { kind:'B'; word:Word; verse:Verse; choices:string[]; answer:string; blanked:string }
   | { kind:'C'; word:Word; verse:Verse; tokens:string[]; answer:string[] };
 
@@ -890,11 +897,11 @@ function pickQuizForWord(w: Word, rep: number, wordSong, meanings: string[], sur
   const song = wordSong.get(w.id);
   const verse = song?.verses.find(v => v.text.includes(w.surface));
   const makeA = (): Quiz | null => {
-    const answer = quizMeaning(w);
+    const answer = dictionaryMeaning(w);
     if (!answer) return null;
     const d = shuffle(meanings.filter(m => m && m !== answer)).slice(0,3);
     if (d.length < 3) return null;
-    return { kind:'A', word:w, answer, choices: shuffle([answer, ...d]) };
+    return { kind:'A', word:w, verse, answer, choices: shuffle([answer, ...d]) };
   };
   const makeB = (): Quiz | null => {
     if (!verse) return null;
@@ -919,7 +926,9 @@ function buildSession(progress: UserProgress, catalog: SongAnalysis[], mode: 'du
   const wordSong = new Map<string, SongAnalysis>();
   catalog.forEach(song => song.vocabulary.forEach(w => { allWords.push(w); wordSong.set(w.id, song); }));
   const dict = buildRubyDict(allWords);
-  const meanings = Array.from(new Set(allWords.map(quizMeaning).filter(Boolean)));
+  // 유형 A는 활용형이 아닌 기본형을 묻는다. 부정형 어미가 정답 힌트가 되지 않게
+  // 오답 선지도 모두 원형의 간결한 사전 뜻으로 통일한다.
+  const meanings = Array.from(new Set(allWords.map(dictionaryMeaning).filter(Boolean)));
   const surfaces = allWords.map(w => w.surface);
 
   const now = Date.now();
@@ -1133,8 +1142,12 @@ function Review({ progress, setProgress, catalog, go }) {
       <div className={`bg-white rounded-2xl p-6 shadow-sm border border-slate-100 ${feedback==='wrong'?'anim-shake':''}`}>
         {/* 유형 A */}
         {current.kind === 'A' && (<>
-          <div className="text-xs font-semibold text-brand-600 mb-2">🍊 단어의 뜻을 고르세요</div>
-          <div className="text-3xl text-center my-6"><RubyText text={current.word.surface} dict={new Map([[current.word.surface, current.word.reading]])} /></div>
+          <div className="text-xs font-semibold text-brand-600 mb-2">🍊 기본형의 뜻을 고르세요</div>
+          <div className="text-3xl text-center my-6 font-jp">
+            {current.word.dictionaryForm === current.word.surface
+              ? <RubyText text={current.word.dictionaryForm} dict={new Map([[current.word.dictionaryForm, current.word.reading]])} />
+              : current.word.dictionaryForm}
+          </div>
           <div className="grid gap-2">
             {current.choices.map((c,i)=>(
               <button key={i} disabled={feedback!=='none'} onClick={()=>choose(c)}
@@ -1146,12 +1159,17 @@ function Review({ progress, setProgress, catalog, go }) {
           </div>
           {feedback!=='none' && (
             <div className="mt-4 rounded-xl bg-slate-50 p-3 text-sm">
-              <div><b className="font-jp">{current.word.surface}</b> · {surfaceMeaning(current.word)}</div>
-              {current.word.dictionaryForm !== current.word.surface && (
-                <div className="text-slate-500 mt-1">원형 <span className="font-jp">{current.word.dictionaryForm}</span> · {dictionaryMeaning(current.word)}</div>
+              {current.verse && (
+                <div className="mb-3 pb-3 border-b border-slate-200">
+                  <div className="text-[11px] font-semibold text-slate-400 mb-1">가사 원문</div>
+                  <div className="font-jp text-base text-ink leading-relaxed">{current.verse.text}</div>
+                  {current.verse.translation && <div className="text-xs text-slate-500 mt-1">{current.verse.translation}</div>}
+                </div>
               )}
+              <div><span className="text-slate-400">가사형 </span><b className="font-jp">{current.word.surface}</b> · {surfaceMeaning(current.word)}</div>
+              <div className="text-slate-500 mt-1">원형 <span className="font-jp">{current.word.dictionaryForm}</span> · {dictionaryMeaning(current.word)}</div>
               {(current.word.grammarNote || current.word.conjugation) && (
-                <div className="text-rose-500 mt-1">{current.word.grammarNote || current.word.conjugation}</div>
+                <div className="text-rose-500 mt-1">문법 · {current.word.grammarNote || current.word.conjugation}</div>
               )}
             </div>
           )}
