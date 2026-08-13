@@ -839,8 +839,20 @@ function Library({ catalog, loading, error, failedFiles, openSong }) {
           <p className="text-slate-500">등록된 곡이 없습니다.</p>
         </div>
       ) : (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {catalog.map((s,i)=>(
+        (() => {
+          // 아티스트 기준 자동 분류: &TEAM 원곡 / &TEAM 커버곡(타 아티스트 원곡) / NCT WISH
+          const groupOf = (s) => {
+            const a = (s.artist || '').toUpperCase();
+            if (a.includes('NCT WISH')) return 'NCT WISH';
+            if (a.includes('&TEAM')) return '&TEAM';
+            return '&TEAM 커버곡';
+          };
+          const SECTIONS = [
+            { key: '&TEAM',       emoji: '🐺', desc: '앤팀 오리지널 곡' },
+            { key: '&TEAM 커버곡', emoji: '🎤', desc: '앤팀이 커버한 곡 (원곡 아티스트 표기)' },
+            { key: 'NCT WISH',    emoji: '✨', desc: 'NCT WISH 곡' },
+          ];
+          const card = (s, i) => (
             <div key={i} className="relative bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex flex-col">
               <DifficultyBadge s={s} />
               <div className="flex-1 cursor-pointer" onClick={()=>openSong(s)}>
@@ -852,8 +864,28 @@ function Library({ catalog, loading, error, failedFiles, openSong }) {
                 <button onClick={()=>openSong(s)} className="text-sm font-semibold text-brand-600">열기</button>
               </div>
             </div>
-          ))}
-        </div>
+          );
+          return (
+            <div>
+              {SECTIONS.map(sec => {
+                const songs = catalog.filter(s => groupOf(s) === sec.key);
+                if (songs.length === 0) return null;
+                return (
+                  <section key={sec.key} className="mb-8">
+                    <div className="flex items-baseline gap-2 mb-3">
+                      <h2 className="text-lg font-extrabold text-ink">{sec.emoji} {sec.key}</h2>
+                      <span className="text-xs font-bold text-white bg-brand-600 rounded-full px-2 py-0.5">{songs.length}곡</span>
+                      <span className="text-xs text-slate-400">{sec.desc}</span>
+                    </div>
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                      {songs.map(card)}
+                    </div>
+                  </section>
+                );
+              })}
+            </div>
+          );
+        })()
       )}
     </div>
   );
