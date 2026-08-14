@@ -1,440 +1,80 @@
 [
-{
-    "title":  "Scar to Scar",
-    "artist":  "\u0026TEAM",
-    "verses":  [
-                   {
-                       "text":  "Every morning when I wake up (yeah)",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "始まる今 face off",
-                       "translation":  "이제 시작되는 face off"
-                   },
-                   {
-                       "text":  "逃げられない",
-                       "translation":  "도망칠 수 없어"
-                   },
-                   {
-                       "text":  "Ain\u0027t playing no game そうだろ?",
-                       "translation":  "Ain\u0027t playing no game 그렇잖아?"
-                   },
-                   {
-                       "text":  "No painじゃ no gain",
-                       "translation":  "No pain이면 no gain"
-                   },
-                   {
-                       "text":  "傷だらけの players",
-                       "translation":  "상처투성이인 players"
-                   },
-                   {
-                       "text":  "言葉はいらないんだ",
-                       "translation":  "말은 필요하지 않아"
-                   },
-                   {
-                       "text":  "We go hard like",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "Rushing through our veins",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "Feel my blood",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "I won\u0027t turn my back",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "躊躇っても 何度でも",
-                       "translation":  "망설이더라도 몇 번이고"
-                   },
-                   {
-                       "text":  "分かり合うため fight, yeah yeah",
-                       "translation":  "서로 이해하기 위해 fight, yeah yeah"
-                   },
-                   {
-                       "text":  "\u0026Team go",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "Scar to scar",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "隠さない just keep it straight",
-                       "translation":  "감추지 않아 just keep it straight"
-                   },
-                   {
-                       "text":  "ゆえにそう learn from the pain",
-                       "translation":  "그러니 그래 learn from the pain"
-                   },
-                   {
-                       "text":  "互いに照らし出す",
-                       "translation":  "서로를 비춰 드러내"
-                   },
-                   {
-                       "text":  "The shade of my shade of my heart",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "We go scar to scar (oh)",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "Say goodbye with devotion and we livin\u0027 wild",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "Scar to scar (oh)",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "It\u0027s a ride or die or the frenemies",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "Spittin\u0027 my 本心 I follow",
-                       "translation":  "Spittin\u0027 my 속마음 I follow"
-                   },
-                   {
-                       "text":  "出来ない手加減など",
-                       "translation":  "봐주기 같은 건 못 해"
-                   },
-                   {
-                       "text":  "何が来ても I swallow",
-                       "translation":  "무슨 일이 닥쳐도 I swallow"
-                   },
-                   {
-                       "text":  "ぶつかってく like hitting the rock",
-                       "translation":  "부딪쳐 가 like hitting the rock"
-                   },
-                   {
-                       "text":  "決めたんだ 目を逸らさない",
-                       "translation":  "정했어, 시선을 피하지 않아"
-                   },
-                   {
-                       "text":  "Friends or not (bring it on)",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "\u0026Team go",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "Scar to scar",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "隠さない just keep it straight",
-                       "translation":  "감추지 않아 just keep it straight"
-                   },
-                   {
-                       "text":  "ゆえにそう learn from the pain",
-                       "translation":  "그러니 그래 learn from the pain"
-                   },
-                   {
-                       "text":  "互いに照らし出す",
-                       "translation":  "서로를 비춰 드러내"
-                   },
-                   {
-                       "text":  "The shade of my shade of my heart",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "We go scar to scar (oh)",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "Say goodbye with devotion and we livin\u0027 wild",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "Scar to scar (oh)",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "It\u0027s a ride or die or the frenemies",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "These battle scars won\u0027t go away (battle scars! Battle scars!)",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "These battle scars won\u0027t",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "Got \u0027em on my body and I\u0027m showing \u0027em off",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "Scar to scar, bring it on!",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "Scar to scar",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "隠さない just keep it straight",
-                       "translation":  "감추지 않아 just keep it straight"
-                   },
-                   {
-                       "text":  "ゆえにそう learn from the pain",
-                       "translation":  "그러니 그래 learn from the pain"
-                   },
-                   {
-                       "text":  "互いに照らし出す",
-                       "translation":  "서로를 비춰 드러내"
-                   },
-                   {
-                       "text":  "The shade of my shade of my heart",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "We go scar to scar (oh)",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "Say goodbye with devotion and we livin\u0027 wild",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "Scar to scar (oh)",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "It\u0027s a ride or die or the frenemies",
-                       "translation":  ""
-                   }
-               ],
-    "vocabulary":  [
-                       {
-                           "id":  "scartoscar∷始まる",
-                           "surface":  "始まる",
-                           "dictionaryForm":  "始まる",
-                           "reading":  "はじまる",
-                           "pos":  "동사",
-                           "meaning":  "시작되다",
-                           "jlptLevel":  "N4",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "시작되다",
-                           "quizMeaning":  "시작되다",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "scartoscar∷逃げる",
-                           "surface":  "逃げられない",
-                           "dictionaryForm":  "逃げる",
-                           "reading":  "にげられない",
-                           "pos":  "동사",
-                           "meaning":  "도망치다",
-                           "jlptLevel":  "N4",
-                           "conjugation":  "가능형+부정(도망칠 수 없다)",
-                           "surfaceMeaning":  "도망칠 수 없다",
-                           "quizMeaning":  "도망칠 수 없다",
-                           "grammarNote":  "가능형+부정(도망칠 수 없다)"
-                       },
-                       {
-                           "id":  "scartoscar∷傷",
-                           "surface":  "傷だらけ",
-                           "dictionaryForm":  "傷",
-                           "reading":  "きずだらけ",
-                           "pos":  "명사",
-                           "meaning":  "상처 (~だらけ: ~투성이)",
-                           "jlptLevel":  "N3",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "상처",
-                           "quizMeaning":  "상처",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "scartoscar∷言葉",
-                           "surface":  "言葉",
-                           "dictionaryForm":  "言葉",
-                           "reading":  "ことば",
-                           "pos":  "명사",
-                           "meaning":  "말, 언어",
-                           "jlptLevel":  "N4",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "말, 언어",
-                           "quizMeaning":  "말, 언어",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "scartoscar∷要る",
-                           "surface":  "いらない",
-                           "dictionaryForm":  "要る",
-                           "reading":  "いらない",
-                           "pos":  "동사",
-                           "meaning":  "필요하다 (いらない: 필요 없다)",
-                           "jlptLevel":  "N4",
-                           "conjugation":  "부정형(ない형)",
-                           "surfaceMeaning":  "필요 없다",
-                           "quizMeaning":  "필요 없다",
-                           "grammarNote":  "부정형(ない형)"
-                       },
-                       {
-                           "id":  "scartoscar∷躊躇う",
-                           "surface":  "躊躇っても",
-                           "dictionaryForm":  "躊躇う",
-                           "reading":  "ためらっても",
-                           "pos":  "동사",
-                           "meaning":  "망설이다, 머뭇거리다",
-                           "jlptLevel":  "N1",
-                           "conjugation":  "て형+も(~해도)",
-                           "surfaceMeaning":  "망설여도",
-                           "quizMeaning":  "망설여도",
-                           "grammarNote":  "て형+も(~해도)"
-                       },
-                       {
-                           "id":  "scartoscar∷何度",
-                           "surface":  "何度でも",
-                           "dictionaryForm":  "何度",
-                           "reading":  "なんどでも",
-                           "pos":  "명사",
-                           "meaning":  "몇 번 (何度でも: 몇 번이라도)",
-                           "jlptLevel":  "N4",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "몇 번",
-                           "quizMeaning":  "몇 번",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "scartoscar∷分かり合う",
-                           "surface":  "分かり合う",
-                           "dictionaryForm":  "分かり合う",
-                           "reading":  "わかりあう",
-                           "pos":  "동사",
-                           "meaning":  "서로 이해하다 (~合う: 서로 ~하다)",
-                           "jlptLevel":  "N2",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "서로 이해하다",
-                           "quizMeaning":  "서로 이해하다",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "scartoscar∷隠す",
-                           "surface":  "隠さない",
-                           "dictionaryForm":  "隠す",
-                           "reading":  "かくさない",
-                           "pos":  "동사",
-                           "meaning":  "숨기다, 감추다",
-                           "jlptLevel":  "N3",
-                           "conjugation":  "부정형(ない형)",
-                           "surfaceMeaning":  "숨기지 않다",
-                           "quizMeaning":  "숨기지 않다",
-                           "grammarNote":  "부정형(ない형)"
-                       },
-                       {
-                           "id":  "scartoscar∷ゆえに",
-                           "surface":  "ゆえに",
-                           "dictionaryForm":  "ゆえに",
-                           "reading":  "ゆえに",
-                           "pos":  "접속사",
-                           "meaning":  "그러므로, 그렇기에 (문어체)",
-                           "jlptLevel":  "N1",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "그러므로, 그렇기에",
-                           "quizMeaning":  "그러므로, 그렇기에",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "scartoscar∷互いに",
-                           "surface":  "互いに",
-                           "dictionaryForm":  "互いに",
-                           "reading":  "たがいに",
-                           "pos":  "부사",
-                           "meaning":  "서로",
-                           "jlptLevel":  "N3",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "서로",
-                           "quizMeaning":  "서로",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "scartoscar∷照らし出す",
-                           "surface":  "照らし出す",
-                           "dictionaryForm":  "照らし出す",
-                           "reading":  "てらしだす",
-                           "pos":  "동사",
-                           "meaning":  "환히 비춰 내다 (照らす+出す)",
-                           "jlptLevel":  "N2",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "환히 비춰 내다",
-                           "quizMeaning":  "환히 비춰 내다",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "scartoscar∷本心",
-                           "surface":  "本心",
-                           "dictionaryForm":  "本心",
-                           "reading":  "ほんしん",
-                           "pos":  "명사",
-                           "meaning":  "본심, 속마음",
-                           "jlptLevel":  "N1",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "본심, 속마음",
-                           "quizMeaning":  "본심, 속마음",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "scartoscar∷手加減",
-                           "surface":  "手加減",
-                           "dictionaryForm":  "手加減",
-                           "reading":  "てかげん",
-                           "pos":  "명사·する동사",
-                           "meaning":  "봐주기, 힘 조절 (手加減しない: 봐주지 않다)",
-                           "jlptLevel":  "N1",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "봐주기, 힘 조절",
-                           "quizMeaning":  "봐주기, 힘 조절",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "scartoscar∷ぶつかる",
-                           "surface":  "ぶつかってく",
-                           "dictionaryForm":  "ぶつかる",
-                           "reading":  "ぶつかってく",
-                           "pos":  "동사",
-                           "meaning":  "부딪치다, 맞부딪다",
-                           "jlptLevel":  "N3",
-                           "conjugation":  "て형+いく의 구어 축약(~てく)",
-                           "surfaceMeaning":  "계속 부딪쳐 가다",
-                           "quizMeaning":  "계속 부딪쳐 가다",
-                           "grammarNote":  "て형+いく의 구어 축약(~てく)"
-                       },
-                       {
-                           "id":  "scartoscar∷決める",
-                           "surface":  "決めた",
-                           "dictionaryForm":  "決める",
-                           "reading":  "きめた",
-                           "pos":  "동사",
-                           "meaning":  "정하다, 결심하다",
-                           "jlptLevel":  "N4",
-                           "conjugation":  "과거형(た형)",
-                           "surfaceMeaning":  "정하다, 결심하다",
-                           "quizMeaning":  "정하다, 결심하다",
-                           "grammarNote":  "과거형(た형)"
-                       },
-                       {
-                           "id":  "scartoscar∷目を逸らす",
-                           "surface":  "目を逸らさない",
-                           "dictionaryForm":  "目を逸らす",
-                           "reading":  "めをそらさない",
-                           "pos":  "관용표현",
-                           "meaning":  "눈을 돌리다, 외면하다",
-                           "jlptLevel":  "N1",
-                           "conjugation":  "부정형(ない형)",
-                           "surfaceMeaning":  "눈을 돌리지 않다",
-                           "quizMeaning":  "눈을 돌리지 않다",
-                           "grammarNote":  "부정형(ない형)"
-                       }
-                   ],
-    "schemaVersion":  2
-}
+  {
+    "title": "Scar to Scar",
+    "artist": "&TEAM",
+    "schemaVersion": 2,
+    "verses": [
+      {"text": "Every morning when I wake up (yeah)", "translation": ""},
+      {"text": "始まる今 face off", "translation": "이제 시작되는 face off"},
+      {"text": "逃げられない", "translation": "도망칠 수 없어"},
+      {"text": "Ain't playing no game そうだろ?", "translation": "Ain't playing no game 그렇잖아?"},
+      {"text": "No painじゃ no gain", "translation": "No pain이면 no gain"},
+      {"text": "傷だらけの players", "translation": "상처투성이인 players"},
+      {"text": "言葉はいらないんだ", "translation": "말은 필요하지 않아"},
+      {"text": "We go hard like", "translation": ""},
+      {"text": "Rushing through our veins", "translation": ""},
+      {"text": "Feel my blood", "translation": ""},
+      {"text": "I won't turn my back", "translation": ""},
+      {"text": "躊躇っても 何度でも", "translation": "망설이더라도 몇 번이고"},
+      {"text": "分かり合うため fight, yeah yeah", "translation": "서로 이해하기 위해 fight, yeah yeah"},
+      {"text": "&Team go", "translation": ""},
+      {"text": "Scar to scar", "translation": ""},
+      {"text": "隠さない just keep it straight", "translation": "감추지 않아 just keep it straight"},
+      {"text": "ゆえにそう learn from the pain", "translation": "그러니 그래 learn from the pain"},
+      {"text": "互いに照らし出す", "translation": "서로를 비춰 드러내"},
+      {"text": "The shade of my shade of my heart", "translation": ""},
+      {"text": "We go scar to scar (oh)", "translation": ""},
+      {"text": "Say goodbye with devotion and we livin' wild", "translation": ""},
+      {"text": "Scar to scar (oh)", "translation": ""},
+      {"text": "It's a ride or die or the frenemies", "translation": ""},
+      {"text": "Spittin' my 本心 I follow", "translation": "Spittin' my 속마음 I follow"},
+      {"text": "出来ない手加減など", "translation": "봐주기 같은 건 못 해"},
+      {"text": "何が来ても I swallow", "translation": "무슨 일이 닥쳐도 I swallow"},
+      {"text": "ぶつかってく like hitting the rock", "translation": "부딪쳐 가 like hitting the rock"},
+      {"text": "決めたんだ 目を逸らさない", "translation": "정했어, 시선을 피하지 않아"},
+      {"text": "Friends or not (bring it on)", "translation": ""},
+      {"text": "&Team go", "translation": ""},
+      {"text": "Scar to scar", "translation": ""},
+      {"text": "隠さない just keep it straight", "translation": "감추지 않아 just keep it straight"},
+      {"text": "ゆえにそう learn from the pain", "translation": "그러니 그래 learn from the pain"},
+      {"text": "互いに照らし出す", "translation": "서로를 비춰 드러내"},
+      {"text": "The shade of my shade of my heart", "translation": ""},
+      {"text": "We go scar to scar (oh)", "translation": ""},
+      {"text": "Say goodbye with devotion and we livin' wild", "translation": ""},
+      {"text": "Scar to scar (oh)", "translation": ""},
+      {"text": "It's a ride or die or the frenemies", "translation": ""},
+      {"text": "These battle scars won't go away (battle scars! Battle scars!)", "translation": ""},
+      {"text": "These battle scars won't", "translation": ""},
+      {"text": "Got 'em on my body and I'm showing 'em off", "translation": ""},
+      {"text": "Scar to scar, bring it on!", "translation": ""},
+      {"text": "Scar to scar", "translation": ""},
+      {"text": "隠さない just keep it straight", "translation": "감추지 않아 just keep it straight"},
+      {"text": "ゆえにそう learn from the pain", "translation": "그러니 그래 learn from the pain"},
+      {"text": "互いに照らし出す", "translation": "서로를 비춰 드러내"},
+      {"text": "The shade of my shade of my heart", "translation": ""},
+      {"text": "We go scar to scar (oh)", "translation": ""},
+      {"text": "Say goodbye with devotion and we livin' wild", "translation": ""},
+      {"text": "Scar to scar (oh)", "translation": ""},
+      {"text": "It's a ride or die or the frenemies", "translation": ""}
+    ],
+    "vocabulary": [
+      {"id": "scartoscar∷始まる", "surface": "始まる", "dictionaryForm": "始まる", "reading": "はじまる", "pos": "동사", "meaning": "시작되다", "jlptLevel": "N4", "conjugation": "", "surfaceMeaning": "시작되다", "quizMeaning": "시작되다", "grammarNote": ""},
+      {"id": "scartoscar∷逃げる", "surface": "逃げられない", "dictionaryForm": "逃げる", "reading": "にげられない", "pos": "동사", "meaning": "도망치다", "jlptLevel": "N4", "conjugation": "가능형+부정(도망칠 수 없다)", "surfaceMeaning": "도망칠 수 없다", "quizMeaning": "도망칠 수 없다", "grammarNote": "가능형+부정(도망칠 수 없다)"},
+      {"id": "scartoscar∷傷", "surface": "傷だらけ", "dictionaryForm": "傷", "reading": "きずだらけ", "pos": "명사", "meaning": "상처 (~だらけ: ~투성이)", "jlptLevel": "N3", "conjugation": "", "surfaceMeaning": "상처", "quizMeaning": "상처", "grammarNote": ""},
+      {"id": "scartoscar∷言葉", "surface": "言葉", "dictionaryForm": "言葉", "reading": "ことば", "pos": "명사", "meaning": "말, 언어", "jlptLevel": "N4", "conjugation": "", "surfaceMeaning": "말, 언어", "quizMeaning": "말, 언어", "grammarNote": ""},
+      {"id": "scartoscar∷要る", "surface": "いらない", "dictionaryForm": "要る", "reading": "いらない", "pos": "동사", "meaning": "필요하다 (いらない: 필요 없다)", "jlptLevel": "N4", "conjugation": "부정형(ない형)", "surfaceMeaning": "필요 없다", "quizMeaning": "필요 없다", "grammarNote": "부정형(ない형)"},
+      {"id": "scartoscar∷躊躇う", "surface": "躊躇っても", "dictionaryForm": "躊躇う", "reading": "ためらっても", "pos": "동사", "meaning": "망설이다, 머뭇거리다", "jlptLevel": "N1", "conjugation": "て형+も(~해도)", "surfaceMeaning": "망설여도", "quizMeaning": "망설여도", "grammarNote": "て형+も(~해도)"},
+      {"id": "scartoscar∷何度", "surface": "何度でも", "dictionaryForm": "何度", "reading": "なんどでも", "pos": "명사", "meaning": "몇 번 (何度でも: 몇 번이라도)", "jlptLevel": "N4", "conjugation": "", "surfaceMeaning": "몇 번", "quizMeaning": "몇 번", "grammarNote": ""},
+      {"id": "scartoscar∷分かり合う", "surface": "分かり合う", "dictionaryForm": "分かり合う", "reading": "わかりあう", "pos": "동사", "meaning": "서로 이해하다 (~合う: 서로 ~하다)", "jlptLevel": "N2", "conjugation": "", "surfaceMeaning": "서로 이해하다", "quizMeaning": "서로 이해하다", "grammarNote": ""},
+      {"id": "scartoscar∷隠す", "surface": "隠さない", "dictionaryForm": "隠す", "reading": "かくさない", "pos": "동사", "meaning": "숨기다, 감추다", "jlptLevel": "N3", "conjugation": "부정형(ない형)", "surfaceMeaning": "숨기지 않다", "quizMeaning": "숨기지 않다", "grammarNote": "부정형(ない형)"},
+      {"id": "scartoscar∷ゆえに", "surface": "ゆえに", "dictionaryForm": "ゆえに", "reading": "ゆえに", "pos": "접속사", "meaning": "그러므로, 그렇기에 (문어체)", "jlptLevel": "N1", "conjugation": "", "surfaceMeaning": "그러므로, 그렇기에", "quizMeaning": "그러므로, 그렇기에", "grammarNote": ""},
+      {"id": "scartoscar∷互いに", "surface": "互いに", "dictionaryForm": "互いに", "reading": "たがいに", "pos": "부사", "meaning": "서로", "jlptLevel": "N3", "conjugation": "", "surfaceMeaning": "서로", "quizMeaning": "서로", "grammarNote": ""},
+      {"id": "scartoscar∷照らし出す", "surface": "照らし出す", "dictionaryForm": "照らし出す", "reading": "てらしだす", "pos": "동사", "meaning": "환히 비춰 내다 (照らす+出す)", "jlptLevel": "N2", "conjugation": "", "surfaceMeaning": "환히 비춰 내다", "quizMeaning": "환히 비춰 내다", "grammarNote": ""},
+      {"id": "scartoscar∷本心", "surface": "本心", "dictionaryForm": "本心", "reading": "ほんしん", "pos": "명사", "meaning": "본심, 속마음", "jlptLevel": "N1", "conjugation": "", "surfaceMeaning": "본심, 속마음", "quizMeaning": "본심, 속마음", "grammarNote": ""},
+      {"id": "scartoscar∷手加減", "surface": "手加減", "dictionaryForm": "手加減", "reading": "てかげん", "pos": "명사·する동사", "meaning": "봐주기, 힘 조절 (手加減しない: 봐주지 않다)", "jlptLevel": "N1", "conjugation": "", "surfaceMeaning": "봐주기, 힘 조절", "quizMeaning": "봐주기, 힘 조절", "grammarNote": ""},
+      {"id": "scartoscar∷ぶつかる", "surface": "ぶつかってく", "dictionaryForm": "ぶつかる", "reading": "ぶつかってく", "pos": "동사", "meaning": "부딪치다, 맞부딪다", "jlptLevel": "N3", "conjugation": "て형+いく의 구어 축약(~てく)", "surfaceMeaning": "계속 부딪쳐 가다", "quizMeaning": "계속 부딪쳐 가다", "grammarNote": "て형+いく의 구어 축약(~てく)"},
+      {"id": "scartoscar∷決める", "surface": "決めた", "dictionaryForm": "決める", "reading": "きめた", "pos": "동사", "meaning": "정하다, 결심하다", "jlptLevel": "N4", "conjugation": "과거형(た형)", "surfaceMeaning": "정했다, 결심했다", "quizMeaning": "정하다, 결심하다", "grammarNote": "과거형(た형)"},
+      {"id": "scartoscar∷目を逸らす", "surface": "目を逸らさない", "dictionaryForm": "目を逸らす", "reading": "めをそらさない", "pos": "관용표현", "meaning": "눈을 돌리다, 외면하다", "jlptLevel": "N1", "conjugation": "부정형(ない형)", "surfaceMeaning": "눈을 돌리지 않다", "quizMeaning": "눈을 돌리지 않다", "grammarNote": "부정형(ない형)"}
+    ]
+  }
 ]
