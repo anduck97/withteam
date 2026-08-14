@@ -74,6 +74,7 @@
     ],
     "vocabulary": [
       { "id": "hotline∷時空", "surface": "時空", "dictionaryForm": "時空", "reading": "じくう", "pos": "명사", "meaning": "시공, 시간과 공간", "jlptLevel": "N1", "conjugation": "" },
+      { "id": "hotline∷さえも", "surface": "さえも", "dictionaryForm": "さえも", "reading": "", "pos": "조사", "meaning": "~조차도, ~마저도", "jlptLevel": "N3", "conjugation": "" },
       { "id": "hotline∷超える", "surface": "超えて", "dictionaryForm": "超える", "reading": "こえて", "pos": "동사", "meaning": "넘다, 뛰어넘다", "jlptLevel": "N3", "conjugation": "て형" },
       { "id": "hotline∷結ぶ", "surface": "結んでいる", "dictionaryForm": "結ぶ", "reading": "むすんでいる", "pos": "동사", "meaning": "잇다, 묶다, 연결하다", "jlptLevel": "N3", "conjugation": "진행형(~ている)" },
       { "id": "hotline∷侵す", "surface": "侵せない", "dictionaryForm": "侵す", "reading": "おかせない", "pos": "동사", "meaning": "침범하다, 침해하다", "jlptLevel": "N1", "conjugation": "가능형+부정(~せない)" },
@@ -92,7 +93,7 @@
       { "id": "hotline∷切り拓く", "surface": "切り拓いて", "dictionaryForm": "切り拓く", "reading": "きりひらいて", "pos": "동사", "meaning": "개척하다, (길을) 열어 나가다 (切り開く의 표기 변형)", "jlptLevel": "N1", "conjugation": "て형" },
       { "id": "hotline∷想い", "surface": "想い", "dictionaryForm": "想い", "reading": "おもい", "pos": "명사", "meaning": "마음, 생각 (思い의 표기 변형)", "jlptLevel": "N3", "conjugation": "" },
       { "id": "hotline∷重ねる", "surface": "重ね", "dictionaryForm": "重ねる", "reading": "かさね", "pos": "동사", "meaning": "겹치다, 포개다, 거듭하다", "jlptLevel": "N2", "conjugation": "ます형 어간(연용중지)" },
-      { "id": "hotline∷加速", "surface": "加速していく", "dictionaryForm": "加速", "reading": "かそく", "pos": "명사·する동사", "meaning": "가속", "jlptLevel": "N1", "conjugation": "~していく(~해 가다)" },
+      { "id": "hotline∷加速", "surface": "加速", "dictionaryForm": "加速", "reading": "かそく", "pos": "명사", "meaning": "가속", "jlptLevel": "N1", "conjugation": "" },
       { "id": "hotline∷息", "surface": "息", "dictionaryForm": "息", "reading": "いき", "pos": "명사", "meaning": "숨, 호흡", "jlptLevel": "N3", "conjugation": "" },
       { "id": "hotline∷鼓動", "surface": "鼓動", "dictionaryForm": "鼓動", "reading": "こどう", "pos": "명사", "meaning": "고동, 심장 박동", "jlptLevel": "N1", "conjugation": "" },
       { "id": "hotline∷特別", "surface": "特別な", "dictionaryForm": "特別", "reading": "とくべつ", "pos": "な형용사", "meaning": "특별함", "jlptLevel": "N4", "conjugation": "명사 수식형(~な)" },
