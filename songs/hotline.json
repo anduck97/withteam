@@ -95,7 +95,7 @@
       {"id": "hotline∷加速", "surface": "加速していく", "dictionaryForm": "加速", "reading": "かそくしていく", "pos": "명사·する동사", "meaning": "가속", "surfaceMeaning": "가속해 가다", "jlptLevel": "N1", "conjugation": "~していく(~해 가다)"},
       {"id": "hotline∷息", "surface": "息", "dictionaryForm": "息", "reading": "いき", "pos": "명사", "meaning": "숨, 호흡", "surfaceMeaning": "숨", "jlptLevel": "N3", "conjugation": ""},
       {"id": "hotline∷鼓動", "surface": "鼓動", "dictionaryForm": "鼓動", "reading": "こどう", "pos": "명사", "meaning": "고동, 심장 박동", "surfaceMeaning": "심장 박동", "jlptLevel": "N1", "conjugation": ""},
-      {"id": "hotline∷特別", "surface": "特別な", "dictionaryForm": "特別", "reading": "とくべつ", "pos": "な형용사", "meaning": "특별함", "surfaceMeaning": "특별한", "jlptLevel": "N4", "conjugation": "명사 수식형(~な)"},
+      {"id": "hotline∷特別な", "surface": "特別な", "dictionaryForm": "特別", "reading": "とくべつな", "pos": "な형용사", "meaning": "특별함", "surfaceMeaning": "특별한", "jlptLevel": "N4", "conjugation": "명사 수식형(~な)"},
       {"id": "hotline∷何度でも", "surface": "何度でも", "dictionaryForm": "何度でも", "reading": "なんどでも", "pos": "부사", "meaning": "몇 번이라도, 몇 번이고", "surfaceMeaning": "몇 번이고", "jlptLevel": "N3", "conjugation": ""},
       {"id": "hotline∷須らく", "surface": "須らく", "dictionaryForm": "須らく", "reading": "すべからく", "pos": "부사", "meaning": "모름지기, 마땅히 (문어)", "surfaceMeaning": "모름지기, 마땅히", "jlptLevel": "N1", "conjugation": ""},
       {"id": "hotline∷かます", "surface": "カマす", "dictionaryForm": "かます", "reading": "かます", "pos": "동사", "meaning": "한 방 먹이다, 세게 해내다 (속어)", "surfaceMeaning": "해내고 말다 (속어)", "jlptLevel": "N1", "conjugation": "속어(가타카나 표기)"},
