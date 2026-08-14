@@ -1,555 +1,93 @@
 [
-{
-    "title":  "Beat The Odds",
-    "artist":  "\u0026TEAM",
-    "verses":  [
-                   {
-                       "text":  "beat the odds",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "Tell me something",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "Have you felt this before?",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "それぞれの Pieceが",
-                       "translation":  "저마다의 Piece가"
-                   },
-                   {
-                       "text":  "重なりだす瞬間",
-                       "translation":  "겹쳐지기 시작하는 순간"
-                   },
-                   {
-                       "text":  "Yeah u ready?",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "運命は Monochrome",
-                       "translation":  "운명은 Monochrome"
-                   },
-                   {
-                       "text":  "白黒つける未来",
-                       "translation":  "흑백을 가리는 미래"
-                   },
-                   {
-                       "text":  "繰り返していく",
-                       "translation":  "반복해 가"
-                   },
-                   {
-                       "text":  "ひとりよりもふたりで",
-                       "translation":  "혼자보다는 둘이서"
-                   },
-                   {
-                       "text":  "描く世界は",
-                       "translation":  "그리는 세계는"
-                   },
-                   {
-                       "text":  "幾重にも 広がって",
-                       "translation":  "몇 겹으로 펼쳐져"
-                   },
-                   {
-                       "text":  "Time to beat the odds",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "解き放つ",
-                       "translation":  "풀어 놓아"
-                   },
-                   {
-                       "text":  "Time to beat the odds",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "一瞬のSpark",
-                       "translation":  "찰나의 Spark"
-                   },
-                   {
-                       "text":  "Time to beat the odds",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "駆け上がる",
-                       "translation":  "뛰어 올라가"
-                   },
-                   {
-                       "text":  "(Start, start, start moving)",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "予測不能の未来",
-                       "translation":  "예측 불가능한 미래"
-                   },
-                   {
-                       "text":  "共に飛び込んだ Now",
-                       "translation":  "함께 뛰어든 Now"
-                   },
-                   {
-                       "text":  "Time to beat the odds for that crown",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "(Start, start, start moving)",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "一歩踏み出したいんだ We must go on",
-                       "translation":  "한 걸음 내딛고 싶어 We must go on"
-                   },
-                   {
-                       "text":  "後戻りできない Put my game on",
-                       "translation":  "되돌아갈 수 없어 Put my game on"
-                   },
-                   {
-                       "text":  "We’re so far from the top (Let’s go)",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "Chance yeah",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "So are ya, are ya gonna lose",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "Oh 消えることのない Triumph",
-                       "translation":  "Oh 사라지지 않는 Triumph"
-                   },
-                   {
-                       "text":  "We can make it",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "We can take it now",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "Cuz I can’t stop when you look in my eyes",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "All or Nothing さぁ",
-                       "translation":  "All or Nothing 자"
-                   },
-                   {
-                       "text":  "まだ見ぬ明日 飛び込んで",
-                       "translation":  "아직 오지 않은 내일로 뛰어들어"
-                   },
-                   {
-                       "text":  "Time to beat the odds",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "解き放つ",
-                       "translation":  "풀어 놓아"
-                   },
-                   {
-                       "text":  "Time to beat the odds",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "一瞬の Spark",
-                       "translation":  "찰나의 Spark"
-                   },
-                   {
-                       "text":  "Time to beat the odds",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "駆け上がる",
-                       "translation":  "뛰어 올라가"
-                   },
-                   {
-                       "text":  "(Start, start, start moving)",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "予測不能の未来",
-                       "translation":  "예측 불가능한 미래"
-                   },
-                   {
-                       "text":  "共に飛び込んだ Now",
-                       "translation":  "함께 뛰어든 Now"
-                   },
-                   {
-                       "text":  "Time to beat the odds for that crown",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "(Start, start, start moving)",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "Fallin’, callin’ 声が集えば",
-                       "translation":  "Fallin’, callin’ 목소리가 모이면"
-                   },
-                   {
-                       "text":  "新たな世界 瞬く未来",
-                       "translation":  "새로운 세계, 반짝이는 미래"
-                   },
-                   {
-                       "text":  "So we ain’t gonna fall oh",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "Time to beat the odds",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "解き放つ",
-                       "translation":  "풀어 놓아"
-                   },
-                   {
-                       "text":  "Time to beat the odds",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "一瞬の Spark",
-                       "translation":  "찰나의 Spark"
-                   },
-                   {
-                       "text":  "Time to beat the odds",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "駆け上がる",
-                       "translation":  "뛰어 올라가"
-                   },
-                   {
-                       "text":  "(Start, start, start moving)",
-                       "translation":  ""
-                   },
-                   {
-                       "text":  "予測不能の未来",
-                       "translation":  "예측 불가능한 미래"
-                   },
-                   {
-                       "text":  "共に飛び込んだ Now",
-                       "translation":  "함께 뛰어든 Now"
-                   },
-                   {
-                       "text":  "Time to beat the odds for that crown",
-                       "translation":  ""
-                   }
-               ],
-    "vocabulary":  [
-                       {
-                           "id":  "beattheodds∷重なる",
-                           "surface":  "重なりだす",
-                           "dictionaryForm":  "重なる",
-                           "reading":  "かさなりだす",
-                           "pos":  "동사",
-                           "meaning":  "겹치다, 포개지다",
-                           "jlptLevel":  "N2",
-                           "conjugation":  "~だす(~하기 시작하다)",
-                           "surfaceMeaning":  "겹치다, 포개지다",
-                           "quizMeaning":  "겹치다, 포개지다",
-                           "grammarNote":  "~だす(~하기 시작하다)"
-                       },
-                       {
-                           "id":  "beattheodds∷瞬間",
-                           "surface":  "瞬間",
-                           "dictionaryForm":  "瞬間",
-                           "reading":  "しゅんかん",
-                           "pos":  "명사",
-                           "meaning":  "순간",
-                           "jlptLevel":  "N3",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "순간",
-                           "quizMeaning":  "순간",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "beattheodds∷運命",
-                           "surface":  "運命",
-                           "dictionaryForm":  "運命",
-                           "reading":  "うんめい",
-                           "pos":  "명사",
-                           "meaning":  "운명",
-                           "jlptLevel":  "N2",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "운명",
-                           "quizMeaning":  "운명",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "beattheodds∷白黒",
-                           "surface":  "白黒",
-                           "dictionaryForm":  "白黒",
-                           "reading":  "しろくろ",
-                           "pos":  "명사",
-                           "meaning":  "흑백 (白黒つける: 흑백을 가리다, 결판내다)",
-                           "jlptLevel":  "N2",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "흑백",
-                           "quizMeaning":  "흑백",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "beattheodds∷未来",
-                           "surface":  "未来",
-                           "dictionaryForm":  "未来",
-                           "reading":  "みらい",
-                           "pos":  "명사",
-                           "meaning":  "미래",
-                           "jlptLevel":  "N4",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "미래",
-                           "quizMeaning":  "미래",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "beattheodds∷繰り返す",
-                           "surface":  "繰り返していく",
-                           "dictionaryForm":  "繰り返す",
-                           "reading":  "くりかえしていく",
-                           "pos":  "동사",
-                           "meaning":  "반복하다, 되풀이하다",
-                           "jlptLevel":  "N3",
-                           "conjugation":  "て형+いく",
-                           "surfaceMeaning":  "반복하다, 되풀이하다",
-                           "quizMeaning":  "반복하다, 되풀이하다",
-                           "grammarNote":  "て형+いく"
-                       },
-                       {
-                           "id":  "beattheodds∷描く",
-                           "surface":  "描く",
-                           "dictionaryForm":  "描く",
-                           "reading":  "えがく",
-                           "pos":  "동사",
-                           "meaning":  "그리다 (미래·꿈을 그리다)",
-                           "jlptLevel":  "N2",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "그리다 (미래·꿈을 그리다)",
-                           "quizMeaning":  "그리다 (미래·꿈을 그리다)",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "beattheodds∷世界",
-                           "surface":  "世界",
-                           "dictionaryForm":  "世界",
-                           "reading":  "せかい",
-                           "pos":  "명사",
-                           "meaning":  "세계, 세상",
-                           "jlptLevel":  "N4",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "세계, 세상",
-                           "quizMeaning":  "세계, 세상",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "beattheodds∷幾重にも",
-                           "surface":  "幾重にも",
-                           "dictionaryForm":  "幾重にも",
-                           "reading":  "いくえにも",
-                           "pos":  "부사",
-                           "meaning":  "몇 겹으로, 겹겹이",
-                           "jlptLevel":  "N1",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "몇 겹으로, 겹겹이",
-                           "quizMeaning":  "몇 겹으로, 겹겹이",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "beattheodds∷広がる",
-                           "surface":  "広がって",
-                           "dictionaryForm":  "広がる",
-                           "reading":  "ひろがって",
-                           "pos":  "동사",
-                           "meaning":  "퍼지다, 펼쳐지다",
-                           "jlptLevel":  "N3",
-                           "conjugation":  "て형",
-                           "surfaceMeaning":  "퍼지다, 펼쳐지다",
-                           "quizMeaning":  "퍼지다, 펼쳐지다",
-                           "grammarNote":  "て형"
-                       },
-                       {
-                           "id":  "beattheodds∷解き放つ",
-                           "surface":  "解き放つ",
-                           "dictionaryForm":  "解き放つ",
-                           "reading":  "ときはなつ",
-                           "pos":  "동사",
-                           "meaning":  "풀어 놓다, 해방하다 (解く+放つ)",
-                           "jlptLevel":  "N1",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "풀어 놓다, 해방하다",
-                           "quizMeaning":  "풀어 놓다, 해방하다",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "beattheodds∷一瞬",
-                           "surface":  "一瞬",
-                           "dictionaryForm":  "一瞬",
-                           "reading":  "いっしゅん",
-                           "pos":  "명사·부사",
-                           "meaning":  "한순간, 찰나",
-                           "jlptLevel":  "N2",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "한순간, 찰나",
-                           "quizMeaning":  "한순간, 찰나",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "beattheodds∷駆け上がる",
-                           "surface":  "駆け上がる",
-                           "dictionaryForm":  "駆け上がる",
-                           "reading":  "かけあがる",
-                           "pos":  "동사",
-                           "meaning":  "뛰어 올라가다, 내달려 오르다",
-                           "jlptLevel":  "N1",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "뛰어 올라가다, 내달려 오르다",
-                           "quizMeaning":  "뛰어 올라가다, 내달려 오르다",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "beattheodds∷予測不能",
-                           "surface":  "予測不能",
-                           "dictionaryForm":  "予測不能",
-                           "reading":  "よそくふのう",
-                           "pos":  "명사·な형용사",
-                           "meaning":  "예측 불가능",
-                           "jlptLevel":  "N1",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "예측 불가능",
-                           "quizMeaning":  "예측 불가능",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "beattheodds∷共に",
-                           "surface":  "共に",
-                           "dictionaryForm":  "共に",
-                           "reading":  "ともに",
-                           "pos":  "부사",
-                           "meaning":  "함께, 다 같이",
-                           "jlptLevel":  "N2",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "함께, 다 같이",
-                           "quizMeaning":  "함께, 다 같이",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "beattheodds∷飛び込む",
-                           "surface":  "飛び込んだ",
-                           "dictionaryForm":  "飛び込む",
-                           "reading":  "とびこんだ",
-                           "pos":  "동사",
-                           "meaning":  "뛰어들다, 몸을 던지다",
-                           "jlptLevel":  "N2",
-                           "conjugation":  "과거형(た형)",
-                           "surfaceMeaning":  "뛰어들다, 몸을 던지다",
-                           "quizMeaning":  "뛰어들다, 몸을 던지다",
-                           "grammarNote":  "과거형(た형)"
-                       },
-                       {
-                           "id":  "beattheodds∷一歩",
-                           "surface":  "一歩",
-                           "dictionaryForm":  "一歩",
-                           "reading":  "いっぽ",
-                           "pos":  "명사",
-                           "meaning":  "한 걸음",
-                           "jlptLevel":  "N3",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "한 걸음",
-                           "quizMeaning":  "한 걸음",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "beattheodds∷踏み出す",
-                           "surface":  "踏み出したい",
-                           "dictionaryForm":  "踏み出す",
-                           "reading":  "ふみだしたい",
-                           "pos":  "동사",
-                           "meaning":  "(첫발을) 내딛다",
-                           "jlptLevel":  "N1",
-                           "conjugation":  "희망형(~たい)",
-                           "surfaceMeaning":  "첫발을 내딛고 싶다",
-                           "quizMeaning":  "첫발을 내딛고 싶다",
-                           "grammarNote":  "희망형(~たい)"
-                       },
-                       {
-                           "id":  "beattheodds∷後戻り",
-                           "surface":  "後戻り",
-                           "dictionaryForm":  "後戻り",
-                           "reading":  "あともどり",
-                           "pos":  "명사·する동사",
-                           "meaning":  "되돌아감, 후퇴",
-                           "jlptLevel":  "N1",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "되돌아감, 후퇴",
-                           "quizMeaning":  "되돌아감, 후퇴",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "beattheodds∷消える",
-                           "surface":  "消える",
-                           "dictionaryForm":  "消える",
-                           "reading":  "きえる",
-                           "pos":  "동사",
-                           "meaning":  "사라지다, 꺼지다 (消えることのない: 사라지지 않는)",
-                           "jlptLevel":  "N4",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "사라지다, 꺼지다",
-                           "quizMeaning":  "사라지다, 꺼지다",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "beattheodds∷まだ見ぬ",
-                           "surface":  "まだ見ぬ",
-                           "dictionaryForm":  "まだ見ぬ",
-                           "reading":  "まだみぬ",
-                           "pos":  "관용표현",
-                           "meaning":  "아직 보지 못한, 아직 오지 않은 (見ぬ: 見ない의 문어형)",
-                           "jlptLevel":  "N1",
-                           "conjugation":  "문어 부정(~ぬ)",
-                           "surfaceMeaning":  "아직 보지 못한",
-                           "quizMeaning":  "아직 보지 못한",
-                           "grammarNote":  "문어 부정(~ぬ)"
-                       },
-                       {
-                           "id":  "beattheodds∷集う",
-                           "surface":  "集えば",
-                           "dictionaryForm":  "集う",
-                           "reading":  "つどえば",
-                           "pos":  "동사",
-                           "meaning":  "모이다 (문어적)",
-                           "jlptLevel":  "N1",
-                           "conjugation":  "가정형(ば형)",
-                           "surfaceMeaning":  "모이다",
-                           "quizMeaning":  "모이다",
-                           "grammarNote":  "가정형(ば형)"
-                       },
-                       {
-                           "id":  "beattheodds∷新た",
-                           "surface":  "新たな",
-                           "dictionaryForm":  "新た",
-                           "reading":  "あらたな",
-                           "pos":  "な형용사",
-                           "meaning":  "새로움, 새로운",
-                           "jlptLevel":  "N2",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "새로움, 새로운",
-                           "quizMeaning":  "새로움, 새로운",
-                           "grammarNote":  ""
-                       },
-                       {
-                           "id":  "beattheodds∷瞬く",
-                           "surface":  "瞬く",
-                           "dictionaryForm":  "瞬く",
-                           "reading":  "またたく",
-                           "pos":  "동사",
-                           "meaning":  "반짝이다, 깜박이다",
-                           "jlptLevel":  "N1",
-                           "conjugation":  "",
-                           "surfaceMeaning":  "반짝이다, 깜박이다",
-                           "quizMeaning":  "반짝이다, 깜박이다",
-                           "grammarNote":  ""
-                       }
-                   ],
-    "schemaVersion":  2
-}
+  {
+    "title": "Beat The Odds",
+    "artist": "&TEAM",
+    "schemaVersion": 2,
+    "verses": [
+      {"text": "beat the odds", "translation": ""},
+      {"text": "Tell me something", "translation": ""},
+      {"text": "Have you felt this before?", "translation": ""},
+      {"text": "それぞれの Pieceが", "translation": "저마다의 Piece가"},
+      {"text": "重なりだす瞬間", "translation": "겹쳐지기 시작하는 순간"},
+      {"text": "Yeah u ready?", "translation": ""},
+      {"text": "運命は Monochrome", "translation": "운명은 Monochrome"},
+      {"text": "白黒つける未来", "translation": "흑백을 가리는 미래"},
+      {"text": "繰り返していく", "translation": "반복해 가"},
+      {"text": "ひとりよりもふたりで", "translation": "혼자보다는 둘이서"},
+      {"text": "描く世界は", "translation": "그리는 세계는"},
+      {"text": "幾重にも 広がって", "translation": "몇 겹으로 펼쳐져"},
+      {"text": "Time to beat the odds", "translation": ""},
+      {"text": "解き放つ", "translation": "풀어 놓아"},
+      {"text": "Time to beat the odds", "translation": ""},
+      {"text": "一瞬のSpark", "translation": "찰나의 Spark"},
+      {"text": "Time to beat the odds", "translation": ""},
+      {"text": "駆け上がる", "translation": "뛰어 올라가"},
+      {"text": "(Start, start, start moving)", "translation": ""},
+      {"text": "予測不能の未来", "translation": "예측 불가능한 미래"},
+      {"text": "共に飛び込んだ Now", "translation": "함께 뛰어든 Now"},
+      {"text": "Time to beat the odds for that crown", "translation": ""},
+      {"text": "(Start, start, start moving)", "translation": ""},
+      {"text": "一歩踏み出したいんだ We must go on", "translation": "한 걸음 내딛고 싶어 We must go on"},
+      {"text": "後戻りできない Put my game on", "translation": "되돌아갈 수 없어 Put my game on"},
+      {"text": "We’re so far from the top (Let’s go)", "translation": ""},
+      {"text": "Chance yeah", "translation": ""},
+      {"text": "So are ya, are ya gonna lose", "translation": ""},
+      {"text": "Oh 消えることのない Triumph", "translation": "Oh 사라지지 않는 Triumph"},
+      {"text": "We can make it", "translation": ""},
+      {"text": "We can take it now", "translation": ""},
+      {"text": "Cuz I can’t stop when you look in my eyes", "translation": ""},
+      {"text": "All or Nothing さぁ", "translation": "All or Nothing 자"},
+      {"text": "まだ見ぬ明日 飛び込んで", "translation": "아직 오지 않은 내일로 뛰어들어"},
+      {"text": "Time to beat the odds", "translation": ""},
+      {"text": "解き放つ", "translation": "풀어 놓아"},
+      {"text": "Time to beat the odds", "translation": ""},
+      {"text": "一瞬の Spark", "translation": "찰나의 Spark"},
+      {"text": "Time to beat the odds", "translation": ""},
+      {"text": "駆け上がる", "translation": "뛰어 올라가"},
+      {"text": "(Start, start, start moving)", "translation": ""},
+      {"text": "予測不能の未来", "translation": "예측 불가능한 미래"},
+      {"text": "共に飛び込んだ Now", "translation": "함께 뛰어든 Now"},
+      {"text": "Time to beat the odds for that crown", "translation": ""},
+      {"text": "(Start, start, start moving)", "translation": ""},
+      {"text": "Fallin’, callin’ 声が集えば", "translation": "Fallin’, callin’ 목소리가 모이면"},
+      {"text": "新たな世界 瞬く未来", "translation": "새로운 세계, 반짝이는 미래"},
+      {"text": "So we ain’t gonna fall oh", "translation": ""},
+      {"text": "Time to beat the odds", "translation": ""},
+      {"text": "解き放つ", "translation": "풀어 놓아"},
+      {"text": "Time to beat the odds", "translation": ""},
+      {"text": "一瞬の Spark", "translation": "찰나의 Spark"},
+      {"text": "Time to beat the odds", "translation": ""},
+      {"text": "駆け上がる", "translation": "뛰어 올라가"},
+      {"text": "(Start, start, start moving)", "translation": ""},
+      {"text": "予測不能の未来", "translation": "예측 불가능한 미래"},
+      {"text": "共に飛び込んだ Now", "translation": "함께 뛰어든 Now"},
+      {"text": "Time to beat the odds for that crown", "translation": ""}
+    ],
+    "vocabulary": [
+      {"id": "beattheodds∷重なる", "surface": "重なりだす", "dictionaryForm": "重なる", "reading": "かさなりだす", "pos": "동사", "meaning": "겹치다, 포개지다", "jlptLevel": "N2", "conjugation": "~だす(~하기 시작하다)", "surfaceMeaning": "겹쳐지기 시작하다", "quizMeaning": "겹치다, 포개지다", "grammarNote": "~だす(~하기 시작하다)"},
+      {"id": "beattheodds∷瞬間", "surface": "瞬間", "dictionaryForm": "瞬間", "reading": "しゅんかん", "pos": "명사", "meaning": "순간", "jlptLevel": "N3", "conjugation": "", "surfaceMeaning": "순간", "quizMeaning": "순간", "grammarNote": ""},
+      {"id": "beattheodds∷運命", "surface": "運命", "dictionaryForm": "運命", "reading": "うんめい", "pos": "명사", "meaning": "운명", "jlptLevel": "N2", "conjugation": "", "surfaceMeaning": "운명", "quizMeaning": "운명", "grammarNote": ""},
+      {"id": "beattheodds∷白黒", "surface": "白黒", "dictionaryForm": "白黒", "reading": "しろくろ", "pos": "명사", "meaning": "흑백 (白黒つける: 흑백을 가리다, 결판내다)", "jlptLevel": "N2", "conjugation": "", "surfaceMeaning": "흑백", "quizMeaning": "흑백", "grammarNote": ""},
+      {"id": "beattheodds∷未来", "surface": "未来", "dictionaryForm": "未来", "reading": "みらい", "pos": "명사", "meaning": "미래", "jlptLevel": "N4", "conjugation": "", "surfaceMeaning": "미래", "quizMeaning": "미래", "grammarNote": ""},
+      {"id": "beattheodds∷繰り返す", "surface": "繰り返していく", "dictionaryForm": "繰り返す", "reading": "くりかえしていく", "pos": "동사", "meaning": "반복하다, 되풀이하다", "jlptLevel": "N3", "conjugation": "て형+いく", "surfaceMeaning": "반복해 가다", "quizMeaning": "반복하다, 되풀이하다", "grammarNote": "て형+いく"},
+      {"id": "beattheodds∷描く", "surface": "描く", "dictionaryForm": "描く", "reading": "えがく", "pos": "동사", "meaning": "그리다 (미래·꿈을 그리다)", "jlptLevel": "N2", "conjugation": "", "surfaceMeaning": "그리다 (미래·꿈을 그리다)", "quizMeaning": "그리다 (미래·꿈을 그리다)", "grammarNote": ""},
+      {"id": "beattheodds∷世界", "surface": "世界", "dictionaryForm": "世界", "reading": "せかい", "pos": "명사", "meaning": "세계, 세상", "jlptLevel": "N4", "conjugation": "", "surfaceMeaning": "세계, 세상", "quizMeaning": "세계, 세상", "grammarNote": ""},
+      {"id": "beattheodds∷幾重にも", "surface": "幾重にも", "dictionaryForm": "幾重にも", "reading": "いくえにも", "pos": "부사", "meaning": "몇 겹으로, 겹겹이", "jlptLevel": "N1", "conjugation": "", "surfaceMeaning": "몇 겹으로, 겹겹이", "quizMeaning": "몇 겹으로, 겹겹이", "grammarNote": ""},
+      {"id": "beattheodds∷広がる", "surface": "広がって", "dictionaryForm": "広がる", "reading": "ひろがって", "pos": "동사", "meaning": "퍼지다, 펼쳐지다", "jlptLevel": "N3", "conjugation": "て형", "surfaceMeaning": "펼쳐져", "quizMeaning": "퍼지다, 펼쳐지다", "grammarNote": "て형"},
+      {"id": "beattheodds∷解き放つ", "surface": "解き放つ", "dictionaryForm": "解き放つ", "reading": "ときはなつ", "pos": "동사", "meaning": "풀어 놓다, 해방하다 (解く+放つ)", "jlptLevel": "N1", "conjugation": "", "surfaceMeaning": "풀어 놓다, 해방하다", "quizMeaning": "풀어 놓다, 해방하다", "grammarNote": ""},
+      {"id": "beattheodds∷一瞬", "surface": "一瞬", "dictionaryForm": "一瞬", "reading": "いっしゅん", "pos": "명사·부사", "meaning": "한순간, 찰나", "jlptLevel": "N2", "conjugation": "", "surfaceMeaning": "한순간, 찰나", "quizMeaning": "한순간, 찰나", "grammarNote": ""},
+      {"id": "beattheodds∷駆け上がる", "surface": "駆け上がる", "dictionaryForm": "駆け上がる", "reading": "かけあがる", "pos": "동사", "meaning": "뛰어 올라가다, 내달려 오르다", "jlptLevel": "N1", "conjugation": "", "surfaceMeaning": "뛰어 올라가다, 내달려 오르다", "quizMeaning": "뛰어 올라가다, 내달려 오르다", "grammarNote": ""},
+      {"id": "beattheodds∷予測不能", "surface": "予測不能", "dictionaryForm": "予測不能", "reading": "よそくふのう", "pos": "명사·な형용사", "meaning": "예측 불가능", "jlptLevel": "N1", "conjugation": "", "surfaceMeaning": "예측 불가능", "quizMeaning": "예측 불가능", "grammarNote": ""},
+      {"id": "beattheodds∷共に", "surface": "共に", "dictionaryForm": "共に", "reading": "ともに", "pos": "부사", "meaning": "함께, 다 같이", "jlptLevel": "N2", "conjugation": "", "surfaceMeaning": "함께, 다 같이", "quizMeaning": "함께, 다 같이", "grammarNote": ""},
+      {"id": "beattheodds∷飛び込む", "surface": "飛び込んだ", "dictionaryForm": "飛び込む", "reading": "とびこんだ", "pos": "동사", "meaning": "뛰어들다, 몸을 던지다", "jlptLevel": "N2", "conjugation": "과거형(た형)", "surfaceMeaning": "뛰어들었다", "quizMeaning": "뛰어들다, 몸을 던지다", "grammarNote": "과거형(た형)"},
+      {"id": "beattheodds∷一歩", "surface": "一歩", "dictionaryForm": "一歩", "reading": "いっぽ", "pos": "명사", "meaning": "한 걸음", "jlptLevel": "N3", "conjugation": "", "surfaceMeaning": "한 걸음", "quizMeaning": "한 걸음", "grammarNote": ""},
+      {"id": "beattheodds∷踏み出す", "surface": "踏み出したい", "dictionaryForm": "踏み出す", "reading": "ふみだしたい", "pos": "동사", "meaning": "(첫발을) 내딛다", "jlptLevel": "N1", "conjugation": "희망형(~たい)", "surfaceMeaning": "첫발을 내딛고 싶다", "quizMeaning": "첫발을 내딛고 싶다", "grammarNote": "희망형(~たい)"},
+      {"id": "beattheodds∷後戻り", "surface": "後戻り", "dictionaryForm": "後戻り", "reading": "あともどり", "pos": "명사·する동사", "meaning": "되돌아감, 후퇴", "jlptLevel": "N1", "conjugation": "", "surfaceMeaning": "되돌아감, 후퇴", "quizMeaning": "되돌아감, 후퇴", "grammarNote": ""},
+      {"id": "beattheodds∷消える", "surface": "消える", "dictionaryForm": "消える", "reading": "きえる", "pos": "동사", "meaning": "사라지다, 꺼지다 (消えることのない: 사라지지 않는)", "jlptLevel": "N4", "conjugation": "", "surfaceMeaning": "사라지다, 꺼지다", "quizMeaning": "사라지다, 꺼지다", "grammarNote": ""},
+      {"id": "beattheodds∷まだ見ぬ", "surface": "まだ見ぬ", "dictionaryForm": "まだ見ぬ", "reading": "まだみぬ", "pos": "관용표현", "meaning": "아직 보지 못한, 아직 오지 않은 (見ぬ: 見ない의 문어형)", "jlptLevel": "N1", "conjugation": "문어 부정(~ぬ)", "surfaceMeaning": "아직 보지 못한", "quizMeaning": "아직 보지 못한", "grammarNote": "문어 부정(~ぬ)"},
+      {"id": "beattheodds∷集う", "surface": "集えば", "dictionaryForm": "集う", "reading": "つどえば", "pos": "동사", "meaning": "모이다 (문어적)", "jlptLevel": "N1", "conjugation": "가정형(ば형)", "surfaceMeaning": "모이다", "quizMeaning": "모이다", "grammarNote": "가정형(ば형)"},
+      {"id": "beattheodds∷新た", "surface": "新たな", "dictionaryForm": "新た", "reading": "あらたな", "pos": "な형용사", "meaning": "새로움, 새로운", "jlptLevel": "N2", "conjugation": "", "surfaceMeaning": "새로운", "quizMeaning": "새로움, 새로운", "grammarNote": ""},
+      {"id": "beattheodds∷瞬く", "surface": "瞬く", "dictionaryForm": "瞬く", "reading": "またたく", "pos": "동사", "meaning": "반짝이다, 깜박이다", "jlptLevel": "N1", "conjugation": "", "surfaceMeaning": "반짝이다, 깜박이다", "quizMeaning": "반짝이다, 깜박이다", "grammarNote": ""}
+    ]
+  }
 ]
