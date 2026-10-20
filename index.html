@@ -140,15 +140,31 @@ interface Word {
   reading: string;
   pos: string;
   meaning: string;
+  surfaceMeaning?: string;
+  quizMeaning?: string;
+  grammarNote?: string;
   jlptLevel: JLPTLevel;
   conjugation?: string;
 }
-interface Verse { text: string; translation: string; }
+interface AudioClip { src: string; start: number; end: number; }
+interface Verse { text: string; translation: string; audio?: AudioClip; }
 interface SongAnalysis {
   title: string; artist: string; lyrics: string;
   verses: Verse[]; vocabulary: Word[];
 }
-interface LearningWord { wordId: string; repetition: number; nextReviewDate: Date; lapses?: number; }
+type Skill = 'meaning'|'context'|'reading'|'listening';
+type Focus = 'mixed'|Skill;
+interface SkillProgress { repetition: number; nextReviewDate: Date; lapses?: number; seenCount?: number; correctCount?: number; hintCount?: number; lastReviewedAt?: string; }
+interface LearningWord extends SkillProgress { wordId: string; skills?: Partial<Record<Skill, SkillProgress>>; }
+const SKILL_LABELS: Record<Skill,string> = {meaning:'뜻',context:'가사·활용',reading:'읽기',listening:'듣기'};
+const SKILLS: Skill[] = ['meaning','context','reading','listening'];
+function songKey(s: {title:string;artist:string}): string {
+  return `${s.title.normalize('NFKC').trim().toLowerCase()}∷${s.artist.normalize('NFKC').trim().toLowerCase()}`;
+}
+function uniqueSongs<T extends {title:string;artist:string}>(songs: T[]): T[] {
+  const seen = new Set<string>();
+  return songs.filter(s => { const key=songKey(s); if(seen.has(key))return false; seen.add(key); return true; });
+}
 interface UserProgress {
   knownWordIds: string[];
   learningWords: LearningWord[];
@@ -165,12 +181,14 @@ function loadProgress(): UserProgress {
     const raw = localStorage.getItem(LS_PROGRESS);
     if (!raw) return EMPTY_PROGRESS;
     const p = JSON.parse(raw);
-    p.learningWords = (p.learningWords || []).map(lw => ({ ...lw, nextReviewDate: new Date(lw.nextReviewDate), lapses: lw.lapses || 0 }));
+    p.learningWords = (p.learningWords || []).map(lw => ({ ...lw, nextReviewDate: new Date(lw.nextReviewDate), lapses: lw.lapses || 0,
+      skills: Object.fromEntries(Object.entries(lw.skills || {}).filter(([key]) => SKILLS.includes(key as Skill))
+        .map(([key,value]: [string,any]) => [key,{...value,nextReviewDate:new Date(value.nextReviewDate)}])) }));
     // v1 stored full song JSON in history. From v2 only device-local learning data is kept.
     return {
       knownWordIds: Array.isArray(p.knownWordIds) ? p.knownWordIds : [],
       learningWords: p.learningWords,
-      recentSongs: Array.isArray(p.recentSongs) ? p.recentSongs : []
+      recentSongs: Array.isArray(p.recentSongs) ? uniqueSongs(p.recentSongs) : []
     };
   } catch { return EMPTY_PROGRESS; }
 }
@@ -189,7 +207,8 @@ async function loadPublicCatalog(): Promise<{ songs: SongAnalysis[]; failedFiles
   if (!manifestRes.ok) throw new Error(`곡 목록을 불러오지 못했습니다 (${manifestRes.status})`);
   const manifest = await manifestRes.json();
   if (!Array.isArray(manifest?.songs)) throw new Error('곡 목록 형식이 올바르지 않습니다.');
-  const settled = await Promise.allSettled(manifest.songs.map(async (file: string, i: number) => {
+  const files = Array.from(new Set<string>(manifest.songs.filter(file => typeof file === 'string').map(file => file.trim())));
+  const settled = await Promise.allSettled(files.map(async (file: string, i: number) => {
     const res = await fetch(`./songs/${file}`, { cache: 'no-cache' });
     if (!res.ok) throw new Error(`${file} (${res.status})`);
     const payload = await res.json();
@@ -202,9 +221,9 @@ async function loadPublicCatalog(): Promise<{ songs: SongAnalysis[]; failedFiles
   const failedFiles: string[] = [];
   settled.forEach((r, i) => {
     if (r.status === 'fulfilled') songs.push(r.value);
-    else failedFiles.push(r.reason?.message || manifest.songs[i]);
+    else failedFiles.push(r.reason?.message || files[i]);
   });
-  return { songs, failedFiles };
+  return { songs: uniqueSongs(songs), failedFiles };
 }
 
 /* ════════════════════════ Chapter 4 · 효과음 (Web Audio) ════════════════════════ */
@@ -314,11 +333,11 @@ function AnnotatedText({ text, vocabulary, onWordClick }: { text: string; vocabu
                 <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded ml-1 ${JLPT_COLOR[w.jlptLevel]}`}>{w.jlptLevel}</span>
               </span>
               <span style={{ display: 'block' }} className="font-jp font-bold text-ink text-sm mt-1">{w.surface} <span className="font-normal" style={{ color: st.c }}>{w.reading}</span></span>
-              <span style={{ display: 'block' }} className="text-slate-600">{w.meaning}</span>
+              <span style={{ display: 'block' }} className="text-slate-700 font-semibold">{surfaceMeaning(w)}</span>
               {w.dictionaryForm && w.dictionaryForm !== w.surface &&
-                <span style={{ display: 'block' }} className="text-slate-400 text-[11px] mt-0.5">사전형 <b className="text-ink font-jp">{w.dictionaryForm}</b></span>}
-              {(w.conjugation || '').trim() &&
-                <span style={{ display: 'block', color: POS_STYLE.conj.c }} className="text-[11px] font-bold">{w.conjugation}</span>}
+                <span style={{ display: 'block' }} className="text-slate-400 text-[11px] mt-0.5">원형 <b className="text-ink font-jp">{w.dictionaryForm}</b>{dictionaryMeaning(w) ? ` · ${dictionaryMeaning(w)}` : ''}</span>}
+              {(w.grammarNote || w.conjugation || '').trim() &&
+                <span style={{ display: 'block', color: POS_STYLE.conj.c }} className="text-[11px] font-bold">{w.grammarNote || w.conjugation}</span>}
             </span>
           </span>
         );
@@ -368,6 +387,29 @@ const JLPT_COLOR: Record<string,string> = {
 
 /* ════════════════════════ 공통 헬퍼 ════════════════════════ */
 function shuffle<T>(arr: T[]): T[] { const a = [...arr]; for (let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+// 뜻은 용도별로 분리한다. 기존 JSON은 meaning 폴백으로 계속 동작한다.
+function cleanDictionaryMeaning(value: string): string {
+  return (value || '')
+    .replace(/\s*[（(][^（）()]*[ぁ-んァ-ヶ一-龯][^（）()]*[）)]/gu, '')
+    .replace(/\s*[（(][^（）()]*(?:활용|부정형|수동형|가능형|축약|문어형|구어형)[^（）()]*[）)]/gu, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+function dictionaryMeaning(w: Word): string { return cleanDictionaryMeaning(w.meaning || ''); }
+function surfaceMeaning(w: Word): string { return (w.surfaceMeaning || w.meaning || '').trim(); }
+function quizMeaning(w: Word): string { return (w.quizMeaning || w.surfaceMeaning || w.meaning || '').trim(); }
+function validateCatalogMeanings(catalog: SongAnalysis[]) {
+  const warnings: string[] = [];
+  catalog.forEach(song => song.vocabulary.forEach(w => {
+    const label = `${song.title} / ${w.surface}`;
+    if (!surfaceMeaning(w)) warnings.push(`${label}: surfaceMeaning 없음`);
+    if (!quizMeaning(w)) warnings.push(`${label}: quizMeaning 없음`);
+    if (/[ぁ-んァ-ヶ一-龯]/u.test(quizMeaning(w))) warnings.push(`${label}: 퀴즈 뜻에 일본어 힌트 포함`);
+    if (w.surface !== w.dictionaryForm && (w.conjugation || '').trim() && !w.surfaceMeaning)
+      warnings.push(`${label}: 활용형의 surfaceMeaning 없음`);
+  }));
+  if (warnings.length) console.warn('[KotobaTune 의미 데이터 검수]', warnings);
+}
 
 // 일본어 한 줄을 단어스러운 토큰으로 쪼개기 (Chapter 4 유형 C용)
 function tokenizeJa(line: string): string[] {
@@ -466,7 +508,7 @@ function Dashboard({ progress, catalog, go, openSong }) {
 }
 
 /* ════════════════════════ Analyze 탭 (Chapter 2 + 3) ════════════════════════ */
-function Analyze({ current, setCurrent, progress, setProgress, catalog, go, openSong }) {
+function Analyze({ current, setCurrent, progress, setProgress, catalog, go, openSong, startSongLesson, startSongListening, audioFile, audioBook, onAttachAudio, onSaveCue }) {
   const [selected, setSelected] = useState<Word | null>(null);
   const [showTrans, setShowTrans] = useState(true);
   const [wf, setWf] = useState<'all'|'learning'|'new'>('all');   // 상태 필터
@@ -591,6 +633,7 @@ function Analyze({ current, setCurrent, progress, setProgress, catalog, go, open
               <div className="text-sm text-slate-500 font-jp">{current.artist}</div>
             </div>
             <div className="flex gap-2 flex-wrap">
+              <button onClick={()=>startSongLesson(current)} className="px-3 py-1.5 text-sm rounded-lg font-bold bg-brand-600 text-white">이 곡 5단어 레슨</button>
               <button onClick={()=>setShowTrans(s=>!s)} className="px-3 py-1.5 text-sm rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-50">
                 번역 {showTrans?'끄기':'켜기'}
               </button>
@@ -602,6 +645,8 @@ function Analyze({ current, setCurrent, progress, setProgress, catalog, go, open
             </div>
           </div>
 
+          <AudioSetup key={songKey(current)} song={current} file={audioFile} book={audioBook} onAttach={onAttachAudio} onSave={onSaveCue}/>
+          {current.verses.some(v=>v.audio) && <button onClick={()=>startSongListening(current)} className="mb-4 px-4 py-2 rounded-xl font-bold bg-brand-600 text-white">🎧 연결한 원곡으로 듣기 연습</button>}
           <div className="grid lg:grid-cols-[1fr_340px] gap-4">
             {/* 가사 (품사 색 밑줄 + 후리가나 + 호버 팝업, 단어 클릭 → 상세) */}
             <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
@@ -641,7 +686,7 @@ function Analyze({ current, setCurrent, progress, setProgress, catalog, go, open
                       <div className="font-jp font-semibold text-ink">{w.surface}</div>
                       <span className={`text-[10px] px-1.5 py-0.5 rounded ${JLPT_COLOR[w.jlptLevel]}`}>{w.jlptLevel}</span>
                     </div>
-                    <div className="text-xs text-slate-500 font-jp">{w.reading} · {w.meaning}</div>
+                    <div className="text-xs text-slate-500 font-jp">{w.reading} · {surfaceMeaning(w)}</div>
                     {isLearning(w.id) && (() => {
                       const lw = lwOf(w.id); if (!lw) return null;
                       const due = isDue(lw, Date.now());
@@ -680,9 +725,10 @@ function Analyze({ current, setCurrent, progress, setProgress, catalog, go, open
                 <span className={`text-xs px-2 py-1 rounded ${JLPT_COLOR[selected.jlptLevel]}`}>{selected.jlptLevel}</span>
               </div>
               <div className="mt-3 grid sm:grid-cols-2 gap-2 text-sm">
-                <div><span className="text-slate-400">뜻 </span><span className="text-ink font-medium">{selected.meaning}</span></div>
+                <div><span className="text-slate-400">가사에서의 뜻 </span><span className="text-ink font-medium">{surfaceMeaning(selected)}</span></div>
                 <div><span className="text-slate-400">품사 </span><span className="text-ink">{selected.pos}</span></div>
-                {selected.conjugation && <div className="sm:col-span-2"><span className="text-slate-400">활용형 </span><span className="text-ink">{selected.conjugation}</span></div>}
+                {selected.dictionaryForm !== selected.surface && <div className="sm:col-span-2"><span className="text-slate-400">원형 뜻 </span><span className="font-jp text-ink">{selected.dictionaryForm}</span><span className="text-ink"> · {dictionaryMeaning(selected)}</span></div>}
+                {(selected.grammarNote || selected.conjugation) && <div className="sm:col-span-2"><span className="text-slate-400">문법 </span><span className="text-ink">{selected.grammarNote || selected.conjugation}</span></div>}
                 {(() => { const v = current.verses.find(v => v.text.includes(selected.surface)); return v ? (
                   <div className="sm:col-span-2 mt-1 pt-2 border-t border-slate-100">
                     <span className="text-slate-400 text-xs">문맥 </span>
@@ -691,7 +737,8 @@ function Analyze({ current, setCurrent, progress, setProgress, catalog, go, open
                   </div>) : null; })()}
                 {isLearning(selected.id) && (() => { const lw = lwOf(selected.id); if (!lw) return null; return (
                   <div className="sm:col-span-2 text-xs text-slate-400">
-                    숙련도 <span className="text-brand-600 font-semibold"><MasteryDots rep={lw.repetition} /></span> · {isDue(lw, Date.now()) ? '오늘 복습 예정' : new Date(lw.nextReviewDate).toLocaleDateString() + ' 복습 예정'}{(lw.lapses||0) > 0 ? ` · 오답 ${lw.lapses}회` : ''}
+                    뜻 숙련도 <span className="text-brand-600 font-semibold"><MasteryDots rep={skillState(lw,'meaning').repetition} /></span>
+                    <SkillSummary lw={lw}/>
                   </div>); })()}
               </div>
               <div className="mt-4 flex gap-2">
@@ -713,6 +760,86 @@ function Analyze({ current, setCurrent, progress, setProgress, catalog, go, open
 }
 
 /* ════════════════════════ API 없이 쓰기 · 곡 데이터 Import/Export ════════════════════════ */
+type CueBook = Record<string,{signature:string;cues:Record<string,{start:number;end:number}>}>;
+type LocalAudio = {src:string;name:string;signature:string};
+const LS_AUDIO_CUES='kotobatune_audio_cues_v1';
+function loadAudioCues():CueBook { try { const data=JSON.parse(localStorage.getItem(LS_AUDIO_CUES)||'{}');return data && typeof data==='object' && !Array.isArray(data)?data:{}; } catch{return {};} }
+function withAudioCues(songs:SongAnalysis[],files:Record<string,LocalAudio>,books:CueBook):SongAnalysis[] {
+  return songs.map(s=>{const key=songKey(s),file=files[key],book=books[key];
+    if(!file || !book || file.signature!==book.signature)return s;
+    return {...s,verses:s.verses.map(v=>{const cue=book.cues?.[v.text];
+      return cue && Number.isFinite(cue.start) && Number.isFinite(cue.end) && cue.start>=0 && cue.end>cue.start
+        ? {...v,audio:{src:file.src,start:cue.start,end:cue.end}} : v;})};
+  });
+}
+function ClipPlayer({clip,onHeard,stopSignal='none'}:{clip:AudioClip;onHeard?:()=>void;stopSignal?:string}) {
+  const player=useRef<HTMLAudioElement|null>(null), timer=useRef<ReturnType<typeof setTimeout>|null>(null);
+  const [error,setError]=useState(''),[playing,setPlaying]=useState(false),[rate,setRate]=useState(1);
+  const clear=()=>{if(timer.current!==null)clearTimeout(timer.current);timer.current=null;};
+  const finish=()=>{clear();player.current?.pause();setPlaying(false);onHeard?.();};
+  const checkEnd=()=>{const audio=player.current;if(!audio || audio.paused)return;
+    const remaining=clip.end-audio.currentTime;
+    if(remaining<=0){finish();return;}
+    clear();timer.current=setTimeout(checkEnd,Math.max(20,remaining/audio.playbackRate*1000));};
+  useEffect(()=>{const audio=player.current;setError('');setPlaying(false);return()=>{clear();audio?.pause();};},[clip.src,clip.start,clip.end]);
+  useEffect(()=>{if(stopSignal!=='none'){clear();player.current?.pause();setPlaying(false);}},[stopSignal]);
+  async function play(){
+    const a=player.current;if(!a)return;clear();a.pause();setError('');
+    if(!Number.isFinite(a.duration)){setError('음원이 아직 준비되지 않았어요. 잠시 후 다시 재생해 주세요.');return;}
+    if(clip.start>=a.duration || clip.end>a.duration+0.05){setError('설정한 구간이 음원 길이를 넘어요. 곡 학습에서 시간을 수정해 주세요.');return;}
+    try{a.currentTime=clip.start;a.playbackRate=rate;await a.play();}
+    catch{setError('재생할 수 없어요. 음원 연결을 확인하거나 이 문제를 건너뛰세요.');setPlaying(false);}
+  }
+  return <div className="rounded-xl bg-brand-50 p-3">
+    <audio ref={player} src={clip.src} preload="metadata" onError={()=>{clear();setPlaying(false);setError('음원을 불러오지 못했어요. 곡 학습에서 파일을 다시 연결해 주세요.');}}
+      onPlaying={()=>{setPlaying(true);clear();checkEnd();}}
+      onWaiting={()=>{clear();setPlaying(false);}} onPause={()=>{clear();setPlaying(false);}}
+      onTimeUpdate={()=>{if(player.current && !player.current.paused && player.current.currentTime>=clip.end)finish();}}
+      onEnded={()=>{if(player.current && player.current.currentTime>=clip.end-0.1)finish();else {setPlaying(false);setError('구간이 끝나기 전에 음원이 종료됐어요. 종료 시간을 확인해 주세요.');}}}/>
+    <div className="flex flex-wrap items-center gap-2">
+      <button onClick={play} className="rounded-lg bg-brand-600 text-white font-bold px-4 py-2">{playing?'처음부터 다시 듣기':'▶ 원곡 구간 듣기'}</button>
+      {playing && <button onClick={()=>player.current?.pause()} className="text-sm text-slate-600">정지</button>}
+      <label className="text-xs text-slate-600">속도 <select aria-label="재생 속도" value={rate} onChange={e=>{player.current?.pause();setRate(Number(e.target.value));}}
+        className="border rounded p-1"><option value={1}>1.0×</option><option value={0.8}>0.8×</option></select></label>
+    </div>
+    <p className="text-xs text-slate-500 mt-2">원곡 {clip.start.toFixed(1)}초–{clip.end.toFixed(1)}초</p>
+    {error && <p role="alert" className="text-xs text-rose-600 mt-2">{error}</p>}
+  </div>;
+}
+function AudioSetup({song,file,book,onAttach,onSave}:{song:SongAnalysis;file?:LocalAudio;book?:CueBook[string];onAttach:(file:File)=>void;onSave:(text:string,start:number,end:number)=>void}) {
+  const audio=useRef<HTMLAudioElement|null>(null);
+  const [line,setLine]=useState('0'),[start,setStart]=useState('0'),[end,setEnd]=useState('5'),[duration,setDuration]=useState(0),[message,setMessage]=useState('');
+  const verse=song.verses[Number(line)];
+  const a=Number(start),b=Number(end),valid=!!file && start.trim()!=='' && end.trim()!=='' && Number.isFinite(a)&&Number.isFinite(b)&&a>=0&&b>a&&b<=duration;
+  useEffect(()=>{const cue=file?.signature===book?.signature?book?.cues?.[verse?.text]:undefined;
+    setStart(String(cue?.start ?? 0));setEnd(String(cue?.end ?? 5));setMessage('');},[line,file?.signature]);
+  return <details className="bg-white border border-slate-200 rounded-2xl p-4 mb-4">
+    <summary className="cursor-pointer font-bold text-ink">🎧 원곡 듣기 설정 {file?'· 음원 연결됨':'· 음원 연결하기'}</summary>
+    <p className="text-sm text-slate-500 mt-3">가지고 있는 음원을 선택하고 가사 한 줄의 시작·끝을 지정하세요. 파일은 서버로 업로드되지 않으며, 새로고침 후에는 같은 파일을 다시 선택해야 해요. 구간 시간은 이 기기에 저장됩니다.</p>
+    <label className="block text-sm font-bold mt-3">음원 파일
+      <input aria-label="원곡 음원 파일" type="file" accept="audio/*" onChange={e=>{const picked=e.target.files?.[0];if(picked){setDuration(0);onAttach(picked);}e.target.value='';}}
+        className="block text-xs mt-2 w-full"/>
+    </label>
+    {file && <p className="text-xs text-slate-500 mt-2">연결한 파일: {file.name}</p>}
+    {!file && book && <p className="text-xs text-brand-600 mt-2">저장된 구간 {Object.keys(book.cues||{}).length}개 · 같은 음원 파일을 연결하면 복원돼요.</p>}
+    {file && <>
+      <audio key={file.src} ref={audio} src={file.src} controls preload="metadata" className="w-full my-3"
+        onLoadedMetadata={()=>setDuration(audio.current?.duration||0)} onError={()=>{setDuration(0);setMessage('이 파일을 재생할 수 없어요. 다른 형식의 음원을 선택해 주세요.');}}/>
+      <label className="text-sm block">가사 구간<select aria-label="구간을 지정할 가사" value={line} onChange={e=>setLine(e.target.value)} className="block w-full border rounded-lg p-2 mt-1 font-jp">
+        {song.verses.map((v,i)=><option key={i} value={i}>{i+1}. {v.text}</option>)}
+      </select></label>
+      <div className="grid grid-cols-2 gap-3 my-3">{[['시작',start,setStart],['끝',end,setEnd]].map(([label,value,setter]:any[])=><label key={label} className="text-xs text-slate-500">
+        {label} (초)<input aria-label={`${label} 시간 (초)`} type="number" min="0" max={duration || undefined} step="0.1" value={value} onChange={e=>setter(e.target.value)} className="block w-full p-2 mt-1 border rounded-lg"/>
+        <button onClick={()=>setter((audio.current?.currentTime||0).toFixed(1))} className="text-brand-600 mt-1">현재 재생 위치로</button>
+      </label>)}</div>
+      <button disabled={!valid} onClick={()=>{audio.current?.pause();onSave(verse.text,a,b);setMessage('구간을 저장했어요. 이 줄의 학습 단어로 듣기 문제를 만들 수 있어요.');}}
+        className="px-4 py-2 rounded-lg bg-brand-600 text-white font-bold disabled:opacity-40">이 가사 구간 저장</button>
+      <p className="text-xs text-slate-500 mt-2">0 ≤ 시작 &lt; 끝 ≤ 음원 길이 {Number.isFinite(duration)?duration.toFixed(1):'—'}초</p>
+      {valid && <div className="mt-3"><ClipPlayer clip={{src:file.src,start:a,end:b}}/></div>}
+    </>}
+    {message && <p role="status" className="text-sm text-brand-600 mt-3">{message}</p>}
+  </details>;
+}
 // 외부에서 받은(또는 사전 분석한) 곡 데이터를 앱 포맷(SongAnalysis)으로 정규화.
 // id·lyrics·결측 필드는 자동 보정 → API 호출 없이 학습/퀴즈에 그대로 사용.
 function normalizeSong(raw, seq: number): SongAnalysis | null {
@@ -727,11 +854,14 @@ function normalizeSong(raw, seq: number): SongAnalysis | null {
     reading: w.reading || '',
     pos: w.pos || '',
     meaning: w.meaning || '',
+    surfaceMeaning: w.surfaceMeaning || '',
+    quizMeaning: w.quizMeaning || '',
+    grammarNote: w.grammarNote || '',
     jlptLevel: (w.jlptLevel as JLPTLevel) || 'Unknown',
     conjugation: w.conjugation || ''
   })).filter(w => w.surface);
   const verses: Verse[] = raw.verses
-    .map(v => ({ text: v.text || '', translation: v.translation || '' }))
+    .map(v => ({ text: v.text || '', translation: v.translation || '', audio: normalizeAudioClip(v.audio) }))
     .filter(v => v.text);
   if (verses.length === 0 || vocabulary.length === 0) return null;
   return {
@@ -774,7 +904,7 @@ function DifficultyBadge({ s }) {
   );
 }
 /* ════════════════════════ Library 탭 (Chapter 5) ════════════════════════ */
-function Library({ catalog, loading, error, failedFiles, openSong }) {
+function Library({ catalog, loading, error, failedFiles, openSong, startSongLesson }) {
   return (
     <div className="anim-slideup">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
@@ -809,8 +939,20 @@ function Library({ catalog, loading, error, failedFiles, openSong }) {
           <p className="text-slate-500">등록된 곡이 없습니다.</p>
         </div>
       ) : (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {catalog.map((s,i)=>(
+        (() => {
+          // 아티스트 기준 자동 분류: &TEAM 원곡 / &TEAM 커버곡(타 아티스트 원곡) / NCT WISH
+          const groupOf = (s) => {
+            const a = (s.artist || '').toUpperCase();
+            if (a.includes('NCT WISH')) return 'NCT WISH';
+            if (a.includes('&TEAM')) return '&TEAM';
+            return '&TEAM 커버곡';
+          };
+          const SECTIONS = [
+            { key: '&TEAM',       emoji: '🐺', desc: '앤팀 오리지널 곡' },
+            { key: '&TEAM 커버곡', emoji: '🎤', desc: '앤팀이 커버한 곡 (원곡 아티스트 표기)' },
+            { key: 'NCT WISH',    emoji: '✨', desc: 'NCT WISH 곡' },
+          ];
+          const card = (s, i) => (
             <div key={i} className="relative bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex flex-col">
               <DifficultyBadge s={s} />
               <div className="flex-1 cursor-pointer" onClick={()=>openSong(s)}>
@@ -818,12 +960,33 @@ function Library({ catalog, loading, error, failedFiles, openSong }) {
                 <div className="text-sm text-slate-500 font-jp">{s.artist}</div>
                 <div className="text-xs text-slate-400 mt-2">{s.vocabulary.length} 단어 · {s.verses.length} 문장</div>
               </div>
-              <div className="mt-3 flex justify-start items-center">
+              <div className="mt-3 flex justify-between items-center">
                 <button onClick={()=>openSong(s)} className="text-sm font-semibold text-brand-600">열기</button>
+                <button onClick={()=>startSongLesson(s)} className="text-sm font-bold text-brand-600">5단어 레슨 →</button>
               </div>
             </div>
-          ))}
-        </div>
+          );
+          return (
+            <div>
+              {SECTIONS.map(sec => {
+                const songs = uniqueSongs(catalog).filter(s => groupOf(s) === sec.key);
+                if (songs.length === 0) return null;
+                return (
+                  <section key={sec.key} className="mb-8">
+                    <div className="flex items-baseline gap-2 mb-3">
+                      <h2 className="text-lg font-extrabold text-ink">{sec.emoji} {sec.key}</h2>
+                      <span className="text-xs font-bold text-white bg-brand-600 rounded-full px-2 py-0.5">{songs.length}곡</span>
+                      <span className="text-xs text-slate-400">{sec.desc}</span>
+                    </div>
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                      {songs.map(card)}
+                    </div>
+                  </section>
+                );
+              })}
+            </div>
+          );
+        })()
       )}
     </div>
   );
@@ -838,17 +1001,61 @@ const MAX_SESSION_WORDS = 15;   // 한 세션 최대 단어 수
 function srsDays(rep: number): number { return SRS_INTERVALS[Math.min(Math.max(rep,0), SRS_INTERVALS.length - 1)]; }
 function isDue(lw: LearningWord, now: number): boolean { return new Date(lw.nextReviewDate).getTime() <= now; }
 function dueCount(progress: UserProgress, catalog: SongAnalysis[], now: number): number {
-  const inVocab = new Set<string>();
-  catalog.forEach(s => s.vocabulary.forEach(w => inVocab.add(w.id)));
-  return progress.learningWords.filter(l => inVocab.has(l.wordId) && isDue(l, now)).length;
+  const words = new Map<string,{w:Word;s:SongAnalysis}>();
+  catalog.forEach(s => s.vocabulary.forEach(w => words.set(w.id,{w,s})));
+  return progress.learningWords.filter(l => { const item=words.get(l.wordId);
+    return item && availableSkills(item.w,item.s).some(skill => isDue(skillState(l,skill),now)); }).length;
 }
-// 정답: 간격 증가 / 오답: 강등 + lapse 기록, 오늘 다시 due
+// 첫 시도만 SRS에 반영. 오답은 다음 날 복습하며 같은 세션의 재도전으로 승급하지 않는다.
 function applyCorrect(lw: LearningWord): LearningWord {
   const rep = lw.repetition + 1;
   return { ...lw, repetition: rep, nextReviewDate: new Date(Date.now() + srsDays(rep) * MS_DAY) };
 }
 function applyLapse(lw: LearningWord): LearningWord {
-  return { ...lw, repetition: Math.max(0, lw.repetition - 1), lapses: (lw.lapses || 0) + 1, nextReviewDate: new Date() };
+  return { ...lw, repetition: Math.max(0, lw.repetition - 1), lapses: (lw.lapses || 0) + 1, nextReviewDate: new Date(Date.now() + MS_DAY) };
+}
+function skillState(lw: LearningWord, skill: Skill): SkillProgress {
+  if (lw.skills?.[skill]) return lw.skills[skill]!;
+  // 과거의 통합 숙련도는 뜻 기록으로만 이관한다. 읽기/듣기 능력을 추정하지 않는다.
+  return skill === 'meaning' ? {repetition:lw.repetition,nextReviewDate:new Date(lw.nextReviewDate),lapses:lw.lapses || 0}
+    : {repetition:0,nextReviewDate:new Date(0),lapses:0};
+}
+function recordSkillAnswer(lw: LearningWord, skill: Skill, correct: boolean, hinted: boolean): LearningWord {
+  const prior = skillState(lw,skill);
+  const base = {...prior,wordId:lw.wordId} as LearningWord;
+  const scheduled = correct ? (hinted ? {...base,nextReviewDate:new Date(Date.now()+MS_DAY)} : applyCorrect(base)) : applyLapse(base);
+  const updated: SkillProgress = {repetition:scheduled.repetition,nextReviewDate:scheduled.nextReviewDate,lapses:scheduled.lapses,
+    seenCount:(prior.seenCount || 0)+1, correctCount:(prior.correctCount || 0)+(correct?1:0),
+    hintCount:(prior.hintCount || 0)+(hinted?1:0),lastReviewedAt:new Date().toISOString()};
+  const skills = {meaning:skillState(lw,'meaning'),...lw.skills,[skill]:updated};
+  // 루트 필드는 기존 화면/백업과 호환되도록 뜻 숙련도와 가장 빠른 복습일을 유지한다.
+  return {...lw,skills,repetition:skills.meaning.repetition,
+    lapses:Object.values(skills).reduce((n,s)=>n+(s.lapses || 0),0),
+    nextReviewDate:new Date(Math.min(...Object.values(skills).map(s=>new Date(s.nextReviewDate).getTime())))};
+}
+function readingKey(value: string): string {
+  return value.normalize('NFKC').trim().replace(/\s+/g,'').replace(/[ァ-ヶ]/g,c=>String.fromCharCode(c.charCodeAt(0)-0x60));
+}
+function usableReading(w: Word): boolean { return /^[ぁ-ゖー]+$/.test(readingKey(w.reading || '')); }
+function normalizeAudioClip(raw): AudioClip | undefined {
+  if (!raw || typeof raw.src !== 'string') return undefined;
+  const src=raw.src.trim(), start=Number(raw.start), end=Number(raw.end);
+  if (!Number.isFinite(start) || !Number.isFinite(end) || start<0 || end<=start) return undefined;
+  if (!/^(https?:\/\/|\.\.?\/|\/[^/])/.test(src)) return undefined;
+  return {src,start,end};
+}
+function availableSkills(w: Word,song?:SongAnalysis): Skill[] {
+  const result:Skill[]=['meaning'];
+  const verse=song?.verses.find(v=>v.text.includes(w.surface));
+  if (verse) result.push('context');
+  if (usableReading(w) && /[一-龯々]/u.test(w.surface)) result.push('reading');
+  if (song?.verses.some(v=>v.text.includes(w.surface) && v.audio)) result.push('listening');
+  return result;
+}
+function SkillSummary({lw}:{lw:LearningWord}) {
+  return <div className="flex flex-wrap gap-2 text-xs mt-2">{SKILLS.map(skill=><span key={skill} className="bg-slate-50 rounded-lg px-2 py-1">
+    {SKILL_LABELS[skill]} · {skill!=='meaning' && !lw.skills?.[skill] ? '아직 연습 전' : `단계 ${skillState(lw,skill).repetition}`}
+  </span>)}</div>;
 }
 // 숙련도 표시 — 발자국 🐾 (채워진 만큼 숙련)
 function MasteryDots({ rep }: { rep: number }) {
@@ -858,68 +1065,201 @@ function MasteryDots({ rep }: { rep: number }) {
 
 /* ════════════════════════ Chapter 4 · 퀴즈 세션 빌더 ════════════════════════ */
 type Quiz =
-  | { kind:'A'; word:Word; choices:string[]; answer:string }
+  | { kind:'A'; word:Word; verse?:Verse; choices:string[]; answer:string }
   | { kind:'B'; word:Word; verse:Verse; choices:string[]; answer:string; blanked:string }
-  | { kind:'C'; word:Word; verse:Verse; tokens:string[]; answer:string[] };
+  | { kind:'C'; word:Word; verse:Verse; tokens:string[]; answer:string[] }
+  | { kind:'D'; word:Word; verse?:Verse; choices:string[]; answer:string }
+  | { kind:'E'; word:Word; verse?:Verse; answer:string }
+  | { kind:'L'; word:Word; verse?:Verse; choices:string[]; answer:string; audio?:AudioClip; blanked?:string };
+function quizSkill(q:Quiz):Skill {
+  return q.kind==='D' || q.kind==='E' ? 'reading' : q.kind==='L' ? 'listening' : q.kind==='A' ? 'meaning' : 'context';
+}
 
-// 단어 하나에 대해 숙련도(rep)에 맞는 유형 1개를 생성 (없으면 쉬운 유형으로 폴백)
-function pickQuizForWord(w: Word, rep: number, wordSong, meanings: string[], surfaces: string[]): Quiz | null {
+// 부정 활용은 표면형과 부정 뜻이 서로 힌트가 되므로 항상 기본형 뜻 문제(A)로 낸다.
+// 예: 隠さない → 문제에는 隠す, 선지에는 '숨기다'를 표시.
+function isNegativeForm(w: Word): boolean {
+  const grammar = `${w.conjugation || ''} ${w.grammarNote || ''}`;
+  return /부정|ない|ぬ|ず/u.test(grammar);
+}
+
+// 단어 하나에 대해 숙련도(rep)에 맞는 유형 1개를 생성 (없으면 쉬운 유형으로 폴백).
+// 숙련도가 높아져도 뜻 4지선다(A)가 사라지지 않도록 세션 순번으로 유형을 섞는다.
+function choiceKey(value: string): string {
+  return value.normalize('NFKC').replace(/\s+/g, '').trim();
+}
+function meaningParts(w: Word): string[] {
+  return [dictionaryMeaning(w), surfaceMeaning(w), quizMeaning(w)]
+    .flatMap(s => s.replace(/[（(][^（）()]*[）)]/g, '').split(/[,，、;；/·]|\s+또는\s+/))
+    .map(choiceKey).filter(Boolean);
+}
+function meaningsOverlap(a: Word, b: Word): boolean {
+  return meaningParts(a).some(x => meaningParts(b).some(y =>
+    x === y || (Math.min(x.length, y.length) >= 2 && (x.includes(y) || y.includes(x)))));
+}
+function quizPos(w: Word): string {
+  const p = (w.pos || '').trim();
+  return ['조동사','형용사','형용동사','동사','대명사','명사','부사','조사','접속사','감탄사']
+    .find(label => p.includes(label)) || p;
+}
+// 중복 표기 전체를 함께 검사해 다른 곡에 실린 동의어가 오답으로 섞이지 않도록 한다.
+// 의미 비교는 데이터에 기재된 뜻에 대한 보수적 필터이며 문맥 의미 판별기는 아니다.
+function quizDistractors(w: Word, words: Word[], kind: 'A'|'B'|'L', verse?: Verse): string[] {
+  const valueOf = (word: Word) => kind === 'A' ? dictionaryMeaning(word) : kind==='L' ? surfaceMeaning(word) : word.surface;
+  const groups = new Map<string, Word[]>();
+  words.forEach(word => {
+    const key = choiceKey(valueOf(word));
+    if (key) groups.set(key, [...(groups.get(key) || []), word]);
+  });
+  const levelDistance = (a: Word, b: Word) => {
+    const x = /^N[1-5]$/.test(a.jlptLevel) ? Number(a.jlptLevel[1]) : null;
+    const y = /^N[1-5]$/.test(b.jlptLevel) ? Number(b.jlptLevel[1]) : null;
+    return x === null || y === null ? 5 : Math.abs(x-y);
+  };
+  const candidates = shuffle(Array.from(groups.values())).filter(group => group.every(c =>
+    c.id !== w.id && choiceKey(c.surface) !== choiceKey(w.surface) &&
+    choiceKey(c.dictionaryForm || c.surface) !== choiceKey(w.dictionaryForm || w.surface) &&
+    choiceKey(valueOf(c)) !== choiceKey(valueOf(w)) && !meaningsOverlap(w, c) &&
+    !(kind === 'B' && verse?.text.includes(c.surface))));
+  candidates.sort((a,b) => {
+    const score = (group: Word[]) => Math.min(...group.map(c =>
+      (quizPos(w) && quizPos(c) === quizPos(w) ? 0 : 10) + levelDistance(w, c)));
+    return score(a) - score(b);
+  });
+  return candidates.slice(0,3).map(group => valueOf(group[0]));
+}
+function retryQuiz(q: Quiz): Quiz {
+  const reorder = (items: string[]) => {
+    const mixed = shuffle(items);
+    return mixed.length > 1 && mixed.every((v,i) => v === items[i])
+      ? [...mixed.slice(1), mixed[0]] : mixed;
+  };
+  return q.kind === 'C' ? { ...q, tokens: reorder(q.tokens) } : q.kind==='E' ? {...q} : { ...q, choices: reorder(q.choices) };
+}
+function pickQuizForWord(w: Word, rep: number, wordSong, words: Word[], sessionIndex: number): Quiz | null {
   const song = wordSong.get(w.id);
   const verse = song?.verses.find(v => v.text.includes(w.surface));
-  const makeA = (): Quiz => {
-    const d = shuffle(meanings.filter(m => m !== w.meaning)).slice(0,3);
-    return { kind:'A', word:w, answer:w.meaning, choices: shuffle([w.meaning, ...d]) };
+  const makeA = (): Quiz | null => {
+    const answer = dictionaryMeaning(w);
+    if (!answer) return null;
+    const d = quizDistractors(w, words, 'A');
+    if (!d.length) return null;
+    return { kind:'A', word:w, verse, answer, choices: shuffle([answer, ...d]) };
   };
   const makeB = (): Quiz | null => {
     if (!verse) return null;
-    const d = shuffle(surfaces.filter(s => s !== w.surface)).slice(0,3);
-    return { kind:'B', word:w, verse, answer:w.surface, blanked: verse.text.replace(w.surface, '［　　］'), choices: shuffle([w.surface, ...d]) };
+    const d = quizDistractors(w, words, 'B', verse);
+    if (!d.length) return null;
+    return { kind:'B', word:w, verse, answer:w.surface, blanked: verse.text.split(w.surface).join('［　　］'), choices: shuffle([w.surface, ...d]) };
   };
   const makeC = (): Quiz | null => {
     if (!verse) return null;
+    // 영문이 섞인 가사는 영어 어순 자체가 힌트가 되어 문장 조립 학습 효과가 없다.
+    // 이런 문장은 C형을 만들지 않고 호출부의 A/B 폴백을 사용한다.
+    if (/[A-Za-z]/.test(verse.text)) return null;
     const tokens = tokenizeJa(verse.text);
     if (tokens.length < 3 || tokens.length > 8) return null;
     return { kind:'C', word:w, verse, answer: tokens, tokens: shuffle(tokens) };
   };
-  if (rep >= 4) return makeC() || makeB() || makeA();
-  if (rep >= 2) return makeB() || makeA();
+  // 부정형은 숙련도가 올라도 빈칸(B)·문장조립(C)으로 자동 전환하지 않는다.
+  // 문제 모양은 기존 뜻 고르기 그대로 두고, 제시어만 dictionaryForm으로 바꾼다.
+  if (isNegativeForm(w)) return makeA();
+  if (rep >= 4) {
+    const variant = sessionIndex % 3;
+    if (variant === 0) return makeA() || makeB() || makeC();
+    if (variant === 1) return makeB() || makeA() || makeC();
+    return makeC() || makeA() || makeB();
+  }
+  if (rep >= 2) {
+    return sessionIndex % 2 === 0
+      ? makeA() || makeB()
+      : makeB() || makeA();
+  }
   return makeA();
 }
 
 // mode 'due': 오늘 복습 예정 단어만 / 'all': 전체 학습 단어. level 로 JLPT 필터. 단어당 1문제, 상한 적용.
-function buildSession(progress: UserProgress, catalog: SongAnalysis[], mode: 'due'|'all' = 'due', level: 'all'|JLPTLevel = 'all'): { quizzes: Quiz[]; dict: Map<string,string> } {
+function makeSkillQuiz(w:Word,lw:LearningWord,skill:Skill,song:SongAnalysis,words:Word[]):Quiz|null {
+  const verse=song.verses.find(v=>v.text.includes(w.surface) && (skill!=='listening' || v.audio));
+  if (skill==='meaning') return pickQuizForWord(w,0,new Map([[w.id,song]]),words,0);
+  if (skill==='reading') {
+    if (!usableReading(w) || !/[一-龯々]/u.test(w.surface)) return null;
+    const answer=readingKey(w.reading);
+    if (skillState(lw,'reading').repetition>=2) return {kind:'E',word:w,verse,answer};
+    const choices=shuffle(Array.from(new Set(words.filter(usableReading).map(c=>readingKey(c.reading)))))
+      .filter(r=>r!==answer).sort((a,b)=>Math.abs(a.length-answer.length)-Math.abs(b.length-answer.length)).slice(0,3);
+    if (!choices.length) return {kind:'E',word:w,verse,answer};
+    return {kind:'D',word:w,verse,answer,choices:shuffle([answer,...choices])};
+  }
+  if (skill==='listening') {
+    if (verse?.audio) {
+      const choices=quizDistractors(w,words,'B',verse);
+      return choices.length ? {kind:'L',word:w,verse,audio:verse.audio,blanked:verse.text.split(w.surface).join('［　　］'),
+        answer:w.surface,choices:shuffle([w.surface,...choices])} : null;
+    }
+    return null; // 원곡 구간이 연결된 경우에만 듣기 출제. 합성 발음으로 대체하지 않는다.
+  }
+  if (!verse) return null;
+  const choices=quizDistractors(w,words,'B',verse);
+  const tokens=tokenizeJa(verse.text);
+  if (skillState(lw,'context').repetition>=2 && !/[A-Za-z]/.test(verse.text) && tokens.length>=3 && tokens.length<=8)
+    return {kind:'C',word:w,verse,answer:tokens,tokens:shuffle(tokens)};
+  return choices.length ? {kind:'B',word:w,verse,answer:w.surface,choices:shuffle([w.surface,...choices]),blanked:verse.text.split(w.surface).join('［　　］')} : null;
+}
+function buildSession(progress: UserProgress, catalog: SongAnalysis[], mode: 'due'|'all'|'lesson' = 'due', level: 'all'|JLPTLevel = 'all',
+  focus:Focus='mixed',selectedSong:string='all'): { quizzes: Quiz[]; dict: Map<string,string> } {
   const lwById = new Map(progress.learningWords.map(l => [l.wordId, l]));
   const allWords: Word[] = [];
   const wordSong = new Map<string, SongAnalysis>();
   catalog.forEach(song => song.vocabulary.forEach(w => { allWords.push(w); wordSong.set(w.id, song); }));
   const dict = buildRubyDict(allWords);
-  const meanings = allWords.map(w => w.meaning);
-  const surfaces = allWords.map(w => w.surface);
+  // 유형 A는 활용형이 아닌 기본형을 묻는다. 부정형 어미가 정답 힌트가 되지 않게
+  // 오답 선지도 모두 원형의 간결한 사전 뜻으로 통일한다.
 
   const now = Date.now();
-  let entries = allWords
-    .filter(w => lwById.has(w.id))
-    .map(w => ({ w, lw: lwById.get(w.id)! }));
+  let entries = Array.from(new Map(allWords.map(w => [w.id, w])).values())
+    .filter(w => (mode==='lesson' ? !progress.knownWordIds.includes(w.id) : lwById.has(w.id)) &&
+      (selectedSong==='all' || songKey(wordSong.get(w.id)!)===selectedSong))
+    .map(w => ({ w, lw: lwById.get(w.id) || {wordId:w.id,repetition:0,nextReviewDate:new Date(0)} }));
   if (level !== 'all') entries = entries.filter(e => e.w.jlptLevel === level);
-  if (mode === 'due') entries = entries.filter(e => isDue(e.lw, now));
-  entries.sort((a,b) => new Date(a.lw.nextReviewDate).getTime() - new Date(b.lw.nextReviewDate).getTime());
-  entries = entries.slice(0, MAX_SESSION_WORDS);
+  const skillsFor=(e) => availableSkills(e.w,wordSong.get(e.w.id)).filter(skill=>(focus==='mixed' || skill===focus) && (mode!=='lesson' || skill!=='listening'));
+  const dueAt=(e) => Math.min(...skillsFor(e).map(skill=>new Date(skillState(e.lw,skill).nextReviewDate).getTime()));
+  if (mode === 'due') entries = entries.filter(e => skillsFor(e).some(skill=>isDue(skillState(e.lw,skill),now)));
+  entries.sort((a,b) => dueAt(a)-dueAt(b));
 
   const quizzes: Quiz[] = [];
+  if (mode==='lesson') {
+    const chosen=entries.filter(e=>availableSkills(e.w,wordSong.get(e.w.id)).includes('reading')).slice(0,5);
+    for (const skill of ['meaning','context','reading'] as Skill[]) for (const e of chosen) {
+      const q=makeSkillQuiz(e.w,e.lw,skill,wordSong.get(e.w.id)!,allWords); if(q)quizzes.push(q);
+    }
+    return {quizzes,dict};
+  }
   for (const e of entries) {
-    const q = pickQuizForWord(e.w, e.lw.repetition, wordSong, meanings, surfaces);
-    if (q) quizzes.push(q);
+    const skills=skillsFor(e).filter(skill=>mode!=='due' || isDue(skillState(e.lw,skill),now));
+    skills.sort((a,b)=>skillState(e.lw,a).repetition-skillState(e.lw,b).repetition ||
+      new Date(skillState(e.lw,a).nextReviewDate).getTime()-new Date(skillState(e.lw,b).nextReviewDate).getTime());
+    for (const skill of skills) {
+      const q=makeSkillQuiz(e.w,e.lw,skill,wordSong.get(e.w.id)!,allWords);
+      if(q){quizzes.push(q);break;}
+    }
+    if(quizzes.length>=MAX_SESSION_WORDS)break;
   }
   return { quizzes: shuffle(quizzes), dict };
 }
 
 /* ════════════════════════ Review 탭 (Chapter 4) ════════════════════════ */
-function Review({ progress, setProgress, catalog, go }) {
+function Review({ progress, setProgress, catalog, go, initialSongKey='all', initialFocus='mixed', openSong }) {
   const [session, setSession] = useState<Quiz[]>([]);
   const [dict, setDict] = useState<Map<string,string>>(new Map());
   const [idx, setIdx] = useState(0);
-  const [done, setDone] = useState(0);          // 누적 정답 수
-  const [feedback, setFeedback] = useState<'none'|'correct'|'wrong'>('none');
+  const [done, setDone] = useState(0);          // 기본 문제 첫 시도 정답 수
+  const [baseTotal, setBaseTotal] = useState(0);
+  const [phase, setPhase] = useState<'base'|'retry'>('base');
+  const [retryQueue, setRetryQueue] = useState<Quiz[]>([]);
+  const [retryCorrect, setRetryCorrect] = useState(0);
+  const [deferred, setDeferred] = useState<Word[]>([]);
+  const submitted = useRef(false); // 빠른 클릭/키 반복으로 중복 채점하지 않음
+  const [feedback, setFeedback] = useState<'none'|'correct'|'wrong'|'skipped'>('none');
   const [picked, setPicked] = useState<string | null>(null);
   const [assembled, setAssembled] = useState<string[]>([]);  // 유형 C 정답 라인
   const [pool, setPool] = useState<string[]>([]);            // 유형 C 토큰 풀
@@ -928,12 +1268,31 @@ function Review({ progress, setProgress, catalog, go }) {
   const [combo, setCombo] = useState(0);                     // 연속 정답 콤보
   const [best, setBest] = useState(0);                       // 최고 콤보
   const [praise, setPraise] = useState('정답!');              // 정답 칭찬 문구
+  const [sessionWords,setSessionWords]=useState<Word[]>([]);
+  const [focus,setFocus]=useState<Focus>(initialFocus);
+  const [selectedSong,setSelectedSong]=useState(initialSongKey);
+  const [sessionMode,setSessionMode]=useState<'due'|'all'|'lesson'>('due');
+  const [typed,setTyped]=useState('');
+  const [hinted,setHinted]=useState(false);
+  const [heard,setHeard]=useState(false);
+  const [skipped,setSkipped]=useState(0);
+  const initialized=useRef(false);
+  const selectedCatalog=selectedSong==='all'?catalog:catalog.filter(s=>songKey(s)===selectedSong);
 
   const PRAISE = ['いいね! 🍊', '완벽해! 🍓', 'すごい! 🐰', '멋져! 🐶','쭈랑해🧡🩵'];
 
-  function startSession(mode: 'due'|'all', lv: 'all'|JLPTLevel = level) {
-    const built = buildSession(progress, catalog, mode, lv);
+  function startSession(mode: 'due'|'all'|'lesson', lv: 'all'|JLPTLevel = level, nextFocus:Focus=focus, nextSong=selectedSong) {
+    const built = buildSession(progress, catalog, mode, lv, nextFocus, nextSong);
+    setSessionWords(Array.from(new Map(built.quizzes.map(q=>[q.word.id,q.word])).values()));
+    if(mode==='lesson') {
+      const ids=Array.from(new Set(built.quizzes.map(q=>q.word.id)));
+      setProgress(prev=>({...prev,learningWords:[...prev.learningWords,
+        ...ids.filter(id=>!prev.learningWords.some(l=>l.wordId===id)).map(wordId=>({wordId,repetition:0,nextReviewDate:new Date(0)}))]}));
+    }
+    setSessionMode(mode);setTyped('');setHinted(false);setHeard(false);setSkipped(0);
     setSession(built.quizzes); setDict(built.dict);
+    setBaseTotal(built.quizzes.length); setPhase('base'); setRetryQueue([]);
+    setRetryCorrect(0); setDeferred([]); submitted.current = false;
     setIdx(0); setDone(0); setWrongCount(0); setCombo(0); setBest(0);
     setFeedback('none'); setPicked(null);
   }
@@ -944,26 +1303,33 @@ function Review({ progress, setProgress, catalog, go }) {
 
   // 세션 생성 — Active Overwrite 락: 진행 중이면 재생성하지 않음. 기본은 '오늘 복습(due)'.
   useEffect(() => {
-    if (session.length > 0 && idx < session.length) return;   // ← 락: 진행 중일 때만 (완료/빈 세션은 재생성)
-    startSession('due');
-  }, [progress.learningWords.length, catalog.length]); // eslint-disable-line
+    if (!catalog.length || initialized.current) return;
+    initialized.current=true;
+    startSession(initialSongKey==='all'?'due':initialFocus==='listening'?'all':'lesson');
+  }, [catalog.length]); // eslint-disable-line
 
   // 현재 레벨에 해당하는 학습 단어 수 (빈 상태 안내·버튼 활성화용)
   const wordById = useMemo(() => {
     const m = new Map<string, Word>();
-    catalog.forEach(s => s.vocabulary.forEach(w => m.set(w.id, w)));
+    selectedCatalog.forEach(s => s.vocabulary.forEach(w => m.set(w.id, w)));
     return m;
-  }, [catalog]);
+  }, [catalog,selectedSong]);
   const levelLearningCount = progress.learningWords.filter(l => {
     const w = wordById.get(l.wordId);
     return w && (level === 'all' || w.jlptLevel === level);
+  }).length;
+  const levelDueCount = progress.learningWords.filter(l => {
+    const w = wordById.get(l.wordId);
+    const song=selectedCatalog.find(s=>s.vocabulary.some(v=>v.id===l.wordId));
+    return w && (level === 'all' || w.jlptLevel === level) && availableSkills(w,song)
+      .filter(skill=>focus==='mixed' || skill===focus).some(skill=>isDue(skillState(l,skill),Date.now()));
   }).length;
 
   // 레벨 선택 칩 (모든 화면 상단 공통)
   const levelBar = (
     <div className="flex flex-wrap items-center gap-1.5 mb-4">
       <span className="text-xs font-bold text-slate-500 mr-1">레벨</span>
-      {(['all','N4','N3','N2','N1'] as const).map(v => (
+      {(['all','N5','N4','N3','N2','N1'] as const).map(v => (
         <button key={v} onClick={()=>changeLevel(v)}
           className={`text-xs font-extrabold px-2.5 py-1 rounded-full border-2 border-ink transition ${level===v?'bg-brand-600 text-white':'bg-white text-slate-600 hover:bg-brand-50'}`}>
           {v==='all'?'전체':v}
@@ -971,43 +1337,65 @@ function Review({ progress, setProgress, catalog, go }) {
       ))}
     </div>
   );
+  const controls=(<div className="rounded-2xl bg-white border border-slate-200 p-4 mb-4 space-y-3">
+    <label className="block text-xs font-bold text-slate-500">학습할 곡
+      <select aria-label="학습할 곡" value={selectedSong} onChange={e=>{setSelectedSong(e.target.value);startSession('due',level,focus,e.target.value);}}
+        className="mt-1 block w-full border border-slate-300 rounded-lg p-2 text-sm text-ink">
+        <option value="all">전체 곡</option>{catalog.map(s=><option key={songKey(s)} value={songKey(s)}>{s.title} · {s.artist}</option>)}
+      </select>
+    </label>
+    <div className="flex flex-wrap gap-2">{(['mixed',...SKILLS] as Focus[]).map(f=><button key={f} aria-pressed={focus===f}
+      onClick={()=>{setFocus(f);startSession('due',level,f);}} className={`px-3 py-1.5 rounded-lg text-xs font-bold border ${focus===f?'bg-brand-600 text-white':'bg-white text-slate-600'}`}>
+      {f==='mixed'?'골고루':SKILL_LABELS[f]}</button>)}</div>
+    <button disabled={selectedSong==='all'} onClick={()=>{setFocus('mixed');startSession('lesson',level,'mixed');}}
+      className="w-full rounded-xl bg-brand-50 text-brand-700 font-bold py-2 text-sm disabled:opacity-40">이 곡 5단어 레슨 시작</button>
+    <p className="text-xs text-slate-500">뜻 → 가사·활용 → 읽기 → 오답 복습 · 곡을 고르면 시작할 수 있어요.</p>
+  </div>);
 
   const current = session[idx];
 
   // 유형 C 토큰 초기화
   useEffect(() => {
-    if (current?.kind === 'C') { setAssembled([]); setPool(current.tokens); }
-  }, [idx, session]);
+    setAssembled([]); setPool(current?.kind === 'C' ? current.tokens : []);
+    setTyped('');setHinted(false);setHeard(false);
+  }, [current]);
 
   function reward(correct: boolean, word?: Word) {
+    if (!current || submitted.current) return;
+    submitted.current = true;
     playSound(correct ? 'correct' : 'wrong');
     if (correct) {
-      setFeedback('correct'); setDone(d => d + 1);
+      setFeedback('correct');
+      if (phase === 'base') setDone(d => d + 1);
+      else setRetryCorrect(n => n + 1);
       setPraise(PRAISE[Math.floor(Math.random() * PRAISE.length)]);
       setCombo(c => { const n = c + 1; setBest(b => Math.max(b, n)); return n; });
       // SRS: 정답 → 간격 증가 (세션 락 덕분에 배열 보존)
-      if (word) setProgress(prev => ({ ...prev,
-        learningWords: prev.learningWords.map(l => l.wordId === word.id ? applyCorrect(l) : l) }));
+      if (word && phase === 'base') setProgress(prev => ({ ...prev,
+        learningWords: prev.learningWords.map(l => l.wordId === word.id ? recordSkillAnswer(l,quizSkill(current),true,hinted) : l) }));
     } else {
       setFeedback('wrong'); setWrongCount(c => c + 1); setCombo(0);
-      // 오답 즉시 순환: 현재 문항 복사본을 세션 맨 끝에 이어 붙임
-      setSession(prev => [...prev, current]);
+      // 기본 문제 종료 후 한 번만 재도전. 재오답은 다음 날 복습으로 넘긴다.
+      if (phase === 'base') setRetryQueue(prev => [...prev, current]);
+      else if (word) setDeferred(prev => prev.some(w=>w.id===word.id)?prev:[...prev, word]);
       // SRS: 오답 → 강등 + lapse 기록
-      if (word) setProgress(prev => ({ ...prev,
-        learningWords: prev.learningWords.map(l => l.wordId === word.id ? applyLapse(l) : l) }));
+      if (word && phase === 'base') setProgress(prev => ({ ...prev,
+        learningWords: prev.learningWords.map(l => l.wordId === word.id ? recordSkillAnswer(l,quizSkill(current),false,hinted) : l) }));
     }
   }
 
   function next() {
+    if (feedback === 'none' || !submitted.current) return;
+    submitted.current = false;
     setFeedback('none'); setPicked(null);
-    setIdx(i => i + 1);
+    if (phase === 'base' && idx + 1 >= session.length && retryQueue.length) {
+      setPhase('retry'); setSession(retryQueue.map(retryQuiz)); setIdx(0);
+    } else setIdx(i => i + 1);
   }
 
   function choose(choice: string) {
     if (feedback !== 'none') return;
     setPicked(choice);
-    if (current.kind === 'A') reward(choice === current.answer, current.word);
-    else if (current.kind === 'B') reward(choice === current.answer, current.word);
   }
 
   function tapToken(tok: string, from: 'pool'|'line', i: number) {
@@ -1018,27 +1406,33 @@ function Review({ progress, setProgress, catalog, go }) {
       setAssembled(a => a.filter((_,k)=>k!==i)); setPool(p => [...p, tok]);
     }
   }
-  function checkC() {
-    if (current.kind !== 'C' || assembled.length === 0) return;
-    const ok = JSON.stringify(assembled) === JSON.stringify(current.answer);
+  const canSubmit = !!current && (current.kind === 'C'
+    ? assembled.length === current.answer.length : current.kind==='E' ? readingKey(typed).length>0
+    : picked !== null && (current.kind!=='L' || heard));
+  function checkAnswer() {
+    if (!current || feedback !== 'none' || !canSubmit) return;
+    const ok = current.kind === 'C'
+      ? JSON.stringify(assembled) === JSON.stringify(current.answer)
+      : current.kind==='E' ? readingKey(typed)===readingKey(current.answer) : picked === current.answer;
     reward(ok, current.word);
   }
 
   // 키보드 단축키: 1–4 선택지 / Enter = 확인·다음
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (!current) return;
+      if (!current || e.repeat || e.isComposing || e.ctrlKey || e.metaKey || e.altKey) return;
+      const el = e.target as HTMLElement;
+      if (el?.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el?.tagName || '')) return;
       if (feedback !== 'none') { if (e.key === 'Enter') { e.preventDefault(); next(); } return; }
-      if (current.kind === 'A' || current.kind === 'B') {
+      if (e.key === 'Enter') { e.preventDefault(); checkAnswer(); return; }
+      if ('choices' in current) {
         const n = parseInt(e.key, 10);
         if (n >= 1 && n <= current.choices.length) { e.preventDefault(); choose(current.choices[n-1]); }
-      } else if (current.kind === 'C' && e.key === 'Enter') {
-        e.preventDefault(); checkC();
       }
     }
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [current, feedback, assembled, picked]); // eslint-disable-line
+  }, [current, feedback, assembled, picked, phase, retryQueue, typed, hinted, heard]); // eslint-disable-line
 
   // 빈 상태 — 학습 단어 없음 / 이 레벨에 없음 / 오늘 복습 완료(due 0)
   if (session.length === 0) {
@@ -1046,9 +1440,15 @@ function Review({ progress, setProgress, catalog, go }) {
     return (
       <div className="anim-slideup">
         <h1 className="text-2xl font-extrabold text-ink mb-4">🐺 복습 퀴즈</h1>
-        {hasLearning && levelBar}
+        {controls}
+        {levelBar}
         <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 text-center">
-          {!hasLearning ? (<>
+          {focus==='listening' && !selectedCatalog.some(s=>s.verses.some(v=>v.audio)) ? (<>
+            <div className="text-5xl mb-3">🎧</div><p className="font-bold mb-2">원곡 구간을 연결해 주세요</p>
+            <p className="text-sm text-slate-500 mb-4">곡 학습에서 음원 파일과 가사 구간을 지정하면 듣기 문제를 풀 수 있어요. 합성 발음은 사용하지 않아요.</p>
+            <button onClick={()=>selectedSong!=='all' && openSong ? openSong(selectedCatalog[0]) : go('library')}
+              className="px-5 py-2.5 rounded-xl font-semibold text-white bg-brand-600">음원 연결하러 가기</button>
+          </>) : !hasLearning ? (<>
             <div className="text-5xl mb-3"><span className="wiggle">🐰</span></div>
             <p className="text-slate-500 mb-4">아직 학습 중인 단어가 없어요.<br/>Analyze에서 단어를 "학습 시작하기"로 등록하면 퀴즈가 생성됩니다.</p>
             <button onClick={()=>go('analyze')} className="px-5 py-2.5 rounded-xl font-semibold text-white bg-brand-600 hover:bg-brand-700">가사 분석하러 가기</button>
@@ -1057,6 +1457,11 @@ function Review({ progress, setProgress, catalog, go }) {
             <p className="text-ink font-bold mb-1">{level} 레벨의 학습 단어가 없어요</p>
             <p className="text-sm text-slate-400 mb-4">다른 레벨을 고르거나 '전체'로 복습해 보세요.</p>
             <button onClick={()=>changeLevel('all')} className="px-5 py-2.5 rounded-xl font-semibold text-white bg-brand-600 hover:bg-brand-700">전체로 보기</button>
+          </>) : levelDueCount > 0 ? (<>
+            <div className="text-5xl mb-3">📚</div>
+            <p className="text-ink font-bold mb-1">출제에 필요한 선택지가 부족해요</p>
+            <p className="text-sm text-slate-500 mb-4">복습할 단어는 있지만, 겹치지 않는 뜻과 가사 정보가 더 필요해요.</p>
+            <button onClick={()=>go('analyze')} className="px-5 py-2.5 rounded-xl font-semibold text-white bg-brand-600 hover:bg-brand-700">학습 단어 살펴보기</button>
           </>) : (<>
             <div className="text-5xl mb-3">🐺🎉</div>
             <p className="text-ink font-bold mb-1">오늘 복습 완료!</p>
@@ -1075,43 +1480,80 @@ function Review({ progress, setProgress, catalog, go }) {
         <div className="text-6xl mb-2">🐺🎉</div>
         <div className="text-3xl mb-3 select-none">🍊 🍓 🐰 🐶</div>
         <h1 className="text-2xl font-extrabold text-ink mb-2">세션 완료!</h1>
-        <p className="text-slate-500 mb-1">정답 {done} · 오답 {wrongCount}회{best >= 2 ? <> · 최고 콤보 <b className="text-brand-600">{best}</b> 🔥</> : null}</p>
-        <p className="text-xs text-slate-400 mb-6">다음 복습은 각 단어의 예정일에 다시 준비돼요.</p>
-        <div className="flex gap-2 justify-center">
-          <button onClick={()=>setSession([])} className="px-5 py-2.5 rounded-xl font-semibold text-white bg-brand-600 hover:bg-brand-700">완료</button>
-          <button onClick={()=>startSession('all')} className="px-5 py-2.5 rounded-xl font-semibold border-2 border-ink text-ink bg-white">전체 다시 복습</button>
+        <div className="h-2.5 rounded-full bg-brand-500 my-4" role="progressbar" aria-label="세션 완료" aria-valuemin={0} aria-valuemax={100} aria-valuenow={100} />
+        <p className="font-bold text-ink mb-2">학습 완료 · 100%</p>
+        <p className="text-slate-500 mb-1">{baseTotal>skipped?<>첫 시도 정답 {done}/{baseTotal-skipped} · 정확도 {Math.round(done / (baseTotal-skipped) * 100)}%</>:'이번에는 채점한 문제가 없어요.'}</p>
+        {skipped>0 && <p className="text-xs text-slate-500 mb-2">듣기 {skipped}문제 건너뜀 · 학습 기록에 반영하지 않았어요.</p>}
+        {retryQueue.length > 0 && <p className="text-sm text-slate-500 mb-2">오답 재도전 {retryCorrect}/{retryQueue.length}개 성공</p>}
+        <p className="text-xs text-slate-400 mb-3">총 오답 {wrongCount}회{best >= 2 ? ` · 최고 콤보 ${best}` : ''}</p>
+        {deferred.length > 0 && <div className="bg-rose-50 rounded-xl p-3 mb-4 text-sm text-left">
+          <p className="font-bold mb-1">다음 복습에서 다시 볼 단어</p>
+          {deferred.map(w => <p key={w.id}><span className="font-jp">{w.surface}</span> · {surfaceMeaning(w)}</p>)}
+        </div>}
+        <p className="text-xs text-slate-500 mb-6">{retryQueue.length > 0
+          ? '틀린 유형은 재도전 결과와 관계없이 내일 다시 복습해요.'
+          : '다음 복습은 각 단어의 예정일에 다시 준비돼요.'}</p>
+        <div className="text-left bg-white p-4 rounded-xl mb-5">
+          <p className="text-sm font-bold mb-2">이번에 연습한 능력</p>
+          {sessionWords.map(w=>{
+            const lw=progress.learningWords.find(l=>l.wordId===w.id);
+            return lw?<div key={w.id} className="mb-3"><b className="text-sm font-jp">{w.surface}</b><SkillSummary lw={lw}/></div>:null;
+          })}
         </div>
+        <div className="flex gap-2 justify-center">
+          <button onClick={()=>go('dashboard')} className="px-5 py-2.5 rounded-xl font-semibold text-white bg-brand-600 hover:bg-brand-700">완료</button>
+          <button onClick={()=>startSession(sessionMode==='lesson'?'lesson':'all')} className="px-5 py-2.5 rounded-xl font-semibold border-2 border-ink text-ink bg-white">{sessionMode==='lesson'?'이 곡 다음 5단어':'선택 범위 다시 복습'}</button>
+        </div>
+        {selectedSong!=='all' && <button onClick={()=>{setFocus('listening');startSession('all',level,'listening');}}
+          className="mt-4 font-bold text-brand-600 text-sm">이 곡 원곡 듣기 연습 →</button>}
       </div>
     );
   }
 
   const correctCls = (val:string) =>
-    feedback==='none' ? 'border-slate-200 hover:border-brand-300'
+    feedback==='none' ? (val===picked ? 'border-brand-600 bg-brand-50 ring-2 ring-brand-300' : 'border-slate-200 hover:border-brand-300')
     : val===current['answer'] ? 'border-emerald-500 bg-emerald-50'
     : val===picked ? 'border-rose-400 bg-rose-50' : 'border-slate-200 opacity-60';
 
-  const pct = (done / session.length) * 100;
+  const answered = idx + (feedback !== 'none' ? 1 : 0);
+  const pct = (answered / session.length) * 100;
+  const lastQuestion = idx + 1 === session.length;
+  const nextLabel = lastQuestion
+    ? (phase === 'base' && retryQueue.length ? `오답 ${retryQueue.length}개 재도전` : '결과 보기')
+    : '다음';
   return (
     <div className="anim-slideup max-w-xl mx-auto">
+      {controls}
       {levelBar}
+      <p className="text-xs text-brand-600 font-bold mb-2">{SKILL_LABELS[quizSkill(current)]} 연습{sessionMode==='lesson'?' · 곡별 레슨':''}</p>
+      <div className="text-sm font-bold text-ink mb-3" aria-live="polite">
+        {phase === 'base' ? `기본 문제 · ${baseTotal}문제` : `기본 ${baseTotal}문제 완료 ✓ · 오답 재도전`}
+        <p className="text-xs font-normal text-slate-500 mt-1">{phase === 'base'
+          ? '틀린 문제는 마지막에 한 번 더 풀어요.' : '한 번 더 연습하고 마쳐요. 틀린 단어는 내일 다시 나와요.'}</p>
+      </div>
       {/* 진행 바 — 늑대가 진행률을 따라 달림 */}
       <div className="flex items-center gap-3 mb-6">
-        <div className="relative flex-1 h-2.5 bg-slate-200 rounded-full">
+        <div className="relative flex-1 h-2.5 bg-slate-200 rounded-full" role="progressbar"
+          aria-label={phase === 'base' ? '기본 문제 진행률' : '오답 재도전 진행률'} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(pct)}>
           <div className="h-full bg-brand-500 rounded-full transition-all" style={{ width: `${pct}%` }} />
           <span className="absolute -top-3.5 text-base transition-all select-none" style={{ left: `calc(${pct}% - 10px)` }}>🐺</span>
         </div>
-        <span className="text-xs text-slate-500">{done}/{session.length}</span>
+        <span className="text-xs text-slate-500">{answered}/{session.length}</span>
         {combo >= 2 && <span className="text-xs font-extrabold text-brand-600 anim-pop">{combo >= 6 ? '🐺🔥' : combo >= 4 ? '🍓' : '🍊'} x{combo}</span>}
       </div>
 
       <div className={`bg-white rounded-2xl p-6 shadow-sm border border-slate-100 ${feedback==='wrong'?'anim-shake':''}`}>
         {/* 유형 A */}
         {current.kind === 'A' && (<>
-          <div className="text-xs font-semibold text-brand-600 mb-2">🍊 단어의 뜻을 고르세요</div>
-          <div className="text-3xl text-center my-6"><RubyText text={current.word.surface} dict={new Map([[current.word.surface, current.word.reading]])} /></div>
+          <div className="text-xs font-semibold text-brand-600 mb-2">🍊 기본형의 뜻을 고르세요</div>
+          <div className="text-3xl text-center my-6 font-jp">
+            {current.word.dictionaryForm === current.word.surface
+              ? <RubyText text={current.word.dictionaryForm} dict={new Map([[current.word.dictionaryForm, current.word.reading]])} />
+              : current.word.dictionaryForm}
+          </div>
           <div className="grid gap-2">
             {current.choices.map((c,i)=>(
-              <button key={i} disabled={feedback!=='none'} onClick={()=>choose(c)}
+              <button key={i} disabled={feedback!=='none'} aria-pressed={picked===c} onClick={()=>choose(c)}
                 className={`p-3 rounded-xl border-2 text-left transition flex items-center gap-2 ${correctCls(c)}`}>
                 <span className="inline-flex items-center justify-center w-5 h-5 shrink-0 rounded-md border-2 border-ink text-[10px] font-extrabold">{i+1}</span>
                 <span>{c}</span>
@@ -1122,12 +1564,12 @@ function Review({ progress, setProgress, catalog, go }) {
 
         {/* 유형 B */}
         {current.kind === 'B' && (<>
-          <div className="text-xs font-semibold text-brand-600 mb-2">🍓 빈칸에 알맞은 단어는?</div>
+          <div className="text-xs font-semibold text-brand-600 mb-2">🍓 원래 가사의 빈칸에 쓰인 단어를 고르세요</div>
           <div className="text-xl text-center my-4 font-jp leading-relaxed">{current.blanked}</div>
           <div className="text-sm text-slate-400 text-center mb-4">{current.verse.translation}</div>
           <div className="grid grid-cols-2 gap-2">
             {current.choices.map((c,i)=>(
-              <button key={i} disabled={feedback!=='none'} onClick={()=>choose(c)}
+              <button key={i} disabled={feedback!=='none'} aria-pressed={picked===c} onClick={()=>choose(c)}
                 className={`p-3 rounded-xl border-2 transition flex items-center justify-center gap-2 ${correctCls(c)}`}>
                 <span className="inline-flex items-center justify-center w-5 h-5 shrink-0 rounded-md border-2 border-ink text-[10px] font-extrabold">{i+1}</span>
                 <RubyText text={c} dict={dict} />
@@ -1138,7 +1580,7 @@ function Review({ progress, setProgress, catalog, go }) {
 
         {/* 유형 C */}
         {current.kind === 'C' && (<>
-          <div className="text-xs font-semibold text-brand-600 mb-2">🐰 번역에 맞게 문장을 완성하세요</div>
+          <div className="text-xs font-semibold text-brand-600 mb-2">🐰 모든 조각을 원래 가사 순서로 놓으세요</div>
           <div className="text-base text-slate-700 text-center my-3">{current.verse.translation}</div>
           {/* 정답 라인 */}
           <div className="min-h-[52px] rounded-xl border-2 border-dashed border-slate-200 p-2 flex flex-wrap gap-2 mb-3">
@@ -1154,27 +1596,72 @@ function Review({ progress, setProgress, catalog, go }) {
                 className="px-3 py-1.5 rounded-lg bg-white border border-slate-300 hover:border-brand-300 text-ink"><RubyText text={t} dict={dict} /></button>
             ))}
           </div>
-          {feedback==='none' && (
-            <button onClick={checkC} disabled={assembled.length===0}
-              className="mt-5 w-full py-2.5 rounded-xl font-semibold text-white bg-brand-600 hover:bg-brand-700 disabled:opacity-40">확인</button>
-          )}
-          {feedback!=='none' && (
-            <div className="mt-4 text-center text-sm">
-              <span className="text-slate-400">정답: </span>
-              <span className="font-jp text-ink"><RubyText text={current.answer.join('')} dict={dict} /></span>
-            </div>
-          )}
         </>)}
 
-        {/* 피드백 + 다음 */}
-        {feedback!=='none' && (
-          <div className="mt-5 flex items-center justify-between anim-pop">
-            <div className={`flex items-center gap-2 font-bold ${feedback==='correct'?'text-emerald-600':'text-rose-600'}`}>
-              {feedback==='correct' ? <><IconCheck width="20" height="20"/> {praise}</> : <><IconX width="20" height="20"/> バチ~🥲</>}
+        {(current.kind==='D' || current.kind==='E') && <>
+          <p className="text-xs font-semibold text-brand-600 mb-2">{current.kind==='D'?'📖 가사 속 단어의 읽기를 고르세요':'✍️ 가사 속 단어의 읽기를 입력하세요'}</p>
+          <p className="font-jp text-3xl text-center my-6">{current.word.surface}</p>
+          {current.kind==='D' ? <div className="grid grid-cols-2 gap-2">{current.choices.map((c,i)=><button key={c}
+            aria-pressed={picked===c} disabled={feedback!=='none'} onClick={()=>choose(c)}
+            className={`p-3 rounded-xl border-2 font-jp ${correctCls(c)}`}><span className="text-xs mr-2">{i+1}</span>{c}</button>)}</div>
+            : <input aria-label="읽기 입력" value={typed} onChange={e=>setTyped(e.target.value)} disabled={feedback!=='none'}
+                onKeyDown={e=>{if(e.key==='Enter' && !e.nativeEvent.isComposing && !e.repeat){e.preventDefault();e.stopPropagation();checkAnswer();}}}
+                autoComplete="off" autoCapitalize="off" spellCheck={false} placeholder="히라가나 또는 가타카나로 입력"
+                className="w-full rounded-xl border-2 border-slate-300 p-3 font-jp text-lg" />}
+          {feedback==='none' && <div className="mt-4 text-sm text-center">
+            <button disabled={hinted} onClick={()=>setHinted(true)} className="text-brand-600 underline disabled:opacity-50">첫 글자 힌트 보기</button>
+            {hinted && <p className="mt-2 text-slate-600">첫 글자: <b className="font-jp">{readingKey(current.answer)[0]}</b> · 총 {readingKey(current.answer).length}글자<br/><span className="text-xs">힌트를 쓰면 읽기 단계는 유지하고 내일 다시 복습해요.</span></p>}
+          </div>}
+        </>}
+        {current.kind==='L' && <>
+          <p className="text-xs font-semibold text-brand-600 mb-3">🎧 원곡 구간을 듣고 빈칸에 쓰인 단어를 고르세요</p>
+          <p className="font-jp text-xl text-center my-4">{current.blanked}</p>
+          {current.audio && <ClipPlayer key={`${idx}-${phase}`} clip={current.audio} onHeard={()=>setHeard(true)} stopSignal={feedback} />}
+          <div className="grid grid-cols-2 gap-2 mt-4">{current.choices.map((c,i)=><button key={c} aria-pressed={picked===c}
+            disabled={feedback!=='none'} onClick={()=>choose(c)} className={`font-jp p-3 rounded-xl border-2 ${correctCls(c)}`}>
+            <span className="text-xs mr-2">{i+1}</span>{c}</button>)}</div>
+          {!heard && feedback==='none' && <p className="text-xs text-slate-500 mt-3">구간을 끝까지 들으면 확인할 수 있어요.</p>}
+          {feedback==='none' && <button onClick={()=>{if(submitted.current)return;submitted.current=true;setFeedback('skipped');if(phase==='base')setSkipped(n=>n+1);}}
+            className="mt-3 text-xs text-slate-500 underline">지금은 들을 수 없어요 · 기록 없이 건너뛰기</button>}
+        </>}
+
+        {/* 모든 유형에 같은 문맥 해설 제공 */}
+        {feedback!=='none' && feedback!=='skipped' && (
+          <div className="mt-5 rounded-xl bg-slate-50 p-4 text-sm" aria-label="정답 해설">
+            <p className="font-bold text-ink mb-3">정답: <span className={current.kind === 'A' ? '' : 'font-jp'}>
+              {current.kind === 'C' ? current.answer.join('') : current.answer}</span></p>
+            {current.verse && <div className="mb-3 pb-3 border-b border-slate-200">
+              <p className="text-xs text-slate-500 mb-1">가사 원문</p>
+              <p className="font-jp text-base leading-relaxed">{current.verse.text}</p>
+              {current.verse.translation && <p className="text-slate-500 mt-1">{current.verse.translation}</p>}
+            </div>}
+            <div className="space-y-2">
+              <p><span className="text-slate-500">가사형 </span><b className="font-jp">{current.word.surface}</b>
+                {current.word.reading && <span className="font-jp text-slate-500">（{current.word.reading}）</span>}</p>
+              <p><span className="text-slate-500">이 가사에서 </span>{surfaceMeaning(current.word)}</p>
+              <p><span className="text-slate-500">기본형 </span><b className="font-jp">{current.word.dictionaryForm}</b> · {dictionaryMeaning(current.word)}</p>
+              {(current.word.grammarNote || current.word.conjugation) && <p><span className="text-slate-500">활용·문법 </span>
+                {Array.from(new Set([current.word.conjugation, current.word.grammarNote].filter(Boolean))).join(' · ')}</p>}
             </div>
-            <button onClick={next} className="px-5 py-2 rounded-xl font-semibold text-white bg-brand-600 hover:bg-brand-700">다음</button>
           </div>
         )}
+      </div>
+      {/* 확인·다음은 유형에 관계없이 같은 하단 영역에 배치 */}
+      <div className="sticky bottom-0 z-20 mt-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <div className="min-h-[44px] mb-2" role="status" aria-live="polite">
+          {feedback === 'skipped' ? <p className="text-sm text-slate-500">건너뛰었어요. 듣기 기록은 바뀌지 않았어요.</p> : feedback === 'none'
+            ? <p className="text-sm text-slate-500">{current.kind === 'C'
+                ? '모든 조각을 놓은 뒤 확인하세요.' : current.kind==='E' ? '입력을 마친 뒤 확인하세요.' : '답을 선택한 뒤 확인하세요. 확인 전에는 바꿀 수 있어요.'}</p>
+            : <><p className={`flex items-center gap-2 font-bold ${feedback==='correct'?'text-emerald-600':'text-rose-600'}`}>
+                {feedback==='correct' ? <><IconCheck width="20" height="20"/> {praise}</> : <><IconX width="20" height="20"/> 해설을 확인해 보세요</>}
+              </p>{feedback === 'wrong' && <p className="text-xs text-slate-500 mt-1">{phase === 'base'
+                ? '기본 문제를 마치고 한 번 더 풀어요.' : '괜찮아요. 이 단어는 내일 다시 복습해요.'}</p>}</>}
+        </div>
+        <button onClick={feedback === 'none' ? checkAnswer : next} disabled={feedback === 'none' && !canSubmit}
+          className="w-full py-3 rounded-xl font-bold text-white bg-brand-600 hover:bg-brand-700 disabled:opacity-40">
+          {feedback === 'none' ? '확인' : nextLabel}
+        </button>
+        <p className="text-center text-[11px] text-slate-400 mt-2">{'choices' in current && '숫자 키로 선택 · '}Enter로 확인 / 다음</p>
       </div>
     </div>
   );
@@ -1196,6 +1683,34 @@ function App() {
   const [catalogError, setCatalogError] = useState('');       // 목록(catalog.json) 자체를 못 읽은 치명적 오류
   const [catalogFailed, setCatalogFailed] = useState<string[]>([]); // 개별 곡 파일 실패 목록(나머지는 정상 표시)
   const [current, setCurrent] = useState<SongAnalysis | null>(null);
+  const [reviewSong,setReviewSong]=useState('all');
+  const [reviewFocus,setReviewFocus]=useState<Focus>('mixed');
+  const [reviewVersion,setReviewVersion]=useState(0);
+  const [audioFiles,setAudioFiles]=useState<Record<string,LocalAudio>>({});
+  const [audioCues,setAudioCues]=useState<CueBook>(loadAudioCues);
+  const urls=useRef<string[]>([]);
+  const learningCatalog=useMemo(()=>withAudioCues(catalog,audioFiles,audioCues),[catalog,audioFiles,audioCues]);
+  const activeCurrent=current ? learningCatalog.find(s=>songKey(s)===songKey(current)) || current : null;
+  useEffect(()=>{localStorage.setItem(LS_AUDIO_CUES,JSON.stringify(audioCues));},[audioCues]);
+  useEffect(()=>()=>{urls.current.forEach(url=>URL.revokeObjectURL(url));},[]);
+  function attachAudio(file:File){
+    if(!current)return;const key=songKey(current),src=URL.createObjectURL(file);
+    urls.current.push(src);
+    const old=audioFiles[key];if(old)URL.revokeObjectURL(old.src);
+    setAudioFiles(prev=>({...prev,[key]:{src,name:file.name,signature:`${file.name}:${file.size}:${file.lastModified}`}}));
+  }
+  function saveCue(text:string,start:number,end:number){
+    if(!current)return;const key=songKey(current),file=audioFiles[key];if(!file)return;
+    setAudioCues(prev=>({...prev,[key]:{signature:file.signature,cues:{...(prev[key]?.signature===file.signature?prev[key].cues:{}),[text]:{start,end}}}}));
+  }
+  function startSongLesson(s:SongAnalysis){setReviewSong(songKey(s));setReviewFocus('mixed');setReviewVersion(n=>n+1);setTab('review');}
+  function startSongListening(s:SongAnalysis){
+    setProgress(prev=>({...prev,learningWords:[...prev.learningWords,...s.vocabulary
+      .filter(w=>availableSkills(w,s).includes('listening') && !prev.knownWordIds.includes(w.id) && !prev.learningWords.some(l=>l.wordId===w.id))
+      .map(w=>({wordId:w.id,repetition:0,nextReviewDate:new Date(0)}))]}));
+    setReviewSong(songKey(s));setReviewFocus('listening');setReviewVersion(n=>n+1);setTab('review');
+  }
+  function go(tabName:string){if(tabName==='review'){setReviewSong('all');setReviewFocus('mixed');}setTab(tabName);}
 
   useEffect(() => { saveProgress(progress); }, [progress]);
   useEffect(() => {
@@ -1204,8 +1719,10 @@ function App() {
       .then(({ songs, failedFiles }) => {
         if (!active) return;
         setCatalog(songs);
+        validateCatalogMeanings(songs);
         setCatalogFailed(failedFiles);
-        setProgress(prev => pruneOrphans(prev, songs));
+        // 곡이 누락되거나 중복이 정리되어도 기존 학습 기록을 자동 삭제하지 않는다.
+        setProgress(prev => ({...prev,recentSongs:uniqueSongs(prev.recentSongs)}));
         setCatalogError('');
       })
       .catch(e => { if (active) setCatalogError(e.message || '곡 로드 실패'); })
@@ -1229,7 +1746,7 @@ function App() {
       {TABS.map(t => {
         const active = tab === t.id;
         return (
-          <button key={t.id} onClick={()=>setTab(t.id)}
+          <button key={t.id} onClick={()=>go(t.id)}
             className={`flex ${vertical?'flex-row gap-3 px-4 py-3 rounded-xl':'flex-col items-center gap-0.5 py-2 flex-1'}
               ${active ? (vertical?'bg-brand-50 text-brand-700':'text-brand-600') : 'text-slate-500 hover:text-slate-800'}`}>
             <t.Icon width="22" height="22"/>
@@ -1264,11 +1781,12 @@ function App() {
       {/* 본문 */}
       <main className="flex-1 overflow-auto p-4 md:p-8 pb-24 md:pb-8">
         <div className="max-w-5xl mx-auto">
-          {tab==='dashboard' && <Dashboard progress={progress} catalog={catalog} go={setTab} openSong={openSong} />}
-          {tab==='analyze'   && <Analyze current={current} setCurrent={setCurrent}
-                                          progress={progress} setProgress={setProgress} catalog={catalog} go={setTab} openSong={openSong} />}
-          {tab==='library'   && <Library catalog={catalog} loading={catalogLoading} error={catalogError} failedFiles={catalogFailed} openSong={openSong} />}
-          {tab==='review'    && <Review progress={progress} setProgress={setProgress} catalog={catalog} go={setTab} />}
+          {tab==='dashboard' && <Dashboard progress={progress} catalog={learningCatalog} go={go} openSong={openSong} />}
+          {tab==='analyze'   && <Analyze current={activeCurrent} setCurrent={setCurrent}
+            progress={progress} setProgress={setProgress} catalog={learningCatalog} go={go} openSong={openSong} startSongLesson={startSongLesson} startSongListening={startSongListening}
+            audioFile={current?audioFiles[songKey(current)]:undefined} audioBook={current?audioCues[songKey(current)]:undefined} onAttachAudio={attachAudio} onSaveCue={saveCue} />}
+          {tab==='library'   && <Library catalog={learningCatalog} loading={catalogLoading} error={catalogError} failedFiles={catalogFailed} openSong={openSong} startSongLesson={startSongLesson} />}
+          {tab==='review'    && <Review key={`${reviewSong}-${reviewVersion}`} progress={progress} setProgress={setProgress} catalog={learningCatalog} go={go} initialSongKey={reviewSong} initialFocus={reviewFocus} openSong={openSong} />}
         </div>
       </main>
 
